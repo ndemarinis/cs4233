@@ -123,10 +123,7 @@ public class TollboothGateTest
 		}
 	}
 	
-	/**
-	 * When I make a new gate, it should not be deactivated
-	 * @throws WPIPSException
-	 */
+/* US4:  Deactivating and reactivating a gate */
 	
 	@Test
 	public void initializedGateIsActivated() throws WPIPSException
@@ -188,5 +185,26 @@ public class TollboothGateTest
 		gate.deactivate();
 		
 		gate.open();
+	}
+	
+/* US5:  Delayed close */
+	
+	@Test
+	public void ICanInitializeAGateWithADelay() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller, 5);
+		
+	}
+	
+	@Test
+	public void AGateInitializedWithADelayClosesNSecondsAfterOpening() throws WPIPSException, InterruptedException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller, 2);
+		
+		gate.open();
+		assertEquals(TollboothGate.TollboothGateState.OPEN, gate.getState());
+		
+		Thread.sleep(5 * 1000);
+		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.getState());
 	}
 }

@@ -8,6 +8,9 @@
 
 package wpi.parking;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import wpi.parking.hw.TollboothGateController;
 
 /**
@@ -22,6 +25,10 @@ public class TollboothGate
 	public enum TollboothGateState { UNKNOWN, OPEN, CLOSED, DEACTIVATED };
 	private final TollboothGateController controller;
 	private TollboothGateState state;
+	private int delayTime = 0;
+	
+	// Timer object for implementing the delay time
+	private Timer timer;
 	
 	/**
 	 * Default constructor.
@@ -39,6 +46,23 @@ public class TollboothGate
 		state = TollboothGateState.CLOSED;
 	}
 	
+	
+	/**
+	 * Initialize a tollbooth gate with a delayed closing
+	 * 
+	 * @param id The tollbooth gate's ID
+	 * @param controller The hardware tollbooth gate controller
+	 * @param time Time in seconds the gate should remain open before closing automatically
+	 * @throws WPIPSException If any errors occur during initialization
+	 */
+	public TollboothGate(String id, TollboothGateController controller, int delayTime) throws WPIPSException
+	{
+		this(id, controller);
+		
+		this.delayTime = delayTime;
+		this.timer = new Timer(); // Only make this if we know we need it
+	}
+	
 	/**
 	 * Open the gate.
 	 * @return the gate's state. It will be OPEN or UNKNOWN if there was a problem.
@@ -52,6 +76,18 @@ public class TollboothGate
 		try {
 			controller.open();
 			state = TollboothGateState.OPEN;
+			
+			// If we have a delay time, start off the timer, (using an anonymous class
+			// for the runnable, and have it change the state when we're done
+			if(delayTime > 0)
+				timer.schedule(new TimerTask() 
+				{
+					public void run()
+					{
+						state = TollboothGateState.CLOSED;
+					}
+				}, delayTime * 1000);
+			
 		} catch (WPIPSException e) {
 			state = TollboothGateState.UNKNOWN;
 			throw e;
@@ -112,4 +148,5 @@ public class TollboothGate
 		state = TollboothGateState.CLOSED;
 		return state;
 	}
+	
 }
