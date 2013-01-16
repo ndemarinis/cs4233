@@ -9,26 +9,36 @@
 package wpi.parking;
 
 import static org.junit.Assert.*;
+
+import java.util.concurrent.TimeUnit;
+
 import org.junit.*;
+
+import wpi.parking.TollboothGate.TollboothGateState;
 import wpi.parking.hw.*;
 
 /**
  * Test cases for the TollboothGate class.
  *
- * @author gpollice
- * @version Dec 31, 2012
+ * @author gpollice (Initial implementation)
+ * @author ndemarinis (Extensions for US4 and US5)
+ * @version Jan 16, 2013
  */
 public class TollboothGateTest
 {
 	private TestGateController controller;
+	private TollboothGate gate;
+	private TollboothGate gateDelay2s;
 	
 	/**
 	 * Create the gate controller that we will use in the tests.
 	 */
 	@Before
-	public void setup()
+	public void setup() throws WPIPSException
 	{
 		controller = new TestGateController();
+		gate = new TollboothGate("gate", controller);
+		gateDelay2s = new TollboothGate("Delayed gate", controller, 2);
 	}
 	/**
 	 * Ensure that an initialized tollbooth gate is closed.
@@ -37,7 +47,6 @@ public class TollboothGateTest
 	@Test
 	public void initializedTollboothGateIsClosed() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate1", controller);
 		assertNotNull(gate);
 		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.getState());
 	}
@@ -69,7 +78,6 @@ public class TollboothGateTest
 	@Test
 	public void openAClosedGateShouldGiveAnOpenState() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate1", controller);
 		assertEquals(TollboothGate.TollboothGateState.OPEN, gate.open());
 		assertEquals(TollboothGate.TollboothGateState.OPEN, gate.getState());
 	}
@@ -81,7 +89,6 @@ public class TollboothGateTest
 	@Test
 	public void closeAnOpenGateShouldGiveAClosedState() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate1", controller);
 		gate.open();
 		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.close());
 		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.getState());
@@ -95,13 +102,13 @@ public class TollboothGateTest
 	public void errorOnClosingCausesExceptionAndUnknownState()
 	{
 		controller.setCloseResults(new boolean[] {false});
-		TollboothGate gate = null;
+		TollboothGate nullGate = null;
 		try {
-			gate = new TollboothGate("gate1", controller);
-			gate.close();		// in case close is not called on initialization
+			nullGate = new TollboothGate("gate1", controller);
+			nullGate.close();		// in case close is not called on initialization
 			fail("Expected gate controller exception");
 		} catch (WPIPSException e) {
-			assertEquals(TollboothGate.TollboothGateState.UNKNOWN, gate.getState());
+			assertEquals(TollboothGate.TollboothGateState.UNKNOWN, nullGate.getState());
 		}
 	}
 	
@@ -113,14 +120,26 @@ public class TollboothGateTest
 	public void errorOnOpeningCausesExceptionAndUnknownState()
 	{
 		controller.setOpenResults(new boolean[] {false});
-		TollboothGate gate = null;
+		TollboothGate failGate = null;
 		try {
-			gate = new TollboothGate("gate1", controller);
-			gate.open();
+			failGate = new TollboothGate("gate1", controller);
+			failGate.open();
 			fail("Expected gate controller exception");
 		} catch (WPIPSException e) {
-			assertEquals(TollboothGate.TollboothGateState.UNKNOWN, gate.getState());
+			assertEquals(TollboothGate.TollboothGateState.UNKNOWN, failGate.getState());
 		}
+	}
+	
+/* More basic tests */
+	@Test
+	public void closingAGateIsIdempotent() throws WPIPSException 
+	{
+		// Fun fact:  This test taught me a new word!  WOOT!  
+		gate.open();
+		gate.close();
+		gate.close();
+		
+		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.getState());
 	}
 	
 /* US4:  Deactivating and reactivating a gate */
@@ -128,15 +147,12 @@ public class TollboothGateTest
 	@Test
 	public void initializedGateIsActivated() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
 		assertTrue(TollboothGate.TollboothGateState.DEACTIVATED != gate.getState());
 	}
 	
 	@Test
 	public void deactivatingAGateShouldGiveADeactivatedState() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
-		
 		assertEquals(gate.deactivate(), TollboothGate.TollboothGateState.DEACTIVATED);
 		assertEquals(gate.getState(), TollboothGate.TollboothGateState.DEACTIVATED);
 	}
@@ -144,8 +160,6 @@ public class TollboothGateTest
 	@Test
 	public void activatingADectivatedGateShouldBeInClosedState() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
-		
 		gate.deactivate();
 		
 		assertEquals(gate.activate(), TollboothGate.TollboothGateState.CLOSED);
@@ -155,15 +169,12 @@ public class TollboothGateTest
 	@Test(expected=WPIPSException.class)
 	public void activatingAnActivatedGateShouldThrowError() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
-		
 		gate.activate();
 	}
 	
 	@Test(expected=WPIPSException.class)
 	public void deactivatingADeactivatedGateShouldThrowError() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
 		gate.deactivate();
 		
 		gate.deactivate();
@@ -172,7 +183,6 @@ public class TollboothGateTest
 	@Test(expected=WPIPSException.class)
 	public void ClosingADeactivatedGateThrowsError() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
 		gate.deactivate();
 		
 		gate.close();
@@ -181,7 +191,6 @@ public class TollboothGateTest
 	@Test(expected=WPIPSException.class)
 	public void OpeningADeactivatedGateThrowsError() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller);
 		gate.deactivate();
 		
 		gate.open();
@@ -192,7 +201,7 @@ public class TollboothGateTest
 	@Test
 	public void ICanInitializeAGateWithADelay() throws WPIPSException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller, 5);
+		final TollboothGate delayGate = new TollboothGate("gate", controller, 5);
 		assertNotNull(gate);
 		
 	}
@@ -201,12 +210,63 @@ public class TollboothGateTest
 	public void AGateInitializedWithADelayClosesNSecondsAfterOpening() 
 			throws WPIPSException, InterruptedException
 	{
-		final TollboothGate gate = new TollboothGate("gate", controller, 2);
+		gateDelay2s.open();
+		assertEquals(TollboothGate.TollboothGateState.OPEN, gateDelay2s.getState());
 		
-		gate.open();
-		assertEquals(TollboothGate.TollboothGateState.OPEN, gate.getState());
+		Thread.sleep(TimeUnit.SECONDS.toMillis(3)); // Add a second to avoid the race condition
+		assertEquals(TollboothGate.TollboothGateState.CLOSED, gateDelay2s.getState());
+	}
+	
+	@Test
+	public void DeactivatingAGateWithDelayCancelsTimer() 
+			throws WPIPSException, InterruptedException
+	{
+		gateDelay2s.open();
+		// Gate will close in two seconds
+		gateDelay2s.deactivate();
 		
-		Thread.sleep(5 * 1000);
-		assertEquals(TollboothGate.TollboothGateState.CLOSED, gate.getState());
+		assertEquals(TollboothGate.TollboothGateState.DEACTIVATED, gateDelay2s.getState());
+		
+		// If we wait out the delay (that shouldn't exist), the state shouldn't have changed
+		Thread.sleep(TimeUnit.SECONDS.toMillis(3));
+		assertEquals(TollboothGate.TollboothGateState.DEACTIVATED, gateDelay2s.getState());
+	}
+	
+	@Test
+	public void OpeningAnAlreadyOpenGateWithDelayExtendsTimer() 
+			throws WPIPSException, InterruptedException
+	{
+		final TollboothGate gateDelay4s = new TollboothGate("4s Delayed Gate", 
+				controller, 4);
+		
+		gateDelay4s.open(); // Open gate for three seconds 
+		
+		// Wait a bit, but continue when the previous timer is running
+		Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+		gateDelay4s.open();  // Open gate for another two seconds
+		
+		// Check the state after the first timer completes, but not the second.  
+		// It should still be open because the new timer cancelled the old one
+		Thread.sleep(TimeUnit.SECONDS.toMillis(2));  
+		assertEquals(TollboothGate.TollboothGateState.OPEN, gateDelay4s.getState());
+		
+		// The gate should be closed after the second timer has completed
+		Thread.sleep(TimeUnit.SECONDS.toMillis(3)); 
+		assertEquals(TollboothGate.TollboothGateState.CLOSED, gateDelay4s.getState());
+	}
+	
+	@Test
+	public void weCanReactivateADeactivatedDelayedGateAndUseIt() 
+			throws WPIPSException, InterruptedException
+	{
+		gateDelay2s.open();
+		gateDelay2s.deactivate();
+		gateDelay2s.activate();
+		
+		gateDelay2s.open();
+		assertEquals(TollboothGate.TollboothGateState.OPEN, gateDelay2s.getState());
+		
+		Thread.sleep(TimeUnit.SECONDS.toMillis(3)); 
+		assertEquals(TollboothGate.TollboothGateState.CLOSED, gateDelay2s.getState());
 	}
 }

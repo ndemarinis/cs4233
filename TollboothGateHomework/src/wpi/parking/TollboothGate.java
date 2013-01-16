@@ -10,6 +10,7 @@ package wpi.parking;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import wpi.parking.hw.TollboothGateController;
 
@@ -17,18 +18,23 @@ import wpi.parking.hw.TollboothGateController;
  * The TollboothGate class encapsulates all control functions for a single
  * gate at a tollbooth in the parking management system.
  *
- * @author gpollice
- * @version Dec 31, 2012
+ * @author gpollice (Initial implementation)
+ * @author ndemarinis (Extensions for US4 and US5)
+ * @version January 16, 2013
  */
 public class TollboothGate
 {
 	public enum TollboothGateState { UNKNOWN, OPEN, CLOSED, DEACTIVATED };
 	private final TollboothGateController controller;
 	private TollboothGateState state;
-	private int delayTime = 0;
+	private long delayTimeMsec = 0; // Time to delay closing the gate in seconds
 	
-	// Timer object for implementing the delay time
-	private Timer timer;
+	// Timer object for implementing the delay time (could also only 
+	// instantiate this when we know we have a delay time)
+	private final Timer timer = new Timer();
+	
+	// Task run when the delayed close timer fires, closing the gate
+	private TimerTask delayTask;
 	
 	/**
 	 * Default constructor.
@@ -52,16 +58,16 @@ public class TollboothGate
 	 * 
 	 * @param id The tollbooth gate's ID
 	 * @param controller The hardware tollbooth gate controller
-	 * @param delayTime Time in seconds the gate should remain open before closing automatically
+	 * @param delayTimeSec Time in seconds the gate should remain open before closing automatically
 	 * @throws WPIPSException If any errors occur during initialization
 	 */
 	public TollboothGate(String id, TollboothGateController controller, 
-			int delayTime) throws WPIPSException
+			int delayTimeSec) throws WPIPSException
 	{
 		this(id, controller);
 		
-		this.delayTime = delayTime;
-		timer = new Timer(); // Only make this if we know we need it
+		delayTimeMsec = TimeUnit.SECONDS.toMillis(delayTimeSec);
+
 	}
 	
 	/**
@@ -78,18 +84,12 @@ public class TollboothGate
 		try {
 			controller.open();
 			state = TollboothGateState.OPEN;
-			
+				
 			// If we have a delay time, start off the timer, (using an anonymous class
-			// for the runnable, and have it change the state when we're done
-			if(delayTime > 0)
+			// for the runnable) and have it change the state when we're done
+			if(delayTimeMsec > 0)
 			{
-				timer.schedule(new TimerTask() 
-				{
-					public void run()
-					{
-						state = TollboothGateState.CLOSED;
-					}
-				}, delayTime * 1000);
+				startDelayTask();
 			}
 			
 		} catch (WPIPSException e) {
@@ -138,8 +138,15 @@ public class TollboothGate
 		if(state == TollboothGateState.DEACTIVATED) {
 			throw new WPIPSException("Can't deactivate a deactivated gate!");
 		}
-			
+		
+		// If we've scheduled a task, cancel it.  
+		if(delayTask != null)
+		{
+			delayTask.cancel();
+		}
+		
 		state = TollboothGateState.DEACTIVATED;
+		
 		return state;
 	}
 	
@@ -154,7 +161,43 @@ public class TollboothGate
 			throw new WPIPSException("Gate is already active!");
 		}
 		
+		// After activating the gate, close it.  Since you can, in theory, 
+		// deactivate an open gate, it makes sense to tell the hardware
+		// to close it when reactivating it to ensure that our state
+		// syncs up with the hardware.  So until we close it with the 
+		// controller, the state is technically unknown.  
+		
+		state = TollboothGateState.UNKNOWN; 
 		return this.close();
+	}
+	
+	/**
+	 * Start a the delayed open timer by scheduling a new task 
+	 * using the delay at initialization  
+	 * If the timer is already running, the existing task is cancelled
+	 * in favor of the new one.  
+	 * 
+	 * This is a little ugly, but, in the spirit of TDD, I think it's 
+	 * the simplest thing that works.  
+	 */
+	private void startDelayTask(){
+		
+		// If a task is currently running, cancel it.  
+		if(delayTask != null)
+		{
+			delayTask.cancel();
+		}
+		
+		// Make a new task for each timer run (this lets us cancel/restart them)
+		delayTask = new TimerTask() 
+		{
+			public void run()
+			{
+				state = TollboothGateState.CLOSED;
+			}
+		};	
+		
+		timer.schedule(delayTask, delayTimeMsec);
 	}
 	
 }
