@@ -1,0 +1,21 @@
+User Story 3:
+-------------
+X Create a TollboothGate and make sure that it is closed after opening.
+X If a gate has a blank ID, it should fail to initialize.
+X If a gate has a null ID, it should fail to initialize.
+
+User Story 2:
+-------------
+X Get the tollgate state (open, closed, or unknown)
+
+Use the hardware tollbooth gate controller:
+-------------------------------------------
+X Extract an interface and change the constructor (refactoring)
+
+User Story 1:
+-------------
+X Open the gate
+X Close an open gate
+X Use a gate controller.
+X Try to open the gate when an error occurs
+X Try to close the gate when an error occurs

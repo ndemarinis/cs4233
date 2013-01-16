@@ -1,0 +1,55 @@
+USER STORY US1: Open and close the tollbooth gate
+  The tollbooth gate can be in either an open or closed state. As a tollbooth operator
+  I should be able to tell the gate to open or close. I expect that the gate will change
+  to the appropriate state. If it cannot do so, because of a hardware malfunction or
+  an obstruction, the gate will indicate that a problem has occurred.
+
+USER STORY US2: Query the tollbooth gate's state
+  As a parking facility employee I need to be able to determine the current state
+  of a tollbooth gate. I should be able to select the gate and ask whether it is
+  open or closed. I should get the current state of the gate, or "unknown" if the
+  gate's state cannot be determined or the gate is offline.
+
+USER STORY US3: Initialize a tollbooth gate
+  As a parking facility administrator I should be able to configure the tollbooth
+  gates in the system. Each gate has a unique, non-blank ID that
+  identifies it. When the parking facility system is initialized the gates are
+  initialized. When a gate is initialized, it is placed in the closed state.
+
+USER STORY US3A: Initialize a tollbooth gate
+  As a parking facility administrator I should be able to configure the tollbooth
+  gates in the system. When the parking facility system is initialized the gates are
+  initialized. When a gate is initialized, it is placed in the closed state.
+
+USER STORY US3B: Unique gate ID
+  Each tollbooth gate will have a unique, non-blank ID.
+
+USER STORY US4: Activate and deactivate a tollbooth gate
+  As a parking facility employee I should be able to activate and deactivate a 
+  tollbooth gate. I might deactivate a gate, for example, when it malfunctions and
+  requires maintenance. When it is fixed, I would reactivate it. When a gate is
+  deactivated, it will not respond to any message except a message to reactivate it or
+  a message to get the current state.
+  When a gate is activated, it is put in the closed state.
+  When a gate is deactivated, you can still find out the gate's state and it will return
+  DEACTIVATED as in the . This is the only thing you
+  can do to a deactivated gate besides activate it.
+
+USER STORY US5: Automatically close the gate
+  As an administrator of a parking facility, I would like to be able to
+  tell the system to automatically close a tollbooth gate after some time
+  has passed from when it was open. I want to do this to avoid having multiple
+  vehicles entering and exiting the facility without each of them paying the
+  appropriate fees. When I configure / initialize the gate, I should be able
+  to provide a time period, in seconds, that should elapse after the gate has
+  been opened. When that period elapses, the system should close the gate. If
+  I do not provide any time period, then the gate should not automatically
+  close. but remain open until the system explicitly closes it.
+
+USER STORY US6: Safe gate close
+  As a tollbooth gate operator, I want to be sure that the gate does not close when a 
+  vehicle has not cleared the gate's path. Even if I have told the gate to close, it 
+  should not close until the vehicle has cleared the gate's path. If a vehicle is 
+  obstructing the gate, then the gate should wait an appropriate number of seconds 
+  and then try to close again. This can be repeated up to five times. After five times, 
+  the gate should issue an alert (exception) that can be used to notify me.
