@@ -19,7 +19,7 @@ import wpi.parking.hw.TollboothGateController;
  */
 public class TollboothGate
 {
-	public enum TollboothGateState { UNKNOWN, OPEN, CLOSED };
+	public enum TollboothGateState { UNKNOWN, OPEN, CLOSED, DEACTIVATED };
 	private final TollboothGateController controller;
 	private TollboothGateState state;
 	
@@ -46,6 +46,9 @@ public class TollboothGate
 	 */
 	public TollboothGateState open() throws WPIPSException
 	{
+		if(state == TollboothGateState.DEACTIVATED)
+			throw new WPIPSException("Cannot open gate; gate is deactivated!");
+		
 		try {
 			controller.open();
 			state = TollboothGateState.OPEN;
@@ -63,6 +66,9 @@ public class TollboothGate
 	 */
 	public TollboothGateState close() throws WPIPSException
 	{
+		if(state == TollboothGateState.DEACTIVATED)
+			throw new WPIPSException("Cannot close gate; gate is deactivated!");
+		
 		try {
 			controller.close();
 			state = TollboothGateState.CLOSED;
@@ -81,4 +87,29 @@ public class TollboothGate
 		return state;
 	}
 	
+	/**
+	 * Deactivate a gate.
+	 * @throws WPIPSException if gate is already deactivated
+	 */
+	public TollboothGateState deactivate() throws WPIPSException
+	{
+		if(state == TollboothGateState.DEACTIVATED)
+			throw new WPIPSException("Can't deactivate a deactivated gate!");
+			
+		state = TollboothGateState.DEACTIVATED;
+		return state;
+	}
+	
+	/**
+	 * Activate a deactivated gate.  
+	 * @throws WPIPSException if gate is already active
+	 */
+	public TollboothGateState activate() throws WPIPSException
+	{
+		if(state != TollboothGateState.DEACTIVATED)
+			throw new WPIPSException("Gate is already active!");
+		
+		state = TollboothGateState.CLOSED;
+		return state;
+	}
 }

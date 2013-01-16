@@ -122,4 +122,71 @@ public class TollboothGateTest
 			assertEquals(TollboothGate.TollboothGateState.UNKNOWN, gate.getState());
 		}
 	}
+	
+	/**
+	 * When I make a new gate, it should not be deactivated
+	 * @throws WPIPSException
+	 */
+	
+	@Test
+	public void initializedGateIsActivated() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		assertTrue(TollboothGate.TollboothGateState.DEACTIVATED != gate.getState());
+	}
+	
+	@Test
+	public void deactivatingAGateShouldGiveADeactivatedState() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		
+		assertEquals(gate.deactivate(), TollboothGate.TollboothGateState.DEACTIVATED);
+		assertEquals(gate.getState(), TollboothGate.TollboothGateState.DEACTIVATED);
+	}
+	
+	@Test
+	public void activatingADectivatedGateShouldBeInClosedState() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		
+		gate.deactivate();
+		
+		assertEquals(gate.activate(), TollboothGate.TollboothGateState.CLOSED);
+		assertEquals(gate.getState(), TollboothGate.TollboothGateState.CLOSED);
+	}
+	
+	@Test(expected=WPIPSException.class)
+	public void activatingAnActivatedGateShouldThrowError() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		
+		gate.activate();
+	}
+	
+	@Test(expected=WPIPSException.class)
+	public void deactivatingADeactivatedGateShouldThrowError() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		gate.deactivate();
+		
+		gate.deactivate();
+	}
+	
+	@Test(expected=WPIPSException.class)
+	public void ClosingADeactivatedGateThrowsError() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		gate.deactivate();
+		
+		gate.close();
+	}
+	
+	@Test(expected=WPIPSException.class)
+	public void OpeningADeactivatedGateThrowsError() throws WPIPSException
+	{
+		TollboothGate gate = new TollboothGate("gate", controller);
+		gate.deactivate();
+		
+		gate.open();
+	}
 }
