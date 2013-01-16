@@ -52,15 +52,16 @@ public class TollboothGate
 	 * 
 	 * @param id The tollbooth gate's ID
 	 * @param controller The hardware tollbooth gate controller
-	 * @param time Time in seconds the gate should remain open before closing automatically
+	 * @param delayTime Time in seconds the gate should remain open before closing automatically
 	 * @throws WPIPSException If any errors occur during initialization
 	 */
-	public TollboothGate(String id, TollboothGateController controller, int delayTime) throws WPIPSException
+	public TollboothGate(String id, TollboothGateController controller, 
+			int delayTime) throws WPIPSException
 	{
 		this(id, controller);
 		
 		this.delayTime = delayTime;
-		this.timer = new Timer(); // Only make this if we know we need it
+		timer = new Timer(); // Only make this if we know we need it
 	}
 	
 	/**
@@ -70,8 +71,9 @@ public class TollboothGate
 	 */
 	public TollboothGateState open() throws WPIPSException
 	{
-		if(state == TollboothGateState.DEACTIVATED)
+		if(state == TollboothGateState.DEACTIVATED) {
 			throw new WPIPSException("Cannot open gate; gate is deactivated!");
+		}
 		
 		try {
 			controller.open();
@@ -80,6 +82,7 @@ public class TollboothGate
 			// If we have a delay time, start off the timer, (using an anonymous class
 			// for the runnable, and have it change the state when we're done
 			if(delayTime > 0)
+			{
 				timer.schedule(new TimerTask() 
 				{
 					public void run()
@@ -87,6 +90,7 @@ public class TollboothGate
 						state = TollboothGateState.CLOSED;
 					}
 				}, delayTime * 1000);
+			}
 			
 		} catch (WPIPSException e) {
 			state = TollboothGateState.UNKNOWN;
@@ -102,8 +106,9 @@ public class TollboothGate
 	 */
 	public TollboothGateState close() throws WPIPSException
 	{
-		if(state == TollboothGateState.DEACTIVATED)
+		if(state == TollboothGateState.DEACTIVATED) {
 			throw new WPIPSException("Cannot close gate; gate is deactivated!");
+		}
 		
 		try {
 			controller.close();
@@ -125,12 +130,14 @@ public class TollboothGate
 	
 	/**
 	 * Deactivate a gate.
+	 * @return The gate's state
 	 * @throws WPIPSException if gate is already deactivated
 	 */
 	public TollboothGateState deactivate() throws WPIPSException
 	{
-		if(state == TollboothGateState.DEACTIVATED)
+		if(state == TollboothGateState.DEACTIVATED) {
 			throw new WPIPSException("Can't deactivate a deactivated gate!");
+		}
 			
 		state = TollboothGateState.DEACTIVATED;
 		return state;
@@ -138,15 +145,16 @@ public class TollboothGate
 	
 	/**
 	 * Activate a deactivated gate.  
+	 * @return The gate's state, should be CLOSED unless an error occurs
 	 * @throws WPIPSException if gate is already active
 	 */
 	public TollboothGateState activate() throws WPIPSException
 	{
-		if(state != TollboothGateState.DEACTIVATED)
+		if(state != TollboothGateState.DEACTIVATED) {
 			throw new WPIPSException("Gate is already active!");
+		}
 		
-		state = TollboothGateState.CLOSED;
-		return state;
+		return this.close();
 	}
 	
 }
