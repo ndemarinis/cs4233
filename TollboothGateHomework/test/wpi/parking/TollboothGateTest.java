@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.*;
 
-import wpi.parking.TollboothGate.TollboothGateState;
 import wpi.parking.hw.*;
 
 /**
@@ -202,7 +201,7 @@ public class TollboothGateTest
 	public void ICanInitializeAGateWithADelay() throws WPIPSException
 	{
 		final TollboothGate delayGate = new TollboothGate("gate", controller, 5);
-		assertNotNull(gate);
+		assertNotNull(delayGate);
 		
 	}
 	
