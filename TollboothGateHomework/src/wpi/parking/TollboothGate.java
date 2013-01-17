@@ -85,11 +85,23 @@ public class TollboothGate
 			controller.open();
 			state = TollboothGateState.OPEN;
 				
-			// If we have a delay time, start off the timer, (using an anonymous class
-			// for the runnable) and have it change the state when we're done
-			if(delayTimeMsec > 0)
+			if(delayTimeMsec > 0) // If we have a delay time, start off the timer
 			{
-				startDelayTask();
+				// If a task is currently running, cancel it.  
+				if(delayTask != null) {
+					delayTask.cancel();
+				}
+				
+				// Make a new task for each timer run (this lets us cancel/restart them)
+				delayTask = new TimerTask() 
+				{
+					public void run()
+					{
+						state = TollboothGateState.CLOSED;
+					}
+				};	
+				
+				timer.schedule(delayTask, delayTimeMsec);
 			}
 			
 		} catch (WPIPSException e) {
@@ -170,34 +182,4 @@ public class TollboothGate
 		state = TollboothGateState.UNKNOWN; 
 		return this.close();
 	}
-	
-	/**
-	 * Start a the delayed open timer by scheduling a new task 
-	 * using the delay at initialization  
-	 * If the timer is already running, the existing task is cancelled
-	 * in favor of the new one.  
-	 * 
-	 * This is a little ugly, but, in the spirit of TDD, I think it's 
-	 * the simplest thing that works.  
-	 */
-	private void startDelayTask(){
-		
-		// If a task is currently running, cancel it.  
-		if(delayTask != null)
-		{
-			delayTask.cancel();
-		}
-		
-		// Make a new task for each timer run (this lets us cancel/restart them)
-		delayTask = new TimerTask() 
-		{
-			public void run()
-			{
-				state = TollboothGateState.CLOSED;
-			}
-		};	
-		
-		timer.schedule(delayTask, delayTimeMsec);
-	}
-	
 }
