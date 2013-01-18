@@ -267,5 +267,6 @@ public class TollboothGateTest
 		
 		Thread.sleep(TimeUnit.SECONDS.toMillis(3)); 
 		assertEquals(TollboothGate.TollboothGateState.CLOSED, gateDelay2s.getState());
+		
 	}
 }
