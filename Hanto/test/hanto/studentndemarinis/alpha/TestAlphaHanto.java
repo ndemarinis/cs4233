@@ -32,17 +32,23 @@ import org.junit.Test;
  */
 public class TestAlphaHanto {
 
-	HantoGame game;
+	TestHantoGameAlphaHarness game;
 
 	final HantoCoordinate origin = new HexCoordinate(0, 0);
 	final HantoCoordinate adjToOrigin = new HexCoordinate(1, 0);
 	final HantoCoordinate adjToOriginAgain = new HexCoordinate(0, -1);
 	final HantoCoordinate wayOffFromOrigin = new HexCoordinate(3, 5);
 	
+	final HexPiece blueButterfly = new HexPiece(new HexCoordinate(0, 0), 
+			HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY);
+	
+	final HexPiece redButterfly = new HexPiece(new HexCoordinate(0, 0), 
+			HantoPlayerColor.RED, HantoPieceType.BUTTERFLY);
+	
 	@Before
 	public void setUp() throws HantoException 
 	{
-		game = new AlphaHanto();
+		game = new TestAlphaHantoGame();
 	}
 
 	@Test
@@ -58,6 +64,20 @@ public class TestAlphaHanto {
 				game.makeMove(HantoPieceType.BUTTERFLY, null, origin));
 	}
 	
+	@Test
+	public void butterflyAtOriginActuallyIsAtOrigin() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		assertTrue(game.doesPieceExistAt(origin));
+	}
+	
+	@Test
+	public void canAddButterflyAtOriginManually() throws HantoException
+	{
+		game.addToBoard(blueButterfly.getCoordinate());
+		assertTrue(game.doesPieceExistAt(origin));
+	}
+	
 	@Test(expected=HantoException.class)
 	public void cantPlaceBlueButterflyAtNonOrigin() throws HantoException 
 	{
@@ -70,8 +90,10 @@ public class TestAlphaHanto {
 	@Test(expected=HantoException.class)
 	public void cantPlaceRedButterflyOnTopOfBlueButterfly() throws HantoException
 	{
+		// Place one blue butterfly, which we know works
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 		
+		// Now place another one.  
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 	}
 	

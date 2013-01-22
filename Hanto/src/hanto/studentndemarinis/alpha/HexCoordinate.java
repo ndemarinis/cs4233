@@ -32,6 +32,18 @@ public class HexCoordinate implements HantoCoordinate {
 	}
 	
 	/**
+	 * Make a new HexCoordinate based on a generic
+	 * HantoCoordinate.  
+	 * 
+	 * @param c The HantoCoordinate to turn into a HexCoordinate
+	 */
+	public HexCoordinate(HantoCoordinate c)
+	{
+		x = c.getX();
+		y = c.getY();
+	}
+	
+	/**
 	 * @return x coordinate of HexCoordinate
 	 */
 	@Override
