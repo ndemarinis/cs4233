@@ -26,7 +26,9 @@ import hanto.util.MoveResult;
  */
 public class AlphaHanto implements HantoGame {
 
-	private int numMoves;
+	private int numMoves; // Total number of moves elapsed in the game so far
+	private HantoPlayerColor nextPlayer; // Next player to make a move.
+	
 	Collection<HexCoordinate> board;
 	
 	
@@ -39,6 +41,7 @@ public class AlphaHanto implements HantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
+		nextPlayer = firstPlayer;
 	}
 
 	@Override
@@ -77,6 +80,9 @@ public class AlphaHanto implements HantoGame {
 		// Finally, if we haven't thrown an error already, this move is valid, so add it to the "board"
 		board.add(new HexCoordinate(to.getX(), to.getY()));
 		
+		// After placing the current piece, the current player has made a move, so switch the next player
+		nextPlayer = (nextPlayer == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+		
 		if(numMoves++ == 0) {
 			return MoveResult.OK;
 		} else {
@@ -88,6 +94,38 @@ public class AlphaHanto implements HantoGame {
 	public String getPrintableBoard() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	/**
+	 * @return the number of moves made in this game
+	 */
+	public int getNumMoves() {
+		return numMoves;
+	}
+
+
+	/**
+	 * @param numMoves the number of moves to set
+	 */
+	public void setNumMoves(int numMoves) {
+		this.numMoves = numMoves;
+	}
+
+
+	/**
+	 * @return the next player that can make a move
+	 */
+	public HantoPlayerColor getNextPlayer() {
+		return nextPlayer;
+	}
+
+
+	/**
+	 * @param nextPlayer Player to make the next move
+	 */
+	public void setNextPlayer(HantoPlayerColor nextPlayer) {
+		this.nextPlayer = nextPlayer;
 	}
 
 }
