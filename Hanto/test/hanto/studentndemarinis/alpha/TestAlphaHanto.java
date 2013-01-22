@@ -7,12 +7,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package hanto.studentndemarinis;
+package hanto.studentndemarinis.alpha;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.alpha.AlphaHanto;
+import hanto.studentndemarinis.alpha.HexCoordinate;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
