@@ -46,5 +46,21 @@ public class HexCoordinate implements HantoCoordinate {
 	public int getY() {
 		return y;
 	}
+	
+	/**
+	 * 
+	 * @param other Some other coordinate
+	 * @return true if this coordinate is adjacent to this one
+	 * using a hexagonal coordinate system
+	 */
+	public boolean isAdjacentTo(HantoCoordinate other)
+	{
+		return (other.getX() == x     && other.getY() == y + 1) ||
+ 			   (other.getX() == x + 1 && other.getY() == y    ) ||
+			   (other.getX() == x + 1 && other.getY() == y - 1) ||
+		       (other.getX() == x     && other.getY() == y - 1) ||
+			   (other.getX() == x - 1 && other.getY() == y    ) || 
+			   (other.getX() == x - 1 && other.getY() == y + 1);
+	}
 
 }

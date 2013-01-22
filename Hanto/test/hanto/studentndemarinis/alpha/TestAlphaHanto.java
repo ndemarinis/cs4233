@@ -22,6 +22,7 @@ import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -65,10 +66,18 @@ public class TestAlphaHanto {
 		assertEquals(ret, MoveResult.OK);
 	}
 	
+	@Test(expected=HantoException.class)
+	public void cantPlaceRedButterflyOnTopOfBlueButterfly() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+	}
+	
 	@Test
 	public void canPlaceRedButterflyAtAdjacentLocation() throws HantoException 
 	{
-		
+	
 		// Place the blue butterfly, as before
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 		
@@ -80,7 +89,6 @@ public class TestAlphaHanto {
 	public void cantPlaceBlueButterflyAtNonAdjacentLocation() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
-		
 		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, 
 				null, wayOffFromOrigin);
 		
