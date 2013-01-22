@@ -19,20 +19,32 @@ import hanto.util.HantoCoordinate;
  */
 public class HexCoordinate implements HantoCoordinate {
 
+	final int x, y;
+	
+	/**
+	 * Make a new HexCoordinate with the specified coordinates
+	 * @param x coordinate on x-axis
+	 * @param y coordinate on y-axis
+	 */
 	public HexCoordinate(int x, int y){
-		
+		this.x = x;
+		this.y = y;
 	}
 	
+	/**
+	 * @return x coordinate of HexCoordinate
+	 */
 	@Override
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
+	/**
+	 * @return y coordinate of HexCoordinate
+	 */
 	@Override
 	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return y;
 	}
 
 }

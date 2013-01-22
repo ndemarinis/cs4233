@@ -23,23 +23,33 @@ import hanto.util.MoveResult;
  */
 public class AlphaHanto implements HantoGame {
 
+	private int numMoves;
 	
-	public AlphaHanto(){
-		
+	
+	public AlphaHanto() throws HantoException {
+		this.initialize(HantoPlayerColor.BLUE);
 	}
 	
 	
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
-		// TODO Auto-generated method stub
-
+		numMoves = 0;
 	}
 
 	@Override
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException {
-
-		return MoveResult.OK;
+		
+		// Starting butterfly should be at origin, or else.
+		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
+			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
+		}
+		
+		if(numMoves++ == 0) {
+			return MoveResult.OK;
+		} else {
+			return MoveResult.DRAW;
+		}
 	}
 
 	@Override

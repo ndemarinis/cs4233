@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.testutil.HexPiece;
+import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
@@ -28,28 +29,62 @@ import org.junit.Test;
  */
 public class TestAlphaHanto {
 
+	HantoGame game;
+
+	final HantoCoordinate origin = new HexCoordinate(0, 0);
+	final HantoCoordinate adjToOrigin = new HexCoordinate(1, 0);
+	final HantoCoordinate wayOffFromOrigin = new HexCoordinate(3, 5);
+	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws HantoException 
+	{
+		game = new AlphaHanto();
 	}
 
 	@Test
-	public void canInitializeGameAndButterfly() throws HantoException {
-		HantoGame game = new AlphaHanto();
-		HexPiece blueButterfly = new HexPiece(new HexCoordinate(0, 0), 
-				HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY);
-		
+	public void canInitializeGameAndButterfly() throws HantoException 
+	{		
 		assertNotNull(game);
-		assertNotNull(blueButterfly);
 	}
 	
 	@Test
-	public void canPlaceButterflyAtOrigin() throws HantoException {
-		HantoGame game = new AlphaHanto();
-		HexPiece blueButterfly = new HexPiece(new HexCoordinate(0, 0),
-				HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY);
-		
-		assertEquals(MoveResult.OK, game.makeMove(blueButterfly.getPiece(), null, 
-				blueButterfly.getCoordinate()));
+	public void canPlaceBlueButterflyAtOrigin() throws HantoException 
+	{		
+		assertEquals(MoveResult.OK, 
+				game.makeMove(HantoPieceType.BUTTERFLY, null, origin));
 	}
-
+	
+	@Test(expected=HantoException.class)
+	public void cantPlaceBlueButterflyAtNonOrigin() throws HantoException 
+	{
+		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, 
+				null, adjToOrigin);
+		
+		assertEquals(ret, MoveResult.OK);
+	}
+	
+	@Test
+	public void canPlaceRedButterflyAtAdjacentLocation() throws HantoException 
+	{
+		
+		// Place the blue butterfly, as before
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		
+		assertEquals(MoveResult.DRAW, 
+				game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin));
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantPlaceBlueButterflyAtNonAdjacentLocation() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		
+		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, 
+				null, wayOffFromOrigin);
+		
+		assertEquals(ret, MoveResult.DRAW);
+		fail("Adjacency checking has not yet been implemented");
+	}
+	
+	
 }
