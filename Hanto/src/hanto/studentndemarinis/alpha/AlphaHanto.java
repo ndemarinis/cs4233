@@ -51,17 +51,21 @@ public class AlphaHanto implements HantoGame {
 		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
 			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
 		}
-		
-		// Next butterfly can't be on top of the previous piece
-		if(numMoves == 1 && (to.getX() == 0 && to.getY() == 0)) {
-			throw new HantoException("Illegal move:  can't place a piece on top of an existing piece!");
-		}
-		
+
+
+		// If there are pieces on the board, look at the existing ones to determine if this is a valid move
 		if(!board.isEmpty())
 		{
 			for(HexCoordinate c : board) {
+				
+				// See if at least one piece is adjacent to the proposed move
 				if(c.isAdjacentTo(to)) {
 					isValid = isValid || true;
+				}
+				
+				// If we find any pieces in that location, it's not a legal move.  
+				if(c.equals(to)) {
+					throw new HantoException("Illegal move:  can't place a piece on top of an existing piece!");
 				}
 			}
 
@@ -70,6 +74,7 @@ public class AlphaHanto implements HantoGame {
 			}
 		}
 		
+		// Finally, if we haven't thrown an error already, this move is valid, so add it to the "board"
 		board.add(new HexCoordinate(to.getX(), to.getY()));
 		
 		if(numMoves++ == 0) {

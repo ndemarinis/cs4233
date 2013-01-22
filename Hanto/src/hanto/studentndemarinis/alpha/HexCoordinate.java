@@ -62,5 +62,15 @@ public class HexCoordinate implements HantoCoordinate {
 			   (other.getX() == x - 1 && other.getY() == y    ) || 
 			   (other.getX() == x - 1 && other.getY() == y + 1);
 	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof HantoCoordinate) {
+			HantoCoordinate other = (HantoCoordinate)obj;
+			return x == other.getX() && y == other.getY();
+		}
+		
+		return false;
+	}
 
 }
