@@ -36,6 +36,7 @@ public class TestAlphaHanto {
 
 	final HantoCoordinate origin = new HexCoordinate(0, 0);
 	final HantoCoordinate adjToOrigin = new HexCoordinate(1, 0);
+	final HantoCoordinate adjToOriginAgain = new HexCoordinate(0, -1);
 	final HantoCoordinate wayOffFromOrigin = new HexCoordinate(3, 5);
 	
 	@Before
@@ -45,7 +46,7 @@ public class TestAlphaHanto {
 	}
 
 	@Test
-	public void canInitializeGameAndButterfly() throws HantoException 
+	public void canInitializeGame() throws HantoException 
 	{		
 		assertNotNull(game);
 	}
@@ -89,12 +90,17 @@ public class TestAlphaHanto {
 	public void cantPlaceBlueButterflyAtNonAdjacentLocation() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
-		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, 
-				null, wayOffFromOrigin);
 		
-		assertEquals(ret, MoveResult.DRAW);
-		fail("Adjacency checking has not yet been implemented");
+		game.makeMove(HantoPieceType.BUTTERFLY, null, wayOffFromOrigin);
 	}
 	
+	@Test
+	public void canPlaceRedButterflyAtAnotherAdjacentLocationEndsInDraw() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY,  null, adjToOriginAgain);
+		
+		assertEquals(ret, MoveResult.DRAW);
+	}
 	
 }
