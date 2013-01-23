@@ -19,6 +19,8 @@ import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -42,7 +44,12 @@ public class GammaHantoGame implements HantoGame {
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
+	// Collection of pieces representing the board for now
 	Collection<HantoPiece> board;
+	
+	// Map of player colors to their hands (for now)
+	Map<HantoPlayerColor, GammaHantoPlayer> players = 
+			new HashMap<HantoPlayerColor, GammaHantoPlayer>();
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
@@ -60,6 +67,10 @@ public class GammaHantoGame implements HantoGame {
 		numMoves = 0;
 		currPlayer = firstPlayer;
 		board = new Vector<HantoPiece>();
+		
+		// Initialize each player's hand.  
+		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
+		players.put(HantoPlayerColor.RED, new GammaHantoPlayer());
 	}
 
 	@Override
@@ -107,12 +118,6 @@ public class GammaHantoGame implements HantoGame {
 			}
 		}
 		
-		// Verify the piece type is one of the types we accept for this game
-		if(pieceType != HantoPieceType.BUTTERFLY && pieceType != HantoPieceType.SPARROW) {
-			throw new HantoException("Illegal Move:  " +
-					"GammaHanto only allows Butterflies and Sparrows.");
-		}
-		
 		// Verify the piece type is valid for this move
 		if(numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
@@ -123,6 +128,8 @@ public class GammaHantoGame implements HantoGame {
 		// If we were moving a piece, remove the old piece from the "board"
 		if(from != null) {
 			board.remove(new HexCoordinate(from));
+		} else { // Otherwise, we're placing a piece, so try to remove one from the player's hand
+			players.get(currPlayer).removeFromHand(pieceType);
 		}
 		
 		// Finally, if we haven't thrown an error already, this move is valid, 
