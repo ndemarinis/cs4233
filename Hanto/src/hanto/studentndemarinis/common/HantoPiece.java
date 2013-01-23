@@ -69,22 +69,6 @@ public class HantoPiece extends HexCoordinate{
 		this.type = type;
 	}
 	
-	/**
-	 *  @return true if both coordinates have the same
-	 *  x and y coordinates, color, and type
-	 */
-	public boolean equals(Object obj)
-	{
-		boolean ret = false; // I have NO idea why CodePro wants this to be final.  It's wrong.  
-		
-		if(obj instanceof HantoPiece) {
-			HantoPiece other = (HantoPiece)obj;
-			ret = (x == other.getX() && y == other.getY() &&
-					color == other.getColor() && type == other.getType());
-		}
-	
-		return ret;
-	}
 
 	/** 
 	 * @return A string representation of the piece
