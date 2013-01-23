@@ -15,6 +15,7 @@ import hanto.util.HantoCoordinate;
  * This class provides the implementation for 
  * Hanto's Hexagonal coordinates
  * @author ndemarinis
+ * @version Jan 21, 2013
  *
  */
 public class HexCoordinate implements HantoCoordinate {
@@ -75,14 +76,20 @@ public class HexCoordinate implements HantoCoordinate {
 			   (other.getX() == x - 1 && other.getY() == y + 1);
 	}
 	
+	/**
+	 *  @return true if both coordinates have the same
+	 *  x and y coordinates
+	 */
 	public boolean equals(Object obj)
 	{
+		boolean ret = false; // I have NO idea why CodePro wants this to be final.  It's wrong.  
+		
 		if(obj instanceof HantoCoordinate) {
 			HantoCoordinate other = (HantoCoordinate)obj;
-			return x == other.getX() && y == other.getY();
+			ret = (x == other.getX() && y == other.getY());
 		}
-		
-		return false;
+	
+		return ret;
 	}
 
 }

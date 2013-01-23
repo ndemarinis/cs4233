@@ -10,7 +10,6 @@
 package hanto.studentndemarinis.alpha;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.alpha.AlphaHanto;
@@ -22,7 +21,6 @@ import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**

@@ -22,6 +22,7 @@ import hanto.util.MoveResult;
 /**
  * AlphaHanto - Initial Hanto implementation
  * @author ndemarinis
+ * @version Jan 21, 2013
  *
  */
 public class AlphaHanto implements HantoGame {
@@ -31,13 +32,18 @@ public class AlphaHanto implements HantoGame {
 	
 	Collection<HexCoordinate> board;
 	
-	
+	// NOTE:  CodePro throws a warning here about the missing exception.  
+	// While it's not technically necessary, I'm leaving it since it's in
+	// the interface.  
 	public AlphaHanto() throws HantoException {
 		this.initialize(HantoPlayerColor.BLUE);
 		board = new Vector<HexCoordinate>();
 	}
 	
 	
+	// NOTE:  CodePro throws a warning here about the missing exception.  
+	// 	While it's not technically necessary, I'm leaving it since it's in
+	// the interface.  
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
@@ -49,6 +55,7 @@ public class AlphaHanto implements HantoGame {
 			HantoCoordinate to) throws HantoException 
 	{
 		boolean isValid = false;
+		MoveResult ret; // I have NO idea why CodePro wants this to be final.  It's wrong.  
 		
 		// Starting butterfly should be at origin, or else.
 		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
@@ -56,7 +63,8 @@ public class AlphaHanto implements HantoGame {
 		}
 
 
-		// If there are pieces on the board, look at the existing ones to determine if this is a valid move
+		// If there are pieces on the board, look at the existing ones 
+		// to determine if this is a valid move
 		if(!board.isEmpty())
 		{
 			for(HexCoordinate c : board) {
@@ -68,7 +76,8 @@ public class AlphaHanto implements HantoGame {
 				
 				// If we find any pieces in that location, it's not a legal move.  
 				if(c.equals(to)) {
-					throw new HantoException("Illegal move:  can't place a piece on top of an existing piece!");
+					throw new HantoException("Illegal move:  can't place a piece " +
+							"on top of an existing piece!");
 				}
 			}
 
@@ -77,17 +86,19 @@ public class AlphaHanto implements HantoGame {
 			}
 		}
 		
-		// Finally, if we haven't thrown an error already, this move is valid, so add it to the "board"
+		// Finally, if we haven't thrown an error already, this move is valid, 
+		// so add it to the "board"
 		board.add(new HexCoordinate(to.getX(), to.getY()));
 		
-		// After placing the current piece, the current player has made a move, so switch the next player
-		nextPlayer = (nextPlayer == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+		// After placing the current piece, the current player has made a move, 
+		// so switch the next player
+		nextPlayer = (nextPlayer == HantoPlayerColor.BLUE) ? 
+					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
-		if(numMoves++ == 0) {
-			return MoveResult.OK;
-		} else {
-			return MoveResult.DRAW;
-		}
+		// First move is OK if valid, then the game ends in a draw on the second move
+		ret = (numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW;
+		
+		return ret;
 	}
 
 	@Override
