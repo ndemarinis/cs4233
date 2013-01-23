@@ -11,6 +11,7 @@ package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
@@ -46,11 +47,8 @@ public class GammaHantoGame implements HantoGame {
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
-	// Maximum number of possible neighbors on a hex grid
-	private final int MAX_NEIGHBORS = 6;
-	
 	// Collection of pieces representing the board for now
-	Collection<HantoPiece> board;
+	HantoBoard board = new HantoBoard();
 	
 	// Map of player colors to their hands (for now)
 	Map<HantoPlayerColor, GammaHantoPlayer> players = 
@@ -71,7 +69,7 @@ public class GammaHantoGame implements HantoGame {
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
 		currPlayer = firstPlayer;
-		board = new Vector<HantoPiece>();
+		board = new HantoBoard();
 		
 		// Initialize each player's hand.  
 		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
@@ -92,7 +90,7 @@ public class GammaHantoGame implements HantoGame {
 						"source piece does not exist on board!");
 			}
 			
-			if(this.getPieceAt(from).getColor() != currPlayer) {
+			if(board.getPieceAt(from).getColor() != currPlayer) {
 				throw new HantoException("Illegal move:  your can only move pieces" +
 						"of your own color!");
 			}
@@ -148,9 +146,9 @@ public class GammaHantoGame implements HantoGame {
 		// Check win conditions (max number of moves, butterfly surrounded)
 		MoveResult ret = (++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW;
 		
-		for(HantoPiece p : getPiecesOfType(HantoPieceType.BUTTERFLY))
+		for(HantoPiece p : board.getPiecesOfType(HantoPieceType.BUTTERFLY))
 		{
-			if(getNeighborsOf(p).size() == MAX_NEIGHBORS) {
+			if(board.isSurrounded(p)) {
 				ret = (p.getColor() == HantoPlayerColor.BLUE) ? 
 						MoveResult.RED_WINS : MoveResult.BLUE_WINS;
 			}
@@ -185,7 +183,7 @@ public class GammaHantoGame implements HantoGame {
 	 * If there's a better way to do this, please let me know.  
 	 */
 	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return this.getPieceAt(c) != null;
+		return board.getPieceAt(c) != null;
 	}
 
 	/**
@@ -229,58 +227,8 @@ public class GammaHantoGame implements HantoGame {
 	public void setCurrPlayer(HantoPlayerColor currPlayer) {
 		this.currPlayer = currPlayer;
 	}
+	
 
-	/**
-	 * Find a piece matching a given coordinate on the board
-	 * @param c Coordinate to search on the board
-	 * @return the piece matching that coordinate, null if none exists
-	 */
-	private HantoPiece getPieceAt(HantoCoordinate c) 
-	{
-		HantoPiece ret = null;
-		
-		for(HantoPiece p : board)
-		{
-			if(p.getX() == c.getX() && p.getY() == c.getY()) {
-				ret = p;
-			}
-		}
-		return ret;
-	}
-	
-	/**
-	 * Find neighbors of a specific coordinate on the board
-	 * @param c Coordinate to find neighbors
-	 * @return Collection of neighbors, empty if none
-	 */
-	private Collection<HantoPiece> getNeighborsOf(HantoCoordinate c)
-	{
-		Collection<HantoPiece> res = new Vector<HantoPiece>();
-		
-		for(HantoPiece p : board) 
-		{
-			if(p.isAdjacentTo(c)) {
-				res.add(p);
-			}
-		}
-		
-		return res;
-	}
-	
-	
-	private Collection<HantoPiece> getPiecesOfType(HantoPieceType t)
-	{
-		Collection<HantoPiece> res = new Vector<HantoPiece>();
-		
-		for(HantoPiece p : board)
-		{
-			if(p.getType() == t) {
-				res.add(p);
-			}
-		}
-		
-		return res;
-	}
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real
 	// board implementation.  For now, I'm ignoring the warning.
