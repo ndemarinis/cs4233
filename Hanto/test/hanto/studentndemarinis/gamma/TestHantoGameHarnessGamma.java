@@ -23,12 +23,12 @@ import hanto.util.HantoPlayerColor;
  * @version Jan 22, 2013
  *
  */
-public class TestHantoGameGamma extends GammaHantoGame implements TestHantoGame {
+public class TestHantoGameHarnessGamma extends GammaHantoGame implements TestHantoGame {
 
 	/**
 	 * @throws HantoException
 	 */
-	public TestHantoGameGamma() throws HantoException {
+	public TestHantoGameHarnessGamma() throws HantoException {
 		super();
 	}
 

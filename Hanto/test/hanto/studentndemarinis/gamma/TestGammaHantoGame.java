@@ -191,12 +191,12 @@ public class TestGammaHantoGame {
 	@Test
 	public void canInitializeWithInitialConfiguration() throws HantoException
 	{
-		TestHantoGame testGame = new TestHantoGameGamma();
+		TestHantoGame testGame = new TestHantoGameHarnessGamma();
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
 		testGame.initialize(HantoPlayerColor.RED, config);
 		
-		assertEquals(HantoPlayerColor.RED, ((TestHantoGameGamma)(testGame)).getCurrPlayer());
-		assertEquals(0, ((TestHantoGameGamma)(testGame)).getNumMoves());
+		assertEquals(HantoPlayerColor.RED, ((TestHantoGameHarnessGamma)(testGame)).getCurrPlayer());
+		assertEquals(0, ((TestHantoGameHarnessGamma)(testGame)).getNumMoves());
 	}
 	
 	
@@ -218,7 +218,7 @@ public class TestGammaHantoGame {
 	@Test
 	public void canMakeMoveWithInitialConfiguration() throws HantoException
 	{
-		TestHantoGame testGame = new TestHantoGameGamma();
+		TestHantoGame testGame = new TestHantoGameHarnessGamma();
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
 		testGame.initialize(HantoPlayerColor.RED, config);
 		
@@ -229,7 +229,7 @@ public class TestGammaHantoGame {
 	@Test
 	public void winWithButterflySurrounded() throws HantoException
 	{
-		TestHantoGame testGame = new TestHantoGameGamma();
+		TestHantoGame testGame = new TestHantoGameHarnessGamma();
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY), 
 							 new HexPiece(new HexCoordinate(0, 1), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
 							 new HexPiece(new HexCoordinate(1, 0), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
