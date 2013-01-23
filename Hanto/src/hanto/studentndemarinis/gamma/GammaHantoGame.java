@@ -48,8 +48,7 @@ public class GammaHantoGame implements HantoGame {
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
 	public GammaHantoGame() throws HantoException {
-		this.initialize(HantoPlayerColor.BLUE);
-		board = new Vector<HantoPiece>();
+		this.initialize(HantoPlayerColor.BLUE); // By default, starting player is blue
 	}
 	
 	
@@ -60,6 +59,7 @@ public class GammaHantoGame implements HantoGame {
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
 		currPlayer = firstPlayer;
+		board = new Vector<HantoPiece>();
 	}
 
 	@Override
@@ -134,10 +134,19 @@ public class GammaHantoGame implements HantoGame {
 		return ret;
 	}
 
+	/**
+	 * Return a string representing the current state of the board,
+	 * empty string if the board is empty.  
+	 */
 	@Override
 	public String getPrintableBoard() {
-		// TODO Auto-generated method stub
-		return null;
+		String ret = "";
+		
+		for(HantoPiece p : board) {
+			ret += (p + "\n");
+		}
+		
+		return ret;
 	}
 
 	
@@ -173,18 +182,18 @@ public class GammaHantoGame implements HantoGame {
 
 
 	/**
-	 * @return the next player that can make a move
+	 * @return the current player up for a move
 	 */
-	public HantoPlayerColor getNextPlayer() {
+	public HantoPlayerColor getCurrPlayer() {
 		return currPlayer;
 	}
 
 
 	/**
-	 * @param nextPlayer Player to make the next move
+	 * @param currPlayer player set to be next to move
 	 */
-	public void setNextPlayer(HantoPlayerColor nextPlayer) {
-		this.currPlayer = nextPlayer;
+	public void setCurrPlayer(HantoPlayerColor currPlayer) {
+		this.currPlayer = currPlayer;
 	}
 
 	/**

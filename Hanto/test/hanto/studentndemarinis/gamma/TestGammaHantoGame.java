@@ -15,6 +15,7 @@ import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
@@ -143,5 +144,45 @@ public class TestGammaHantoGame {
 		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 		
 		assertEquals(MoveResult.DRAW, ret);
+	}
+	
+	@Test
+	public void printedGameRepresentationShouldMakeSense() throws HantoException
+	{
+		game.makeMove(HantoPieceType.SPARROW,  null, origin);
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin01);
+		
+		assertEquals("BLUE Sparrow at (0, 0)\nRED Butterfly at (0, 1)\n", game.getPrintableBoard());
+	}
+	
+	@Test
+	public void printedGameIsEmptyStringWithNothingOnIt()
+	{
+		assertEquals("", game.getPrintableBoard());
+	}
+
+	@Test
+	public void startingPlayerIsBlue()
+	{
+		assertEquals(HantoPlayerColor.BLUE, ((GammaHantoGame)(game)).getCurrPlayer());
+	}
+	
+	@Test
+	public void currTurnAlternates() throws HantoException
+	{
+		// We know starting player is blue
+		game.makeMove(HantoPieceType.SPARROW, null, origin);
+		assertEquals(HantoPlayerColor.RED, ((GammaHantoGame)(game)).getCurrPlayer());
+	}
+	
+	
+	@Test
+	public void initializeClearsBoard() throws HantoException
+	{
+		game.makeMove(HantoPieceType.SPARROW, null, origin);
+		game.initialize(HantoPlayerColor.BLUE);
+		
+		// An empty board returns an empty string.  
+		assertEquals("", game.getPrintableBoard());
 	}
 }

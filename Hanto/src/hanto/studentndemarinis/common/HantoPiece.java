@@ -86,5 +86,12 @@ public class HantoPiece extends HexCoordinate{
 		return ret;
 	}
 
+	/** 
+	 * @return A string representation of the piece
+	 */
+	public String toString()
+	{
+		return color + " " + type + " at (" + this.getX() + ", " + this.getY() + ")";
+	}
 
 }
