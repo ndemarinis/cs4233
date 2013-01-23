@@ -55,8 +55,7 @@ public class AlphaHantoGame implements HantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
-		boolean isValid = false;
-		MoveResult ret; // I have NO idea why CodePro wants this to be final.  It's wrong.  
+		boolean isValid = false;  
 		
 		// Starting butterfly should be at origin, or else.
 		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
@@ -97,9 +96,8 @@ public class AlphaHantoGame implements HantoGame {
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		ret = (numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW;
+		return ((numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW);
 		
-		return ret;
 	}
 
 	@Override

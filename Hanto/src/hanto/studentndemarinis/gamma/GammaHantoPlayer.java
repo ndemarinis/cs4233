@@ -24,7 +24,7 @@ public class GammaHantoPlayer {
 	private final int MAX_BUTTERFLIES = 1;
 	private final int MAX_SPARROWS = 5;
 	
-	private Map<HantoPieceType,Integer> pieces = new HashMap<HantoPieceType,Integer>();
+	private final Map<HantoPieceType,Integer> pieces = new HashMap<HantoPieceType,Integer>();
 	
 	/**
 	 * This class provides an abstraction for each player in GammaHanto.  
@@ -49,7 +49,7 @@ public class GammaHantoPlayer {
 		Integer remaining = pieces.get(type);
 		
 		if(remaining != null && remaining > 0) {
-			pieces.put(type,--remaining);
+			pieces.put(type, --remaining);
 		} else {
 			throw new HantoException("Illegal move:  " +
 					"Current player has no pieces to play of specified type!");

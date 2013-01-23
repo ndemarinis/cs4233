@@ -80,12 +80,15 @@ public class HexCoordinate implements HantoCoordinate {
 	 *  @return true if both coordinates have the same
 	 *  x and y coordinates
 	 */
-	public boolean equals(Object obj)
+	public boolean equals(Object obj) 
 	{
 		boolean ret = false; // I have NO idea why CodePro wants this to be final.  It's wrong.  
 		
 		if(obj instanceof HantoCoordinate) {
-			HantoCoordinate other = (HantoCoordinate)obj;
+			// I think this cast is making CodePro throw a warning here. 
+			// Since I AM actually comparing things, I am ignoring the warning.  
+			// If I'm dong this wrong, please let me know.  
+			final HantoCoordinate other = (HantoCoordinate)obj;
 			ret = (x == other.getX() && y == other.getY());
 		}
 	

@@ -78,8 +78,7 @@ public class GammaHantoGame implements HantoGame {
 			HantoCoordinate to) throws HantoException 
 	{
 		boolean isValid = false;
-		MoveResult ret; // I have NO idea why CodePro wants this to be final.  It's wrong.  
-
+		
 		// Verify the source piece is valid, if provided.  
 		if(from != null) 
 		{
@@ -142,9 +141,7 @@ public class GammaHantoGame implements HantoGame {
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		ret = (++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW;
-		
-		return ret;
+		return ((++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW);
 	}
 
 	/**
@@ -165,6 +162,11 @@ public class GammaHantoGame implements HantoGame {
 	
 	/**
 	 * @return true if a piece exists on the board
+	 * @param c coordinate to check for a piece
+	 * 
+	 * NOTE:  CodePro's warning doesn't make sense to me.  
+	 * The name of this method seems accurate.  
+	 * If there's a better way to do this, please let me know.  
 	 */
 	public boolean doesPieceExistAt(HantoCoordinate c) {
 		return this.getPieceAt(c) != null;
@@ -172,9 +174,12 @@ public class GammaHantoGame implements HantoGame {
 
 	/**
 	 * Add a coordinate to the board
+	 * @param color color of new piece
+	 * @param type type of new piece
+	 * @param c location of new piece
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
-		HantoPiece p = new HantoPiece(color, type, c);
+		final HantoPiece p = new HantoPiece(color, type, c);
 		board.add(p);
 	}
 
@@ -220,9 +225,14 @@ public class GammaHantoGame implements HantoGame {
 		
 		for(HantoPiece p : board)
 		{
-			if(p.getX() == c.getX() && p.getY() == c.getY())
+			if(p.getX() == c.getX() && p.getY() == c.getY()) {
 				ret = p;
+			}
 		}
 		return ret;
 	}
+	
+	// TODO:  When we know more about the board, I can write
+	// HashCode in such a way that is works with a real
+	// board implementation.  For now, I'm ignoring the warning.
 }

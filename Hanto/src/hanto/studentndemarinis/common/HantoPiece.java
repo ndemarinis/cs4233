@@ -29,7 +29,7 @@ public class HantoPiece extends HexCoordinate{
 	/**
 	 * Creates a Hanto piece.  
 	 * 
-	 * @parrm color The color of the player placing the piece
+	 * @param color The color of the player placing the piece
 	 * @param type The type of piece as played
 	 * @param loc The coordinate of the piece on the hex grid
 	 */
