@@ -39,6 +39,9 @@ public class GammaHantoGame implements HantoGame {
 	private int numMoves; // Total number of moves elapsed in the game so far
 	private HantoPlayerColor currPlayer; // Player that making the current/next move
 	
+	// Number of moves before we MUST place a butterfly
+	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
+	
 	Collection<HantoPiece> board;
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
@@ -65,11 +68,6 @@ public class GammaHantoGame implements HantoGame {
 	{
 		boolean isValid = false;
 		MoveResult ret; // I have NO idea why CodePro wants this to be final.  It's wrong.  
-		
-		// Starting piece should always be at the origin
-		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
-			throw new HantoException("Illegal move:  starting move must be at origin!");
-		}
 
 		// Verify the source piece is valid, if provided.  
 		if(from != null) 
@@ -90,24 +88,31 @@ public class GammaHantoGame implements HantoGame {
 		// Verify the destination is valid, provided the board is populated.  
 		if(!board.isEmpty())
 		{
-			for(HantoPiece c : board) {
+			for(HantoPiece p : board) {
 				
 				// See if at least one piece is adjacent to the proposed move
-				if(c.isAdjacentTo(to)) {
+				if(p.isAdjacentTo(to)) {
 					isValid = isValid || true;
-				}
-				
-				// If we find any pieces in that location, it's not a legal move.  
-				if(c.equals(to)) {
-					throw new HantoException("Illegal move:  can't place a piece " +
-							"on top of an existing piece!");
 				}
 			}
 
 			if(!isValid) {
 				throw new HantoException("Illegal move:  piece must be adjacent to the group!");
 			}
+			
+			// If we find any pieces in the destination, it's not a legal move.  
+			if(this.doesPieceExistAt(to)){
+				throw new HantoException("Illegal move:  can't place a piece " +
+						"on top of an existing piece!");
+			}
 		}
+		
+		// Verify the piece type is valid for the move number
+		if(numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
+			throw new HantoException("Illegal move:  " +
+					"Butterfly must be placed by the foruth turn!");
+		}
+		
 		
 		// If we were moving a piece, remove the old piece from the "board"
 		if(from != null) {
