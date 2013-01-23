@@ -10,6 +10,8 @@
 package hanto.studentndemarinis.alpha;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPlayerColor;
@@ -21,8 +23,8 @@ import hanto.util.HantoPlayerColor;
  * @author ndemarinis
  *
  */
-public class TestAlphaHantoGame extends AlphaHanto implements
-		TestHantoGameAlphaHarness {
+public class TestAlphaHantoGame extends AlphaHantoGame implements
+		TestHantoGameHarness {
 
 	/**
 	 * @throws HantoException

@@ -12,8 +12,9 @@ package hanto.studentndemarinis.alpha;
 import static org.junit.Assert.*;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
-import hanto.studentndemarinis.alpha.AlphaHanto;
-import hanto.studentndemarinis.alpha.HexCoordinate;
+import hanto.studentndemarinis.alpha.AlphaHantoGame;
+import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
@@ -116,20 +117,20 @@ public class TestAlphaHanto {
 	public void butterflyAtOriginActuallyIsAtOrigin() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
-		assertTrue(((TestHantoGameAlphaHarness)(game)).doesPieceExistAt(origin));
+		assertTrue(((TestHantoGameHarness)(game)).doesPieceExistAt(origin));
 	}
 	
 	@Test
 	public void canAddButterflyAtOriginManually() throws HantoException
 	{
-		((TestHantoGameAlphaHarness)(game)).addToBoard(blueButterfly.getCoordinate());
-		assertTrue(((TestHantoGameAlphaHarness)(game)).doesPieceExistAt(origin));
+		((TestHantoGameHarness)(game)).addToBoard(blueButterfly.getCoordinate());
+		assertTrue(((TestHantoGameHarness)(game)).doesPieceExistAt(origin));
 	}
 	
 	@Test
 	public void currentPlayerIsBlueOnInitialization()
 	{
-		assertEquals(HantoPlayerColor.BLUE, ((AlphaHanto)(game)).getNextPlayer());
+		assertEquals(HantoPlayerColor.BLUE, ((AlphaHantoGame)(game)).getNextPlayer());
 	}
 	
 	@Test
@@ -137,21 +138,21 @@ public class TestAlphaHanto {
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 		
-		assertEquals(HantoPlayerColor.RED, ((AlphaHanto)(game)).getNextPlayer());
+		assertEquals(HantoPlayerColor.RED, ((AlphaHantoGame)(game)).getNextPlayer());
 	}
 	
 	
 	@Test
 	public void gameStartsWithZeroMoves()
 	{
-		assertEquals(0, ((AlphaHanto)(game)).getNumMoves());
+		assertEquals(0, ((AlphaHantoGame)(game)).getNumMoves());
 	}
 	
 	@Test
 	public void numberOfMovesIncrementsAfterOneMove() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
-		assertEquals(1, ((AlphaHanto)(game)).getNumMoves());
+		assertEquals(1, ((AlphaHantoGame)(game)).getNumMoves());
 	}
 	
 }

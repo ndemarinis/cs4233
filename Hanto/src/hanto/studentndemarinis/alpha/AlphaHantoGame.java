@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -25,7 +26,7 @@ import hanto.util.MoveResult;
  * @version Jan 21, 2013
  *
  */
-public class AlphaHanto implements HantoGame {
+public class AlphaHantoGame implements HantoGame {
 
 	private int numMoves; // Total number of moves elapsed in the game so far
 	private HantoPlayerColor nextPlayer; // Next player to make a move.
@@ -35,7 +36,7 @@ public class AlphaHanto implements HantoGame {
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
-	public AlphaHanto() throws HantoException {
+	public AlphaHantoGame() throws HantoException {
 		this.initialize(HantoPlayerColor.BLUE);
 		board = new Vector<HexCoordinate>();
 	}
