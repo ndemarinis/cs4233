@@ -199,19 +199,8 @@ public class TestGammaHantoGame {
 		assertEquals(0, ((TestHantoGameGamma)(testGame)).getNumMoves());
 	}
 	
-	@Test
-	public void canMakeMoveWithInitialConfiguration() throws HantoException
-	{
-		TestHantoGame testGame = new TestHantoGameGamma();
-		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
-		testGame.initialize(HantoPlayerColor.RED, config);
-		
-		MoveResult ret = testGame.makeMove(HantoPieceType.SPARROW, origin, adjToOrigin01);
-		assertEquals(MoveResult.OK, ret);
-	}
 	
 	@Test(expected=HantoException.class)
-	@Ignore
 	public void cantPlaceMoreThanOneButterfly() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin); // Place blue butterfly
@@ -224,6 +213,35 @@ public class TestGammaHantoGame {
 	public void cantAddPiecesNotButterfliesOrSparrows() throws HantoException
 	{
 		game.makeMove(HantoPieceType.CRAB, null, origin);
+	}
+	
+	@Test
+	public void canMakeMoveWithInitialConfiguration() throws HantoException
+	{
+		TestHantoGame testGame = new TestHantoGameGamma();
+		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
+		testGame.initialize(HantoPlayerColor.RED, config);
+		
+		MoveResult ret = testGame.makeMove(HantoPieceType.SPARROW, origin, adjToOrigin01);
+		assertEquals(MoveResult.OK, ret);
+	}
+	
+	@Test
+	public void winWithButterflySurrounded() throws HantoException
+	{
+		TestHantoGame testGame = new TestHantoGameGamma();
+		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY), 
+							 new HexPiece(new HexCoordinate(0, 1), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
+							 new HexPiece(new HexCoordinate(1, 0), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
+							 new HexPiece(new HexCoordinate(1, -1), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
+							 new HexPiece(new HexCoordinate(0, -1), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
+							 new HexPiece(new HexCoordinate(-1, 0), HantoPlayerColor.RED,  HantoPieceType.SPARROW)
+							};
+		
+		testGame.initialize(HantoPlayerColor.RED, config);
+		
+		MoveResult ret = testGame.makeMove(HantoPieceType.SPARROW, null, new HexCoordinate(-1, 1));
+		assertEquals(MoveResult.RED_WINS, ret);
 	}
 	
 	

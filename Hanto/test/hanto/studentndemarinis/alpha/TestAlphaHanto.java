@@ -27,6 +27,7 @@ import org.junit.Test;
 /**
  * TestAlphaHanto:  Test cases for AlphaHanto
  * @author ndemarinis
+ * @version Jan 22, 2013
  *
  */
 public class TestAlphaHanto {

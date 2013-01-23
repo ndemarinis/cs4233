@@ -24,10 +24,12 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * AlphaHanto - Initial Hanto implementation
+ * GammaHanto - Extended hanto implementation
+ * supporting Butterflies, Sparrows, and movement 
+ * of pieces.  Ends after 10 turns.  
+ * 
  * @author ndemarinis
  * @version Jan 21, 2013
- *
  */
 
 /*
@@ -43,6 +45,9 @@ public class GammaHantoGame implements HantoGame {
 	
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
+	
+	// Maximum number of possible neighbors on a hex grid
+	private final int MAX_NEIGHBORS = 6;
 	
 	// Collection of pieces representing the board for now
 	Collection<HantoPiece> board;
@@ -140,8 +145,19 @@ public class GammaHantoGame implements HantoGame {
 		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
+		// Check win conditions (max number of moves, butterfly surrounded)
+		MoveResult ret = (++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW;
+		
+		for(HantoPiece p : getPiecesOfType(HantoPieceType.BUTTERFLY))
+		{
+			if(getNeighborsOf(p).size() == MAX_NEIGHBORS) {
+				ret = (p.getColor() == HantoPlayerColor.BLUE) ? 
+						MoveResult.RED_WINS : MoveResult.BLUE_WINS;
+			}
+		}
+		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		return ((++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW);
+		return ret;
 	}
 
 	/**
@@ -232,6 +248,39 @@ public class GammaHantoGame implements HantoGame {
 		return ret;
 	}
 	
+	/**
+	 * Find neighbors of a specific coordinate on the board
+	 * @param c Coordinate to find neighbors
+	 * @return Collection of neighbors, empty if none
+	 */
+	private Collection<HantoPiece> getNeighborsOf(HantoCoordinate c)
+	{
+		Collection<HantoPiece> res = new Vector<HantoPiece>();
+		
+		for(HantoPiece p : board) 
+		{
+			if(p.isAdjacentTo(c)) {
+				res.add(p);
+			}
+		}
+		
+		return res;
+	}
+	
+	
+	private Collection<HantoPiece> getPiecesOfType(HantoPieceType t)
+	{
+		Collection<HantoPiece> res = new Vector<HantoPiece>();
+		
+		for(HantoPiece p : board)
+		{
+			if(p.getType() == t) {
+				res.add(p);
+			}
+		}
+		
+		return res;
+	}
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real
 	// board implementation.  For now, I'm ignoring the warning.

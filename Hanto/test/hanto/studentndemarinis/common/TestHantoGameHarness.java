@@ -15,7 +15,17 @@ import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 /**
+ * This interface abstracts some common test
+ * methods for manipulating the board for ALphaHanto.  
+ *
+ * Note:  I decided against using this for GammaHanto in favor 
+ * of just implementing these methods in the source class.  
+ * I'm not sure whether it makes sense to keep this interface 
+ * or not in the future--I'll probably make that decision in 
+ * future revisions.  
+ * 
  * @author ndemarinis
+ * @version Jan 22, 2013
  *
  */
 public interface TestHantoGameHarness extends TestHantoGame {
