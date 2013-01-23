@@ -210,6 +210,21 @@ public class TestGammaHantoGame {
 		assertEquals(MoveResult.OK, ret);
 	}
 	
+	@Test(expected=HantoException.class)
+	@Ignore
+	public void cantPlaceMoreThanOneButterfly() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin); // Place blue butterfly
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin01); // Place red butterfly
+		
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin10); // Blue shouldn't be able to place another butterfly
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantAddPiecesNotButterfliesOrSparrows() throws HantoException
+	{
+		game.makeMove(HantoPieceType.CRAB, null, origin);
+	}
 	
 	
 }

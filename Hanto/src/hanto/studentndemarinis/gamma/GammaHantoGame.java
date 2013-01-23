@@ -107,7 +107,13 @@ public class GammaHantoGame implements HantoGame {
 			}
 		}
 		
-		// Verify the piece type is valid for the move number
+		// Verify the piece type is one of the types we accept for this game
+		if(pieceType != HantoPieceType.BUTTERFLY && pieceType != HantoPieceType.SPARROW) {
+			throw new HantoException("Illegal Move:  " +
+					"GammaHanto only allows Butterflies and Sparrows.");
+		}
+		
+		// Verify the piece type is valid for this move
 		if(numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
 					"Butterfly must be placed by the foruth turn!");
