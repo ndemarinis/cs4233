@@ -14,6 +14,8 @@ import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.testutil.HexPiece;
+import hanto.testutil.TestHantoGame;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
@@ -185,4 +187,29 @@ public class TestGammaHantoGame {
 		// An empty board returns an empty string.  
 		assertEquals("", game.getPrintableBoard());
 	}
+	
+	@Test
+	public void canInitializeWithInitialConfiguration() throws HantoException
+	{
+		TestHantoGame testGame = new TestHantoGameGamma();
+		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
+		testGame.initialize(HantoPlayerColor.RED, config);
+		
+		assertEquals(HantoPlayerColor.RED, ((TestHantoGameGamma)(testGame)).getCurrPlayer());
+		assertEquals(0, ((TestHantoGameGamma)(testGame)).getNumMoves());
+	}
+	
+	@Test
+	public void canMakeMoveWithInitialConfiguration() throws HantoException
+	{
+		TestHantoGame testGame = new TestHantoGameGamma();
+		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.RED, HantoPieceType.BUTTERFLY)};
+		testGame.initialize(HantoPlayerColor.RED, config);
+		
+		MoveResult ret = testGame.makeMove(HantoPieceType.SPARROW, origin, adjToOrigin01);
+		assertEquals(MoveResult.OK, ret);
+	}
+	
+	
+	
 }
