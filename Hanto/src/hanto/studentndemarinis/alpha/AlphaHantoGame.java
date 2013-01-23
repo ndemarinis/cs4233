@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
@@ -29,16 +30,16 @@ import hanto.util.MoveResult;
 public class AlphaHantoGame implements HantoGame {
 
 	private int numMoves; // Total number of moves elapsed in the game so far
-	private HantoPlayerColor nextPlayer; // Next player to make a move.
+	private HantoPlayerColor currPlayer; // Player currently making a move, or about to make one
 	
-	Collection<HexCoordinate> board;
+	Collection<HantoPiece> board;
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
 	public AlphaHantoGame() throws HantoException {
 		this.initialize(HantoPlayerColor.BLUE);
-		board = new Vector<HexCoordinate>();
+		board = new Vector<HantoPiece>();
 	}
 	
 	
@@ -48,7 +49,7 @@ public class AlphaHantoGame implements HantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
-		nextPlayer = firstPlayer;
+		currPlayer = firstPlayer;
 	}
 
 	@Override
@@ -62,6 +63,11 @@ public class AlphaHantoGame implements HantoGame {
 			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
 		}
 
+		// We shouldn't be able to place any pieces other than butterflies
+		if(pieceType != HantoPieceType.BUTTERFLY) {
+			throw new HantoException("Illegal move:  " +
+					"can't place anyting other than butterflies!");
+		}
 
 		// If there are pieces on the board, look at the existing ones 
 		// to determine if this is a valid move
@@ -88,11 +94,11 @@ public class AlphaHantoGame implements HantoGame {
 		
 		// Finally, if we haven't thrown an error already, this move is valid, 
 		// so add it to the "board"
-		board.add(new HexCoordinate(to.getX(), to.getY()));
+		board.add(new HantoPiece(currPlayer, pieceType, to));
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player
-		nextPlayer = (nextPlayer == HantoPlayerColor.BLUE) ? 
+		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
@@ -100,10 +106,19 @@ public class AlphaHantoGame implements HantoGame {
 		
 	}
 
+	/**
+	 * Return a string representing the current state of the board,
+	 * empty string if the board is empty.  
+	 */
 	@Override
 	public String getPrintableBoard() {
-		// TODO Auto-generated method stub
-		return null;
+		String ret = "";
+		
+		for(HantoPiece p : board) {
+			ret += (p + "\n");
+		}
+		
+		return ret;
 	}
 
 
@@ -127,7 +142,7 @@ public class AlphaHantoGame implements HantoGame {
 	 * @return the next player that can make a move
 	 */
 	public HantoPlayerColor getNextPlayer() {
-		return nextPlayer;
+		return currPlayer;
 	}
 
 
@@ -135,7 +150,7 @@ public class AlphaHantoGame implements HantoGame {
 	 * @param nextPlayer Player to make the next move
 	 */
 	public void setNextPlayer(HantoPlayerColor nextPlayer) {
-		this.nextPlayer = nextPlayer;
+		this.currPlayer = nextPlayer;
 	}
 
 }

@@ -10,10 +10,12 @@
 package hanto.studentndemarinis.alpha;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
+import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 /**
@@ -52,9 +54,8 @@ public class TestAlphaHantoGame extends AlphaHantoGame implements
 	 * Add a coordinate to the board
 	 */
 	@Override
-	public void addToBoard(HantoCoordinate c) {
-		HexCoordinate h = new HexCoordinate(c);
-		board.add(h);
+	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
+		board.add(new HantoPiece(color, type, c));
 	}
 
 }

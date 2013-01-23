@@ -123,7 +123,8 @@ public class TestAlphaHanto {
 	@Test
 	public void canAddButterflyAtOriginManually() throws HantoException
 	{
-		((TestHantoGameHarness)(game)).addToBoard(blueButterfly.getCoordinate());
+		((TestHantoGameHarness)(game)).addToBoard(blueButterfly.getPlayer(), 
+				blueButterfly.getPiece(), blueButterfly.getCoordinate());
 		assertTrue(((TestHantoGameHarness)(game)).doesPieceExistAt(origin));
 	}
 	
@@ -155,4 +156,26 @@ public class TestAlphaHanto {
 		assertEquals(1, ((AlphaHantoGame)(game)).getNumMoves());
 	}
 	
+	@Test(expected=HantoException.class)
+	public void cantPlaceAnythingOtherThanButterflies() throws HantoException
+	{
+		game.makeMove(HantoPieceType.CRAB, null, origin);
+	}
+	
+	@Test
+	public void printingEmptyBoardReturnsEmptyString()
+	{
+		assertEquals("", game.getPrintableBoard());
+	}
+	
+	
+	@Test
+	public void printableBoardOutputMakesSense() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin);
+		
+		assertEquals("BLUE Butterfly at (0, 0)\nRED Butterfly at (1, 0)\n", 
+				game.getPrintableBoard());
+	}
 }

@@ -11,6 +11,8 @@ package hanto.studentndemarinis.common;
 
 import hanto.testutil.TestHantoGame;
 import hanto.util.HantoCoordinate;
+import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
 
 /**
  * @author ndemarinis
@@ -32,5 +34,5 @@ public interface TestHantoGameHarness extends TestHantoGame {
 	 * 
 	 * @param c The piece to add.  
 	 */
-	public void addToBoard(HantoCoordinate c);
+	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
 }
