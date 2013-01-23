@@ -132,7 +132,7 @@ public class TestAlphaHanto {
 	@Test
 	public void currentPlayerIsBlueOnInitialization()
 	{
-		assertEquals(HantoPlayerColor.BLUE, ((AlphaHantoGame)(game)).getNextPlayer());
+		assertEquals(HantoPlayerColor.BLUE, ((AlphaHantoGame)(game)).getCurrPlayer());
 	}
 	
 	@Test
@@ -140,7 +140,7 @@ public class TestAlphaHanto {
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
 		
-		assertEquals(HantoPlayerColor.RED, ((AlphaHantoGame)(game)).getNextPlayer());
+		assertEquals(HantoPlayerColor.RED, ((AlphaHantoGame)(game)).getCurrPlayer());
 	}
 	
 	
@@ -178,5 +178,16 @@ public class TestAlphaHanto {
 		
 		assertEquals("BLUE Butterfly at (0, 0)\nRED Butterfly at (1, 0)\n", 
 				game.getPrintableBoard());
+	}
+	
+	@Test
+	public void initializeResetsBoard() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		game.initialize(HantoPlayerColor.BLUE);
+		
+		assertEquals("", game.getPrintableBoard());
+		assertEquals(0, ((AlphaHantoGame)(game)).getNumMoves());
+		assertEquals(HantoPlayerColor.BLUE, ((AlphaHantoGame)(game)).getCurrPlayer());
 	}
 }

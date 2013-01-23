@@ -229,6 +229,7 @@ public class TestGammaHantoGame {
 	@Test
 	public void winWithButterflySurrounded() throws HantoException
 	{
+		// Initialize the board with a blue butterfly surrounded by red sparrows, save one hex
 		TestHantoGame testGame = new TestHantoGameHarnessGamma();
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), HantoPlayerColor.BLUE, HantoPieceType.BUTTERFLY), 
 							 new HexPiece(new HexCoordinate(0, 1), HantoPlayerColor.RED,  HantoPieceType.SPARROW),
@@ -240,6 +241,7 @@ public class TestGammaHantoGame {
 		
 		testGame.initialize(HantoPlayerColor.RED, config);
 		
+		// Place that one sparrow in the remaining open hex, which should result in a win.  
 		MoveResult ret = testGame.makeMove(HantoPieceType.SPARROW, null, new HexCoordinate(-1, 1));
 		assertEquals(MoveResult.RED_WINS, ret);
 	}

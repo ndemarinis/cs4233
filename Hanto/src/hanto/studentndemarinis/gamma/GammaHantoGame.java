@@ -25,7 +25,8 @@ import java.util.Map;
 /**
  * GammaHanto - Extended hanto implementation
  * supporting Butterflies, Sparrows, and movement 
- * of pieces.  Ends after 10 turns.  
+ * of pieces.  Ends after 10 turns or when butterfly 
+ * is surrounded.  
  * 
  * @author ndemarinis
  * @version Jan 21, 2013
@@ -35,6 +36,8 @@ import java.util.Map;
  * NOTE:  I started GammaHanto by starting with AlphaHanto and MASSIVELY
  * refactoring it.  This felt like the right way to start for me.  
  * If I was totally off base in doing this, I plead ignorance.  
+ * 
+ * I did, however, start with a completely new set of tests.  
  */
 
 public class GammaHantoGame implements HantoGame {
@@ -72,6 +75,10 @@ public class GammaHantoGame implements HantoGame {
 		// Initialize each player's hand.  
 		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
 		players.put(HantoPlayerColor.RED, new GammaHantoPlayer());
+		
+		// Based on the specification, red can move first even though it's
+		// technically not in the rules if we initialize the board that way,
+		// therefore, I don't see how we can be breaking a rule here.  
 	}
 
 	@Override

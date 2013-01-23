@@ -38,8 +38,7 @@ public class AlphaHantoGame implements HantoGame {
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
 	public AlphaHantoGame() throws HantoException {
-		this.initialize(HantoPlayerColor.BLUE);
-		board = new Vector<HantoPiece>();
+		this.initialize(HantoPlayerColor.BLUE); // As specified, blue always moves first.
 	}
 	
 	
@@ -49,7 +48,8 @@ public class AlphaHantoGame implements HantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
-		currPlayer = firstPlayer;
+		currPlayer = HantoPlayerColor.BLUE; // As specified, blue always moves first
+		board = new Vector<HantoPiece>(); 
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class AlphaHantoGame implements HantoGame {
 	/**
 	 * @return the next player that can make a move
 	 */
-	public HantoPlayerColor getNextPlayer() {
+	public HantoPlayerColor getCurrPlayer() {
 		return currPlayer;
 	}
 
