@@ -30,7 +30,8 @@ public class TestGammaHantoGame {
 
 	private HantoGame game;
 	private final HexCoordinate origin = new HexCoordinate(0, 0);
-	private final HexCoordinate adjToOrigin = new HexCoordinate(1, 0);
+	private final HexCoordinate adjToOrigin10 = new HexCoordinate(1, 0);
+	private final HexCoordinate adjToOrigin01 = new HexCoordinate(0, 1);
 	
 	/**
 	 * @throws java.lang.Exception
@@ -62,14 +63,26 @@ public class TestGammaHantoGame {
 	}
 	
 	@Test
-	@Ignore
 	public void canMoveButterflyFromOriginToAdjacentSquare() throws HantoException
 	{
 		game.makeMove(HantoPieceType.BUTTERFLY, null, origin); // Place blue butterfly
-		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin); // Place red butterfly
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin10); // Place red butterfly
 		
-		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, origin, adjToOrigin);
+		MoveResult ret = game.makeMove(HantoPieceType.BUTTERFLY, origin, adjToOrigin01);
 		
-		assertEquals(MoveResult.OK, ret);
+		assertEquals(MoveResult.OK, ret); // Make sure the move was valid
+		assertFalse(((GammaHantoGame)(game)).doesPieceExistAt(origin)); // Make sure the origin is now empty
 	}
+	
+	@Test(expected=HantoException.class)
+	public void cantMoveAPieceThatIsntMine() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin); // Place blue butterfly
+		game.makeMove(HantoPieceType.BUTTERFLY, null, adjToOrigin10); // Place red butterfly
+		
+		// Now it's blue's turn, so try to move the red butterfly
+		game.makeMove(HantoPieceType.BUTTERFLY, adjToOrigin10, adjToOrigin01);
+	}
+	
+	
 }

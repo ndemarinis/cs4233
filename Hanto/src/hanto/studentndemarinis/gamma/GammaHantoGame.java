@@ -9,16 +9,17 @@
  */
 package hanto.studentndemarinis.gamma;
 
-import java.util.Collection;
-import java.util.Vector;
-
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
+
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * AlphaHanto - Initial Hanto implementation
@@ -36,16 +37,16 @@ import hanto.util.MoveResult;
 public class GammaHantoGame implements HantoGame {
 
 	private int numMoves; // Total number of moves elapsed in the game so far
-	private HantoPlayerColor nextPlayer; // Next player to make a move.
+	private HantoPlayerColor currPlayer; // Player that making the current/next move
 	
-	Collection<HexCoordinate> board;
+	Collection<HantoPiece> board;
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
 	public GammaHantoGame() throws HantoException {
 		this.initialize(HantoPlayerColor.BLUE);
-		board = new Vector<HexCoordinate>();
+		board = new Vector<HantoPiece>();
 	}
 	
 	
@@ -55,7 +56,7 @@ public class GammaHantoGame implements HantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
-		nextPlayer = firstPlayer;
+		currPlayer = firstPlayer;
 	}
 
 	@Override
@@ -65,17 +66,31 @@ public class GammaHantoGame implements HantoGame {
 		boolean isValid = false;
 		MoveResult ret; // I have NO idea why CodePro wants this to be final.  It's wrong.  
 		
-		// Starting butterfly should be at origin, or else.
+		// Starting piece should always be at the origin
 		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
-			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
+			throw new HantoException("Illegal move:  starting move must be at origin!");
 		}
 
-
-		// If there are pieces on the board, look at the existing ones 
-		// to determine if this is a valid move
+		// Verify the source piece is valid, if provided.  
+		if(from != null) 
+		{
+			if(!this.doesPieceExistAt(from)) {
+				throw new HantoException("Illegal move:  " +
+						"source piece does not exist on board!");
+			}
+			
+			if(this.getPieceAt(from).getColor() != currPlayer) {
+				throw new HantoException("Illegal move:  your can only move pieces" +
+						"of your own color!");
+			}
+			
+		}
+		
+		
+		// Verify the destination is valid, provided the board is populated.  
 		if(!board.isEmpty())
 		{
-			for(HexCoordinate c : board) {
+			for(HantoPiece c : board) {
 				
 				// See if at least one piece is adjacent to the proposed move
 				if(c.isAdjacentTo(to)) {
@@ -94,17 +109,22 @@ public class GammaHantoGame implements HantoGame {
 			}
 		}
 		
+		// If we were moving a piece, remove the old piece from the "board"
+		if(from != null) {
+			board.remove(new HexCoordinate(from));
+		}
+		
 		// Finally, if we haven't thrown an error already, this move is valid, 
 		// so add it to the "board"
-		board.add(new HexCoordinate(to.getX(), to.getY()));
+		board.add(new HantoPiece(currPlayer, pieceType, to));
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player
-		nextPlayer = (nextPlayer == HantoPlayerColor.BLUE) ? 
+		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		ret = (numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW;
+		ret = (++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW;
 		
 		return ret;
 	}
@@ -115,6 +135,21 @@ public class GammaHantoGame implements HantoGame {
 		return null;
 	}
 
+	
+	/**
+	 * @return true if a piece exists on the board
+	 */
+	public boolean doesPieceExistAt(HantoCoordinate c) {
+		return this.getPieceAt(c) != null;
+	}
+
+	/**
+	 * Add a coordinate to the board
+	 */
+	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
+		HantoPiece p = new HantoPiece(color, type, c);
+		board.add(p);
+	}
 
 	/**
 	 * @return the number of moves made in this game
@@ -136,7 +171,7 @@ public class GammaHantoGame implements HantoGame {
 	 * @return the next player that can make a move
 	 */
 	public HantoPlayerColor getNextPlayer() {
-		return nextPlayer;
+		return currPlayer;
 	}
 
 
@@ -144,7 +179,23 @@ public class GammaHantoGame implements HantoGame {
 	 * @param nextPlayer Player to make the next move
 	 */
 	public void setNextPlayer(HantoPlayerColor nextPlayer) {
-		this.nextPlayer = nextPlayer;
+		this.currPlayer = nextPlayer;
 	}
 
+	/**
+	 * Find a piece matching a given coordinate on the board
+	 * @param c Coordinate to search on the board
+	 * @return the piece matching that coordinate, null if none exists
+	 */
+	private HantoPiece getPieceAt(HantoCoordinate c) 
+	{
+		HantoPiece ret = null;
+		
+		for(HantoPiece p : board)
+		{
+			if(p.getX() == c.getX() && p.getY() == c.getY())
+				ret = p;
+		}
+		return ret;
+	}
 }
