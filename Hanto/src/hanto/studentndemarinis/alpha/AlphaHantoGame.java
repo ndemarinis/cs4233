@@ -149,8 +149,8 @@ public class AlphaHantoGame implements HantoGame {
 	/**
 	 * @param nextPlayer Player to make the next move
 	 */
-	public void setNextPlayer(HantoPlayerColor nextPlayer) {
-		this.currPlayer = nextPlayer;
+	public void setCurrPlayer(HantoPlayerColor currPlayer) {
+		this.currPlayer = currPlayer;
 	}
 
 }

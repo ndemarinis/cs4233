@@ -17,6 +17,9 @@ import java.util.Vector;
 
 /**
  * This class represents the hexagonal Hanto Board.  
+ * It extends a class of Collection, so it implements
+ * all of the nice collection-parsing methods while containing
+ * logic for parsing our hex board.  
  * 
  * @author ndemarinis
  * @version Jan 23, 2013
@@ -27,12 +30,6 @@ public class HantoBoard extends Vector<HantoPiece> {
 	// Maximum number of possible neighbors on a hex grid
 	private final int MAX_NEIGHBORS = 6;
 	
-	/**
-	 * Initialize a new HantoBoard
-	 */
-	public HantoBoard() {
-		super();
-	}
 	
 	/**
 	 * Find a piece matching a given coordinate on the board
@@ -59,7 +56,7 @@ public class HantoBoard extends Vector<HantoPiece> {
 	 */
 	public Collection<HantoPiece> getNeighborsOf(HantoCoordinate c)
 	{
-		Collection<HantoPiece> res = new Vector<HantoPiece>();
+		final Collection<HantoPiece> res = new Vector<HantoPiece>();
 		
 		for(HantoPiece p : this) 
 		{
@@ -78,7 +75,7 @@ public class HantoBoard extends Vector<HantoPiece> {
 	 */
 	public Collection<HantoPiece> getPiecesOfType(HantoPieceType t)
 	{
-		Collection<HantoPiece> res = new Vector<HantoPiece>();
+		final Collection<HantoPiece> res = new Vector<HantoPiece>();
 		
 		for(HantoPiece p : this)
 		{
@@ -99,4 +96,8 @@ public class HantoBoard extends Vector<HantoPiece> {
 	{
 		return this.getNeighborsOf(c).size() == MAX_NEIGHBORS;
 	}
+	
+	// TODO:  There's a warning about not implementing clone()
+	// I'm not sure the right way to do this, so I'm leaving it alone.  
+	// Specifically, I don't know enough about making it synchronized etc.  
 }
