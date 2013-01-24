@@ -118,7 +118,7 @@ public class GammaHantoGame implements HantoGame {
 				throw new HantoException("Illegal move:  piece must be adjacent to the group!");
 			}
 			
-			// If we find any pieces in the destination, it's not a legal move.  
+			// If we find any pieces at the destination, it's not a legal move.  
 			if(this.doesPieceExistAt(to)){
 				throw new HantoException("Illegal move:  can't place a piece " +
 						"on top of an existing piece!");
@@ -126,11 +126,12 @@ public class GammaHantoGame implements HantoGame {
 		}
 		
 		// Verify the piece type is valid for this move
-		if(numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
+		if(!board.containsPiece(currPlayer, HantoPieceType.BUTTERFLY) &&
+				numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
 					"Butterfly must be placed by the foruth turn!");
 		}
-		
+
 		
 		// If we were moving a piece, remove the old piece from the "board"
 		if(from != null) {

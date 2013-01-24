@@ -50,6 +50,9 @@ public class AlphaHantoGame implements HantoGame {
 		numMoves = 0;
 		currPlayer = HantoPlayerColor.BLUE; // As specified, blue always moves first
 		board = new Vector<HantoPiece>(); 
+		
+		// Since blue always moves first, I'm not sure how we could possibly
+		// violate the rules to throw an exception here.  
 	}
 
 	@Override

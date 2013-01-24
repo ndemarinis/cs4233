@@ -11,6 +11,7 @@ package hanto.studentndemarinis.common;
 
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -95,6 +96,26 @@ public class HantoBoard extends Vector<HantoPiece> {
 	public boolean isSurrounded(HantoCoordinate c)
 	{
 		return this.getNeighborsOf(c).size() == MAX_NEIGHBORS;
+	}
+	
+	
+	/**
+	 * Check if a particular piece is somewhere on the board
+	 * @param c Color of piece to find
+	 * @param t Type of piece to find
+	 * @return true if at least one piece matching the type 
+	 * and color are on the board
+	 */
+	public boolean containsPiece(HantoPlayerColor c, HantoPieceType t)
+	{
+		boolean ret = false;
+		
+		for(HantoPiece p : this)
+		{
+			ret = ret || (p.getColor() == c && p.getType() == t);
+		}
+		
+		return ret;
 	}
 	
 	// TODO:  There's a warning about not implementing clone()

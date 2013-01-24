@@ -108,6 +108,21 @@ public class TestGammaHantoGame {
 		game.makeMove(HantoPieceType.BUTTERFLY, origin, wayOffOrigin);	
 	}
 	
+	@Test(expected=HantoException.class)
+	@Ignore
+	public void cantMoveAPieceThatBreaksGrouping() throws HantoException
+	{
+		// Make a contiguous group of pieces
+		game.makeMove(HantoPieceType.BUTTERFLY, null, origin);
+		game.makeMove(HantoPieceType.BUTTERFLY, null, new HexCoordinate(0, 1));
+		game.makeMove(HantoPieceType.SPARROW,   null, new HexCoordinate(0, -1));
+		game.makeMove(HantoPieceType.SPARROW,   null, new HexCoordinate(1, -1));
+		
+		// Now move the butterfly such that it's near some pieces, but leaves the
+		// red butterfly at (0, 1) on its own.  
+		game.makeMove(HantoPieceType.BUTTERFLY, origin, new HexCoordinate(-1, 0));
+	}
+	
 	@Test
 	public void canMoveAPieceSomewhereElse() throws HantoException
 	{
