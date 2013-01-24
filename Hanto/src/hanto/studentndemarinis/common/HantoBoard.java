@@ -14,10 +14,8 @@ import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
@@ -111,6 +109,9 @@ public class HantoBoard extends Vector<HantoPiece> {
 	 * @param t Type of piece to find
 	 * @return true if at least one piece matching the type 
 	 * and color are on the board
+	 * 
+	 * NOTE:  this name makes sense to me.  I don't understand how the suggestions in
+	 * CodePro's audit rule could make more sense here.  
 	 */
 	public boolean containsPiece(HantoPlayerColor c, HantoPieceType t)
 	{
@@ -129,14 +130,17 @@ public class HantoBoard extends Vector<HantoPiece> {
 	 * @param a Some HantoCoordinate
 	 * @param b Some other HantoCoordinate
 	 * @return true if a path exists between the two
+	 * 
+	 * NOTE:  this name makes sense to me.  I don't understand how the suggestions in
+	 * CodePro's audit rule could make more sense here.  
 	 */
 	public boolean thereExistsPathBetween(HantoCoordinate a, HantoCoordinate b) 
 	{
-		Queue<HantoCoordinate> q = new LinkedList<HantoCoordinate>(); // Queue for our BFS
+		final Queue<HantoCoordinate> q = new LinkedList<HantoCoordinate>(); // Queue for our BFS
 		
 		// We also need something to hold visited nodes, preferably which we can
 		// check in constant time.  After some research, a HashSet fills this requirement.  
-		Set<HantoCoordinate> visited = new HashSet<HantoCoordinate>();
+		final Set<HantoCoordinate> visited = new HashSet<HantoCoordinate>();
 		
 		boolean ret = false;
 		

@@ -13,7 +13,6 @@ import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
-import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -203,9 +202,9 @@ public class GammaHantoGame implements HantoGame {
 	 * @return true if a piece exists on the board
 	 * @param c coordinate to check for a piece
 	 * 
-	 * NOTE:  CodePro's warning doesn't make sense to me.  
-	 * The name of this method seems accurate.  
-	 * If there's a better way to do this, please let me know.  
+	 * NOTE:  this name makes sense to me.  
+	 * I don't understand how the suggestions in
+	 * CodePro's audit rule could make more sense here.   
 	 */
 	public boolean doesPieceExistAt(HantoCoordinate c) {
 		return board.getPieceAt(c) != null;
