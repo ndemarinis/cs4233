@@ -109,7 +109,6 @@ public class TestGammaHantoGame {
 	}
 	
 	@Test(expected=HantoException.class)
-	@Ignore
 	public void cantMoveAPieceThatBreaksGrouping() throws HantoException
 	{
 		// Make a contiguous group of pieces

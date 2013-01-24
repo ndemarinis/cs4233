@@ -85,7 +85,8 @@ public class GammaHantoGame implements HantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
-		boolean isValid = false;
+		HantoPiece toRemove = null;
+		boolean isValid = true;
 		
 		// Verify the source piece is valid, if provided.  
 		if(from != null) 
@@ -102,47 +103,65 @@ public class GammaHantoGame implements HantoGame {
 			
 		}
 		
-		
-		// Verify the destination is valid, provided the board is populated.  
-		if(!board.isEmpty())
-		{
-			for(HantoPiece p : board) {
-				
-				// See if at least one piece is adjacent to the proposed move
-				if(p.isAdjacentTo(to)) {
-					isValid = isValid || true;
-				}
-			}
-
-			if(!isValid) {
-				throw new HantoException("Illegal move:  piece must be adjacent to the group!");
-			}
-			
-			// If we find any pieces at the destination, it's not a legal move.  
-			if(this.doesPieceExistAt(to)){
-				throw new HantoException("Illegal move:  can't place a piece " +
-						"on top of an existing piece!");
-			}
+		// If we find any pieces at the destination, it's not a legal move.  
+		if(this.doesPieceExistAt(to)){
+			throw new HantoException("Illegal move:  can't place a piece " +
+					"on top of an existing piece!");
 		}
 		
-		// Verify the piece type is valid for this move
+		// Verify this move doesn't _need_ to place the butterfly.  
 		if(!board.containsPiece(currPlayer, HantoPieceType.BUTTERFLY) &&
 				numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
 					"Butterfly must be placed by the foruth turn!");
 		}
 
+		/* **********************************************************
+		 * .. okay, by now, the move is _probably_ valid.  
+		 * We can now TRY to apply it to the board and then make sure
+		 * it doesn't violate the adjacency rules.
+		 * ***********************************************************/ 
 		
-		// If we were moving a piece, remove the old piece from the "board"
+		
+		// If we were moving a piece, remove the old piece from the "board",
+		// but store it in case we need to revert the change.  
 		if(from != null) {
-			board.remove(new HexCoordinate(from));
-		} else { // Otherwise, we're placing a piece, so try to remove one from the player's hand
-			players.get(currPlayer).removeFromHand(pieceType);
+			toRemove = board.getPieceAt(from);
+			board.remove(from);
 		}
 		
-		// Finally, if we haven't thrown an error already, this move is valid, 
-		// so add it to the "board"
+		// Finally, add the new piece to the board.  
 		board.add(new HantoPiece(currPlayer, pieceType, to));
+		
+		// Now that we've added the piece, check if it doesn't violate the adjacency rules
+		for(HantoPiece p : board)
+		{
+			// If everything is in one contiguous group, we should be able to
+			// pick any piece on the board and find a path from it
+			// to every other piece.  
+			// If one fails, we broke the rules.  
+			isValid = isValid && board.thereExistsPathBetween(to, p);
+		}
+		
+		if(!isValid) // If we violated the adjacency rules
+		{
+			if(toRemove != null) { // Replace the piece we removed (if any)
+				board.add(toRemove);
+			}
+			board.remove(to); // Remove the piece we wanted to place
+			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
+		}
+		
+		
+		/* ************************************************
+		 * By now, we know the move is valid.  
+		 * ************************************************/
+		
+		
+		// If this move involved placing a new piece, remove it from the player's hand
+		if(from == null) {
+			players.get(currPlayer).removeFromHand(pieceType);
+		}
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player

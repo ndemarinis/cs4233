@@ -14,6 +14,12 @@ import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -117,6 +123,47 @@ public class HantoBoard extends Vector<HantoPiece> {
 		
 		return ret;
 	}
+	
+	/**
+	 * Find a path between two HantoCoordinates on the board using BFS.  
+	 * @param a Some HantoCoordinate
+	 * @param b Some other HantoCoordinate
+	 * @return true if a path exists between the two
+	 */
+	public boolean thereExistsPathBetween(HantoCoordinate a, HantoCoordinate b) 
+	{
+		Queue<HantoCoordinate> q = new LinkedList<HantoCoordinate>(); // Queue for our BFS
+		
+		// We also need something to hold visited nodes, preferably which we can
+		// check in constant time.  After some research, a HashSet fills this requirement.  
+		Set<HantoCoordinate> visited = new HashSet<HantoCoordinate>();
+		
+		boolean ret = false;
+		
+		// Add the starting node.  
+		q.add(a);
+		visited.add(a);
+		
+		while(!ret && !q.isEmpty()) // Run until we find a path or we run out of nodes
+		{
+			HantoCoordinate c = q.remove();
+			if(c.getX() == b.getX() && c.getY() == b.getY()) {
+				ret = true;
+			}
+			
+			for(HantoCoordinate neighbor : this.getNeighborsOf(c))
+			{
+				if(!visited.contains(neighbor)) {
+					visited.add(neighbor);
+					q.add(neighbor);
+				}
+			}
+		}
+		
+		return ret;
+	}
+	
+	
 	
 	// TODO:  There's a warning about not implementing clone()
 	// I'm not sure the right way to do this, so I'm leaving it alone.  
