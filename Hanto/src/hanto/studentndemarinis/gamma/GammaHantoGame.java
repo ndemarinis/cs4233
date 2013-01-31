@@ -11,6 +11,7 @@ package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.util.HantoCoordinate;
@@ -39,16 +40,10 @@ import java.util.Map;
  * I did, however, start with a completely new set of tests.  
  */
 
-public class GammaHantoGame implements HantoGame {
+public class GammaHantoGame extends AbstractHantoGame {
 
-	private int numMoves; // Total number of moves elapsed in the game so far
-	private HantoPlayerColor currPlayer; // Player that making the current/next move
-	
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
-	
-	// Collection of pieces representing the board for now
-	HantoBoard board = new HantoBoard();
 	
 	// Map of player colors to their hands (for now)
 	Map<HantoPlayerColor, GammaHantoPlayer> players = 
@@ -181,77 +176,6 @@ public class GammaHantoGame implements HantoGame {
 		// First move is OK if valid, then the game ends in a draw on the second move
 		return ret;
 	}
-
-	/**
-	 * Return a string representing the current state of the board,
-	 * empty string if the board is empty.  
-	 */
-	@Override
-	public String getPrintableBoard() {
-		String ret = "";
-		
-		for(HantoPiece p : board) {
-			ret += (p + "\n");
-		}
-		
-		return ret;
-	}
-
-	
-	/**
-	 * @return true if a piece exists on the board
-	 * @param c coordinate to check for a piece
-	 * 
-	 * NOTE:  this name makes sense to me.  
-	 * I don't understand how the suggestions in
-	 * CodePro's audit rule could make more sense here.   
-	 */
-	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return board.getPieceAt(c) != null;
-	}
-
-	/**
-	 * Add a coordinate to the board
-	 * @param color color of new piece
-	 * @param type type of new piece
-	 * @param c location of new piece
-	 */
-	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
-		final HantoPiece p = new HantoPiece(color, type, c);
-		board.add(p);
-	}
-
-	/**
-	 * @return the number of moves made in this game
-	 */
-	public int getNumMoves() {
-		return numMoves;
-	}
-
-
-	/**
-	 * @param numMoves the number of moves to set
-	 */
-	public void setNumMoves(int numMoves) {
-		this.numMoves = numMoves;
-	}
-
-
-	/**
-	 * @return the current player up for a move
-	 */
-	public HantoPlayerColor getCurrPlayer() {
-		return currPlayer;
-	}
-
-
-	/**
-	 * @param currPlayer player set to be next to move
-	 */
-	public void setCurrPlayer(HantoPlayerColor currPlayer) {
-		this.currPlayer = currPlayer;
-	}
-	
 
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real

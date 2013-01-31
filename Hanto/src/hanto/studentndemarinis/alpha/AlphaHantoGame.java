@@ -14,6 +14,8 @@ import java.util.Vector;
 
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.common.AbstractHantoGame;
+import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
@@ -27,12 +29,12 @@ import hanto.util.MoveResult;
  * @version Jan 21, 2013
  *
  */
-public class AlphaHantoGame implements HantoGame {
+public class AlphaHantoGame extends AbstractHantoGame {
 
-	private int numMoves; // Total number of moves elapsed in the game so far
+/*	private int numMoves; // Total number of moves elapsed in the game so far
 	private HantoPlayerColor currPlayer; // Player currently making a move, or about to make one
 	
-	Collection<HantoPiece> board;
+	Collection<HantoPiece> board;*/
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
@@ -49,7 +51,7 @@ public class AlphaHantoGame implements HantoGame {
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		numMoves = 0;
 		currPlayer = HantoPlayerColor.BLUE; // As specified, blue always moves first
-		board = new Vector<HantoPiece>(); 
+		board = new HantoBoard();
 		
 		// Since blue always moves first, I'm not sure how we could possibly
 		// violate the rules to throw an exception here.  
@@ -107,53 +109,6 @@ public class AlphaHantoGame implements HantoGame {
 		// First move is OK if valid, then the game ends in a draw on the second move
 		return ((numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW);
 		
-	}
-
-	/**
-	 * Return a string representing the current state of the board,
-	 * empty string if the board is empty.  
-	 */
-	@Override
-	public String getPrintableBoard() {
-		String ret = "";
-		
-		for(HantoPiece p : board) {
-			ret += (p + "\n");
-		}
-		
-		return ret;
-	}
-
-
-	/**
-	 * @return the number of moves made in this game
-	 */
-	public int getNumMoves() {
-		return numMoves;
-	}
-
-
-	/**
-	 * @param numMoves the number of moves to set
-	 */
-	public void setNumMoves(int numMoves) {
-		this.numMoves = numMoves;
-	}
-
-
-	/**
-	 * @return the next player that can make a move
-	 */
-	public HantoPlayerColor getCurrPlayer() {
-		return currPlayer;
-	}
-
-
-	/**
-	 * @param nextPlayer Player to make the next move
-	 */
-	public void setCurrPlayer(HantoPlayerColor currPlayer) {
-		this.currPlayer = currPlayer;
 	}
 
 }
