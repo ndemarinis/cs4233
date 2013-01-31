@@ -34,10 +34,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	/**
 	 * Abstract HantoGame providing basic implementation
 	 */
-	public AbstractHantoGame() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	@Override
 	public abstract void initialize(HantoPlayerColor firstPlayer) 
 			throws HantoException;
