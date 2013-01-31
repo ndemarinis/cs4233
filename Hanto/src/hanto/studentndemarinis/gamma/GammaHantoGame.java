@@ -10,7 +10,6 @@
 package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
-import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;

@@ -9,11 +9,7 @@
  */
 package hanto.studentndemarinis.alpha;
 
-import java.util.Collection;
-import java.util.Vector;
-
 import hanto.common.HantoException;
-import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
@@ -30,11 +26,6 @@ import hanto.util.MoveResult;
  *
  */
 public class AlphaHantoGame extends AbstractHantoGame {
-
-/*	private int numMoves; // Total number of moves elapsed in the game so far
-	private HantoPlayerColor currPlayer; // Player currently making a move, or about to make one
-	
-	Collection<HantoPiece> board;*/
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in

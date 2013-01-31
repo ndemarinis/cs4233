@@ -12,7 +12,6 @@ package hanto.studentndemarinis.gamma;
 import static org.junit.Assert.*;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
-import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.testutil.HexPiece;
 import hanto.testutil.TestHantoGame;
@@ -21,7 +20,6 @@ import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
