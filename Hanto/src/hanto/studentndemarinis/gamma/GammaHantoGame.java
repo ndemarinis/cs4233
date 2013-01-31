@@ -13,6 +13,7 @@ import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoPiece;
+import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -41,8 +42,7 @@ import java.util.Map;
 
 public class GammaHantoGame extends AbstractHantoGame {
 
-	// Number of moves before we MUST place a butterfly
-	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
+	private HantoRuleSet rules;
 	
 	// Map of player colors to their hands (for now)
 	Map<HantoPlayerColor, GammaHantoPlayer> players = 
@@ -64,6 +64,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		numMoves = 0;
 		currPlayer = firstPlayer;
 		board = new HantoBoard();
+		rules = new GammaHantoRules(this);
 		
 		// Initialize each player's hand.  
 		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
@@ -82,32 +83,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		boolean isValid = true;
 		
 		// Verify the source piece is valid, if provided.  
-		if(from != null) 
-		{
-			if(!this.doesPieceExistAt(from)) {
-				throw new HantoException("Illegal move:  " +
-						"source piece does not exist on board!");
-			}
-			
-			if(board.getPieceAt(from).getColor() != currPlayer) {
-				throw new HantoException("Illegal move:  your can only move pieces" +
-						"of your own color!");
-			}
-			
-		}
-		
-		// If we find any pieces at the destination, it's not a legal move.  
-		if(this.doesPieceExistAt(to)){
-			throw new HantoException("Illegal move:  can't place a piece " +
-					"on top of an existing piece!");
-		}
-		
-		// Verify this move doesn't _need_ to place the butterfly.  
-		if(!board.containsPiece(currPlayer, HantoPieceType.BUTTERFLY) &&
-				numMoves >= NUM_MOVES_PRE_BUTTERFLY && pieceType != HantoPieceType.BUTTERFLY) {
-			throw new HantoException("Illegal move:  " +
-					"Butterfly must be placed by the foruth turn!");
-		}
+		rules.doPreMoveChecks(pieceType, from, to);
 
 		/* **********************************************************
 		 * .. okay, by now, the move is _probably_ valid.  

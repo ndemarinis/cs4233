@@ -112,4 +112,11 @@ public abstract class AbstractHantoGame implements HantoGame {
 		this.currPlayer = currPlayer;
 	}
 
+	/**
+	 * @return the board
+	 */
+	public HantoBoard getBoard() {
+		return board;
+	}
+
 }
