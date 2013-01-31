@@ -79,52 +79,17 @@ public class GammaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
-		HantoPiece toRemove = null;
-		boolean isValid = true;
-		
 		// Verify the source piece is valid, if provided.  
 		rules.doPreMoveChecks(pieceType, from, to);
 
-		/* **********************************************************
-		 * .. okay, by now, the move is _probably_ valid.  
-		 * We can now TRY to apply it to the board and then make sure
-		 * it doesn't violate the adjacency rules.
-		 * ***********************************************************/ 
+	
+		// Now that we know we can make the move, do it for realsies.  
+		actuallyMakeMove(pieceType, from, to);
 		
-		
-		// If we were moving a piece, remove the old piece from the "board",
-		// but store it in case we need to revert the change.  
-		if(from != null) {
-			toRemove = board.getPieceAt(from);
-			board.remove(from);
-		}
-		
-		// Finally, add the new piece to the board.  
-		board.add(new HantoPiece(currPlayer, pieceType, to));
-		
-		// Now that we've added the piece, check if it doesn't violate the adjacency rules
-		for(HantoPiece p : board)
-		{
-			// If everything is in one contiguous group, we should be able to
-			// pick any piece on the board and find a path from it
-			// to every other piece.  
-			// If one fails, we broke the rules.  
-			isValid = isValid && board.thereExistsPathBetween(to, p);
-		}
-		
-		if(!isValid) // If we violated the adjacency rules
-		{
-			if(toRemove != null) { // Replace the piece we removed (if any)
-				board.add(toRemove);
-			}
-			board.remove(to); // Remove the piece we wanted to place
-			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
-		}
-		
-		
-		/* ************************************************
-		 * By now, we know the move is valid.  
-		 * ************************************************/
+		// Make sure that move we just did was valid
+		// (We're assuming that just throwing an exception is okay here,
+		// the incorrect move is applied and NOT changed for now.)
+		rules.doPostMoveChecks(to);
 		
 		
 		// If this move involved placing a new piece, remove it from the player's hand
@@ -137,22 +102,33 @@ public class GammaHantoGame extends AbstractHantoGame {
 		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
 		
-		// Check win conditions (max number of moves, butterfly surrounded)
-		MoveResult ret = (++numMoves != 10) ? MoveResult.OK : MoveResult.DRAW;
-		
-		for(HantoPiece p : board.getPiecesOfType(HantoPieceType.BUTTERFLY))
-		{
-			if(board.isSurrounded(p)) {
-				ret = (p.getColor() == HantoPlayerColor.BLUE) ? 
-						MoveResult.RED_WINS : MoveResult.BLUE_WINS;
-			}
-		}
+		numMoves++;
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		return ret;
+		return rules.evaluateWinConditions();
 	}
 
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real
 	// board implementation.  For now, I'm ignoring the warning.
+	
+	/**
+	 * Make a move, regardless of whether or not it is valid.
+	 * Any piece currently at the source and destination locations
+	 * are REMOVED when this method is calle.d  
+	 * 
+	 * @param type Piece type to place at the destination
+	 * @param from Source coordinate of the piece, null if piece is not on the board
+	 * @param to Destination coordinate of the piece
+	 */
+	private void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to)
+	{
+		// Remove the old piece from the board (if we haven't failed yet)
+		if(from != null) {
+			board.remove(from);
+		}
+		
+		// Finally, add the new piece to the board.  
+		board.add(new HantoPiece(currPlayer, type, to));
+	}
 }

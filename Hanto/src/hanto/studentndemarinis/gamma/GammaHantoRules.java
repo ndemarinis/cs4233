@@ -11,10 +11,12 @@ package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
-import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
+import hanto.util.MoveResult;
 
 /**
  * Abstraction for GammaHanto's move rules
@@ -72,15 +74,41 @@ public class GammaHantoRules implements HantoRuleSet {
 	}
 
 	@Override
-	public void doPostMoveChecks() throws HantoException {
-		// TODO Auto-generated method stub
-
+	public void doPostMoveChecks(HantoCoordinate dest) throws HantoException {
+		
+		boolean isValid = true;
+		
+		// Now that we've added the piece, check if it doesn't violate the adjacency rules
+		for(HantoPiece p : game.getBoard())
+		{
+			// If everything is in one contiguous group, we should be able to
+			// pick any piece on the board and find a path from it
+			// to every other piece.  
+			// If one fails, we broke the rules.  
+			isValid = isValid && game.getBoard().thereExistsPathBetween(dest, p);
+		}
+		
+		// If we violated the adjacency rules
+		if(!isValid) {
+			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
+		}
 	}
 
 	@Override
-	public void evaluateWinConditions() throws HantoException {
-		// TODO Auto-generated method stub
-
+	public MoveResult evaluateWinConditions() throws HantoException {
+		
+		// Check win conditions (max number of moves, butterfly surrounded)
+		MoveResult ret = (game.getNumMoves() != 10) ? MoveResult.OK : MoveResult.DRAW;
+		
+		for(HantoPiece p : game.getBoard().getPiecesOfType(HantoPieceType.BUTTERFLY))
+		{
+			if(game.getBoard().isSurrounded(p)) {
+				ret = (p.getColor() == HantoPlayerColor.BLUE) ? 
+						MoveResult.RED_WINS : MoveResult.BLUE_WINS;
+			}
+		}
+		
+		return ret;
 	}
 
 }

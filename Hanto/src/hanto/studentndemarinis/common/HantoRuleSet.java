@@ -12,6 +12,7 @@ package hanto.studentndemarinis.common;
 import hanto.common.HantoException;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
+import hanto.util.MoveResult;
 
 /**
  * This class specifies the sets of rules that apply to a
@@ -25,7 +26,7 @@ public interface HantoRuleSet {
 	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from, HantoCoordinate to) 
 			throws HantoException;
 	
-	public void doPostMoveChecks() throws HantoException;
+	public void doPostMoveChecks(HantoCoordinate dest) throws HantoException;
 	
-	public void evaluateWinConditions() throws HantoException;
+	public MoveResult evaluateWinConditions() throws HantoException;
 }
