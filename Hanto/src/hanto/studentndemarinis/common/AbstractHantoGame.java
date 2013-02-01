@@ -29,6 +29,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	
 	// Collection of pieces representing the board for now
 	protected HantoBoard board = new HantoBoard();
+	protected boolean game_over = false; // Whether or not the game has ended
 	
 	
 	/**
@@ -119,4 +120,11 @@ public abstract class AbstractHantoGame implements HantoGame {
 		return board;
 	}
 
+	/**
+	 * @return true if the game has ended
+	 * @return
+	 */
+	public boolean isGameOver() {
+		return game_over;
+	}
 }

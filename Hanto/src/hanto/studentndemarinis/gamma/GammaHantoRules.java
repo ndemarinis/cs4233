@@ -75,6 +75,17 @@ public class GammaHantoRules implements HantoRuleSet {
 		}
 		
 		
+		// If this is the first move, we need a piece at the origin
+		if(game.getNumMoves() == 0 && 
+				to.getX() != 0 && to.getY() != 0) {
+			throw new HantoException("Illegal move:  First piece must be placed " +
+					"at origin!");
+		}
+		
+		if(game.isGameOver()) {
+			throw new HantoException("Illegal move:  game has already ended!");
+		}
+		
 		// If we find any pieces at the destination, it's not a legal move.  
 		if(game.doesPieceExistAt(to)){
 			throw new HantoException("Illegal move:  can't place a piece " +

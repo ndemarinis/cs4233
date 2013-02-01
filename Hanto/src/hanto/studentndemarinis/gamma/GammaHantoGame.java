@@ -104,8 +104,13 @@ public class GammaHantoGame extends AbstractHantoGame {
 		
 		numMoves++;
 		
-		// First move is OK if valid, then the game ends in a draw on the second move
-		return rules.evaluateWinConditions();
+		// Determine if this move ended the game
+		MoveResult ret = rules.evaluateWinConditions();
+		if(ret == MoveResult.DRAW || 
+				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS)
+			game_over = true;
+		
+		return ret;
 	}
 	
 	/**
