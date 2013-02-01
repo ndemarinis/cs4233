@@ -258,5 +258,10 @@ public class TestGammaHanto {
 		assertEquals(MoveResult.RED_WINS, ret);
 	}
 	
+	@Test(expected=HantoException.class)
+	public void moveWithInvalidDestination() throws HantoException
+	{
+		game.makeMove(HantoPieceType.BUTTERFLY, null, null);
+	}
 	
 }

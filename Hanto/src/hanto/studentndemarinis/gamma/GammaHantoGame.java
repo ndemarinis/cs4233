@@ -107,10 +107,6 @@ public class GammaHantoGame extends AbstractHantoGame {
 		// First move is OK if valid, then the game ends in a draw on the second move
 		return rules.evaluateWinConditions();
 	}
-
-	// TODO:  When we know more about the board, I can write
-	// HashCode in such a way that is works with a real
-	// board implementation.  For now, I'm ignoring the warning.
 	
 	/**
 	 * Make a move, regardless of whether or not it is valid.
@@ -131,4 +127,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 		// Finally, add the new piece to the board.  
 		board.add(new HantoPiece(currPlayer, type, to));
 	}
+	
+	// TODO:  When we know more about the board, I can write
+	// HashCode in such a way that is works with a real
+	// board implementation.  For now, I'm ignoring the warning.
 }

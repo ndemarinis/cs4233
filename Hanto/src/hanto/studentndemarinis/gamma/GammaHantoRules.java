@@ -35,14 +35,25 @@ public class GammaHantoRules implements HantoRuleSet {
 	/**
 	 * Make a new set of GammaHanto's rules, given
 	 * the game itself
+	 * @param game The HantoGame we'll be checking
 	 */
 	public GammaHantoRules(AbstractHantoGame game) {
 		this.game = game;
 	}
 
+	/**
+	 * Checks to be performed before a move is made
+	 * 
+	 * @param piece Piece to be placed at the given location
+	 * @param from source coordinate of piece on the board, null if not on the board
+	 * @param to destination coordinate for piece to move
+	 * @throws HantoException if a rule has been violated, 
+	 * leaving the board in an illegal state
+	 */
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from, HantoCoordinate to) 
 			throws HantoException {
+		
 		// Verify the source piece is valid, if provided.  
 		if(from != null) 
 		{
@@ -58,6 +69,12 @@ public class GammaHantoRules implements HantoRuleSet {
 
 		}
 
+		// Verify a destination coordinate has actually been provided
+		if(to == null){
+			throw new HantoException("Illegal move:  Destination coordinate must be provided!");
+		}
+		
+		
 		// If we find any pieces at the destination, it's not a legal move.  
 		if(game.doesPieceExistAt(to)){
 			throw new HantoException("Illegal move:  can't place a piece " +
@@ -73,8 +90,14 @@ public class GammaHantoRules implements HantoRuleSet {
 
 	}
 
+	/**
+	 * Checks to perform after a move has been made.  
+	 * @param to Destination coordinate of newly-moved piece
+	 * @throws HantoException if the a rule has been violated, 
+	 * leaving the board in an illegal state
+	 */
 	@Override
-	public void doPostMoveChecks(HantoCoordinate dest) throws HantoException {
+	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
 		
 		boolean isValid = true;
 		
@@ -85,7 +108,7 @@ public class GammaHantoRules implements HantoRuleSet {
 			// pick any piece on the board and find a path from it
 			// to every other piece.  
 			// If one fails, we broke the rules.  
-			isValid = isValid && game.getBoard().thereExistsPathBetween(dest, p);
+			isValid = isValid && game.getBoard().thereExistsPathBetween(to, p);
 		}
 		
 		// If we violated the adjacency rules
@@ -94,6 +117,11 @@ public class GammaHantoRules implements HantoRuleSet {
 		}
 	}
 
+	/**
+	 * Evaluate whether the game needs to end based on the board configuration.  
+	 * Intended to be called after each move to determine if a win has occurred.  
+	 * @throws HantoException if the board is in an illegal state
+	 */
 	@Override
 	public MoveResult evaluateWinConditions() throws HantoException {
 		
