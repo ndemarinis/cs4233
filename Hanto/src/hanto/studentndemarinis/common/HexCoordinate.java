@@ -94,5 +94,10 @@ public class HexCoordinate implements HantoCoordinate {
 	
 		return ret;
 	}
+	
+	public int HashCode()
+	{
+		return x*10000+y;
+	}
 
 }

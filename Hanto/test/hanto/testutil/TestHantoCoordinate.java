@@ -9,31 +9,18 @@
  */
 package hanto.testutil;
 
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 
 /**
  * @author ndemarinis
  *
  */
-public class TestHantoCoordinate implements HantoCoordinate {
+public class TestHantoCoordinate extends HexCoordinate implements HantoCoordinate {
 
-	int x, y;
-	/**
-	 * 
-	 */
+
 	public TestHantoCoordinate(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
+		super(x, y);
 	}
 
 }

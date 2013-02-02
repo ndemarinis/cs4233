@@ -111,14 +111,14 @@ public class TestGammaHanto {
 	public void cantMoveAPieceThatBreaksGrouping() throws HantoException
 	{
 		// Make a contiguous group of pieces
-		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, new HexCoordinate(0, 0));
 		game.makeMove(BUTTERFLY, null, new HexCoordinate(0, 1));
-		game.makeMove(SPARROW,   null, new HexCoordinate(0, -1));
-		game.makeMove(SPARROW,   null, new HexCoordinate(1, -1));
+		game.makeMove(SPARROW,   null, new HexCoordinate(-1, 0));
+		game.makeMove(SPARROW,   null, new HexCoordinate(0, 2));
 		
 		// Now move the butterfly such that it's near some pieces, but leaves the
 		// red butterfly at (0, 1) on its own.  
-		game.makeMove(BUTTERFLY, origin, new HexCoordinate(-1, 0));
+		game.makeMove(BUTTERFLY, origin, new HexCoordinate(0, -1));
 	}
 	
 	@Test
