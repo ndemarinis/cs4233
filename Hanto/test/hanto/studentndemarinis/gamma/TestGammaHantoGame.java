@@ -57,7 +57,7 @@ public class TestGammaHantoGame extends GammaHantoGame implements TestHantoGame 
 		{
 			this.addToBoard(configuration[i].getPlayer(), 
 					configuration[i].getPiece(), configuration[i].getCoordinate());
-			numMoves++;
+			state.setNumMoves(state.getNumMoves() + 1);
 		}
 	}
 

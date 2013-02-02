@@ -46,7 +46,7 @@ public class TestAlphaHantoGame extends AlphaHantoGame implements
 	 */
 	@Override
 	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return board.contains(c);
+		return state.getBoard().contains(c);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class TestAlphaHantoGame extends AlphaHantoGame implements
 	 */
 	@Override
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
-		board.add(new HantoPiece(color, type, c));
+		state.getBoard().add(new HantoPiece(color, type, c));
 	}
 
 }

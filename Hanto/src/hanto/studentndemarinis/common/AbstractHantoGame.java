@@ -23,22 +23,17 @@ import hanto.util.MoveResult;
  */
 public abstract class AbstractHantoGame implements HantoGame {
 
-	
-	protected int numMoves = 0; // Total number of moves elapsed in the game so far
-	protected HantoPlayerColor currPlayer; // Player that making the current/next move
-	
-	// Collection of pieces representing the board for now
-	protected HantoBoard board = new HantoBoard();
 	protected boolean game_over = false; // Whether or not the game has ended
-	
+	protected HantoGameState state;
 	
 	/**
 	 * Abstract HantoGame providing basic implementation
 	 */
 	
 	@Override
-	public abstract void initialize(HantoPlayerColor firstPlayer) 
-			throws HantoException;
+	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
+		state = new HantoGameState(firstPlayer);
+	}
 	
 	@Override
 	public abstract MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
@@ -52,7 +47,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	public String getPrintableBoard() {
 		String ret = "";
 		
-		for(HantoPiece p : board) {
+		for(HantoPiece p : state.getBoard()) {
 			ret += (p + "\n");
 		}
 		
@@ -68,7 +63,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * CodePro's audit rule could make more sense here.   
 	 */
 	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return board.getPieceAt(c) != null;
+		return state.getBoard().getPieceAt(c) != null;
 	}
 
 	/**
@@ -79,14 +74,14 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
 		final HantoPiece p = new HantoPiece(color, type, c);
-		board.add(p);
+		state.getBoard().add(p);
 	}
 
 	/**
 	 * @return the number of moves made in this game
 	 */
 	public int getNumMoves() {
-		return numMoves;
+		return state.getNumMoves();
 	}
 
 
@@ -94,7 +89,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * @param numMoves the number of moves to set
 	 */
 	public void setNumMoves(int numMoves) {
-		this.numMoves = numMoves;
+		state.setNumMoves(numMoves);
 	}
 
 
@@ -102,7 +97,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * @return the current player up for a move
 	 */
 	public HantoPlayerColor getCurrPlayer() {
-		return currPlayer;
+		return state.getCurrPlayer();
 	}
 
 
@@ -110,14 +105,28 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * @param currPlayer player set to be next to move
 	 */
 	public void setCurrPlayer(HantoPlayerColor currPlayer) {
-		this.currPlayer = currPlayer;
+		state.setCurrPlayer(currPlayer);
 	}
 
 	/**
 	 * @return the board
 	 */
 	public HantoBoard getBoard() {
-		return board;
+		return state.getBoard();
+	}
+
+	/**
+	 * @return the state
+	 */
+	public HantoGameState getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(HantoGameState state) {
+		this.state = state;
 	}
 
 	/**

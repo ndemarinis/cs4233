@@ -12,6 +12,7 @@ package hanto.studentndemarinis.gamma;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.util.HantoCoordinate;
@@ -61,10 +62,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	// the interface.  
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
-		numMoves = 0;
-		currPlayer = firstPlayer;
-		board = new HantoBoard();
-		rules = new GammaHantoRules(this);
+		state = new HantoGameState(firstPlayer);
+		rules = new GammaHantoRules(state);
 		
 		// Initialize each player's hand.  
 		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
@@ -79,6 +78,12 @@ public class GammaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
+		
+		// Verify the game is not over
+		if(game_over) {
+			throw new HantoException("Illegal move:  game has already ended!");
+		}
+		
 		// Verify the source piece is valid, if provided.  
 		rules.doPreMoveChecks(pieceType, from, to);
 
@@ -94,15 +99,15 @@ public class GammaHantoGame extends AbstractHantoGame {
 		
 		// If this move involved placing a new piece, remove it from the player's hand
 		if(from == null) {
-			players.get(currPlayer).removeFromHand(pieceType);
+			players.get(state.getCurrPlayer()).removeFromHand(pieceType);
 		}
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player
-		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
-					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+		state.setCurrPlayer((state.getCurrPlayer() == HantoPlayerColor.BLUE) ? 
+				HantoPlayerColor.RED : HantoPlayerColor.BLUE);
 		
-		numMoves++;
+		state.setNumMoves(state.getNumMoves() + 1);
 		
 		// Determine if this move ended the game
 		MoveResult ret = rules.evaluateWinConditions();
@@ -126,11 +131,11 @@ public class GammaHantoGame extends AbstractHantoGame {
 	{
 		// Remove the old piece from the board (if we haven't failed yet)
 		if(from != null) {
-			board.remove(from);
+			state.getBoard().remove(from);
 		}
 		
 		// Finally, add the new piece to the board.  
-		board.add(new HantoPiece(currPlayer, type, to));
+		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), type, to));
 	}
 	
 	// TODO:  When we know more about the board, I can write

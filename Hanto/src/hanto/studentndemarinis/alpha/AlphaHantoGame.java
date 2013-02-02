@@ -12,6 +12,7 @@ package hanto.studentndemarinis.alpha;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
@@ -40,9 +41,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 	// the interface.  
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
-		numMoves = 0;
-		currPlayer = HantoPlayerColor.BLUE; // As specified, blue always moves first
-		board = new HantoBoard();
+		state = new HantoGameState(HantoPlayerColor.BLUE);
 		
 		// Since blue always moves first, I'm not sure how we could possibly
 		// violate the rules to throw an exception here.  
@@ -55,7 +54,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		boolean isValid = false;  
 		
 		// Starting butterfly should be at origin, or else.
-		if(numMoves == 0 && (to.getX() != 0 || to.getY() != 0)) {
+		if(state.getNumMoves() == 0 && (to.getX() != 0 || to.getY() != 0)) {
 			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
 		}
 
@@ -67,9 +66,9 @@ public class AlphaHantoGame extends AbstractHantoGame {
 
 		// If there are pieces on the board, look at the existing ones 
 		// to determine if this is a valid move
-		if(!board.isEmpty())
+		if(!state.getBoard().isEmpty())
 		{
-			for(HexCoordinate c : board) {
+			for(HexCoordinate c : state.getBoard()) {
 				
 				// See if at least one piece is adjacent to the proposed move
 				if(c.isAdjacentTo(to)) {
@@ -90,15 +89,18 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		
 		// Finally, if we haven't thrown an error already, this move is valid, 
 		// so add it to the "board"
-		board.add(new HantoPiece(currPlayer, pieceType, to));
+		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), pieceType, to));
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player
-		currPlayer = (currPlayer == HantoPlayerColor.BLUE) ? 
-					HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+		state.setCurrPlayer((state.getCurrPlayer() == HantoPlayerColor.BLUE) ? 
+					HantoPlayerColor.RED : HantoPlayerColor.BLUE);
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		return ((numMoves++ == 0) ? MoveResult.OK : MoveResult.DRAW);
+		MoveResult ret = (state.getNumMoves() == 0) ? MoveResult.OK : MoveResult.DRAW;
+		state.setNumMoves(state.getNumMoves() + 1);
+		
+		return ret;
 		
 	}
 
