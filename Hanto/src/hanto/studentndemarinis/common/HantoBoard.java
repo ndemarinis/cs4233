@@ -13,8 +13,10 @@ import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
+import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -30,11 +32,28 @@ import java.util.Vector;
  * @version Jan 23, 2013
  *
  */
-public class HantoBoard extends Vector<HantoPiece> {
+public class HantoBoard implements Iterable<HantoPiece> {
 
 	// Maximum number of possible neighbors on a hex grid
 	private final int MAX_NEIGHBORS = 6;
 	
+	private Vector<HantoPiece> pieces;
+	
+	
+	public HantoBoard(){
+		pieces = new Vector<HantoPiece>();
+	}
+	
+	/**
+	 * Add a piece to the board
+	 * Note that this method DOES NOT perform any
+	 * error checking to ensure the piece is in a valid position
+	 * @param p The piece to add
+	 */
+	public void add(HantoPiece p)
+	{
+		pieces.add(p);
+	}
 	
 	/**
 	 * Find a piece matching a given coordinate on the board
@@ -45,7 +64,7 @@ public class HantoBoard extends Vector<HantoPiece> {
 	{
 		HantoPiece ret = null;
 		
-		for(HantoPiece p : this)
+		for(HantoPiece p : pieces)
 		{
 			if(p.getX() == c.getX() && p.getY() == c.getY()) {
 				ret = p;
@@ -63,7 +82,7 @@ public class HantoBoard extends Vector<HantoPiece> {
 	{
 		final Collection<HantoPiece> res = new Vector<HantoPiece>();
 		
-		for(HantoPiece p : this) 
+		for(HantoPiece p : pieces) 
 		{
 			if(p.isAdjacentTo(c)) {
 				res.add(p);
@@ -82,7 +101,7 @@ public class HantoBoard extends Vector<HantoPiece> {
 	{
 		final Collection<HantoPiece> res = new Vector<HantoPiece>();
 		
-		for(HantoPiece p : this)
+		for(HantoPiece p : pieces)
 		{
 			if(p.getType() == t) {
 				res.add(p);
@@ -102,7 +121,6 @@ public class HantoBoard extends Vector<HantoPiece> {
 		return this.getNeighborsOf(c).size() == MAX_NEIGHBORS;
 	}
 	
-	
 	/**
 	 * Check if a particular piece is somewhere on the board
 	 * @param c Color of piece to find
@@ -113,16 +131,36 @@ public class HantoBoard extends Vector<HantoPiece> {
 	 * NOTE:  this name makes sense to me.  I don't understand how the suggestions in
 	 * CodePro's audit rule could make more sense here.  
 	 */
-	public boolean containsPiece(HantoPlayerColor c, HantoPieceType t)
+	public boolean contains(HantoPlayerColor c, HantoPieceType t)
 	{
 		boolean ret = false;
 		
-		for(HantoPiece p : this)
+		for(HantoPiece p : pieces)
 		{
 			ret = ret || (p.getColor() == c && p.getType() == t);
 		}
 		
 		return ret;
+	}
+	/**
+	 * @return true if pieces are in a contiguous grouping, 
+	 * false otherwise.  
+	 */
+	public boolean isBoardContiguous()
+	{
+		boolean isContiguous = true;
+		
+		// Now that we've added the piece, check if it doesn't violate the adjacency rules
+		for(HantoPiece p : pieces)
+		{
+			// If everything is in one contiguous group, we should be able to
+			// pick any piece on the board and find a path from it
+			// to every other piece.  
+			// If one fails, we broke the rules.  
+			isContiguous = isContiguous && this.thereExistsPathBetween(pieces.get(0), p);
+		}
+		
+		return isContiguous;
 	}
 	
 	/**
@@ -167,6 +205,31 @@ public class HantoBoard extends Vector<HantoPiece> {
 		return ret;
 	}
 	
+	
+	/**
+	 * 
+	 * @return true if the board is empty, false otherwise
+	 */
+	public boolean isEmpty()
+	{
+		return pieces.isEmpty();
+	}
+	
+	/**
+	 * Create an iterator over all of the pieces on the board
+	 */
+	public Iterator<HantoPiece> iterator()
+	{
+		return pieces.iterator();
+	}
+	
+	/**
+	 * @param p Piece at HantoCoordinate to remove from the board
+	 */
+	public void remove(HantoCoordinate p)
+	{
+		pieces.remove(p);
+	}
 	
 	
 	// TODO:  There's a warning about not implementing clone()

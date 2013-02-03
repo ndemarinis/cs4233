@@ -91,7 +91,7 @@ public class GammaHantoRules implements HantoRuleSet {
 		}
 
 		// Verify this move doesn't _need_ to place the butterfly.  
-		if(!state.getBoard().containsPiece(state.getCurrPlayer(), HantoPieceType.BUTTERFLY) &&
+		if(!state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY) &&
 				state.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY && piece != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
 					"Butterfly must be placed by the foruth turn!");

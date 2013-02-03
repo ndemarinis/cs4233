@@ -46,7 +46,7 @@ public class TestAlphaHantoGame extends AlphaHantoGame implements
 	 */
 	@Override
 	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return state.getBoard().contains(c);
+		return state.getBoard().getPieceAt(c) != null;
 	}
 
 	/**

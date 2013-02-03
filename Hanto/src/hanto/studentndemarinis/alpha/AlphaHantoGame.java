@@ -65,30 +65,27 @@ public class AlphaHantoGame extends AbstractHantoGame {
 
 		// If there are pieces on the board, look at the existing ones 
 		// to determine if this is a valid move
-		if(!state.getBoard().isEmpty())
-		{
-			for(HexCoordinate c : state.getBoard()) {
-				
-				// See if at least one piece is adjacent to the proposed move
-				if(c.isAdjacentTo(to)) {
-					isValid = isValid || true;
-				}
-				
-				// If we find any pieces in that location, it's not a legal move.  
-				if(c.equals(to)) {
-					throw new HantoException("Illegal move:  can't place a piece " +
-							"on top of an existing piece!");
-				}
-			}
+		for(HexCoordinate c : state.getBoard()) {
 
-			if(!isValid) {
-				throw new HantoException("Illegal move:  piece must be adjacent to the group!");
-			}
+			
+		}
+
+		// If we find any pieces in that location, it's not a legal move.  
+		if(state.getBoard().getPieceAt(to) != null) {
+			throw new HantoException("Illegal move:  can't place a piece " +
+					"on top of an existing piece!");
 		}
 		
 		// Finally, if we haven't thrown an error already, this move is valid, 
 		// so add it to the "board"
 		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), pieceType, to));
+		
+		
+		// Make sure the pieces are in a contiguous group after adding the new one.  
+		if(!state.getBoard().isBoardContiguous()) {
+			throw new HantoException("Illegal move:  piece must be adjacent to the group!");
+		}
+		
 		
 		// After placing the current piece, the current player has made a move, 
 		// so switch the next player

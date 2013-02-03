@@ -99,19 +99,4 @@ public abstract class AbstractHantoGame implements HantoGame {
 		return state.getCurrPlayer();
 	}
 
-
-	/**
-	 * @param currPlayer player set to be next to move
-	 */
-	public void setCurrPlayer(HantoPlayerColor currPlayer) {
-		state.setCurrPlayer(currPlayer);
-	}
-
-	/**
-	 * @return the board
-	 */
-	public HantoBoard getBoard() {
-		return state.getBoard();
-	}
-
 }
