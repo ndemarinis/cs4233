@@ -44,6 +44,13 @@ public class HantoGameState {
 	public void setNumMoves(int numMoves) {
 		this.numMoves = numMoves;
 	}
+	
+	/**
+	 * @return number of moves after incrementing it by one
+	 */
+	public int incNumMoves(){
+		return ++numMoves;
+	}
 
 	/**
 	 * @return the currPlayer

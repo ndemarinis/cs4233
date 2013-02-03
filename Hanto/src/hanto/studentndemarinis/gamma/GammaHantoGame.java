@@ -11,7 +11,6 @@ package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
-import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
@@ -107,7 +106,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		state.setCurrPlayer((state.getCurrPlayer() == HantoPlayerColor.BLUE) ? 
 				HantoPlayerColor.RED : HantoPlayerColor.BLUE);
 		
-		state.setNumMoves(state.getNumMoves() + 1);
+		state.incNumMoves();
 		
 		// Determine if this move ended the game
 		MoveResult ret = rules.evaluateWinConditions();

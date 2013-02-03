@@ -11,7 +11,6 @@ package hanto.studentndemarinis.alpha;
 
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
-import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;

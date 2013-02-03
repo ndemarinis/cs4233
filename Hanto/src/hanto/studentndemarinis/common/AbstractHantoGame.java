@@ -114,18 +114,4 @@ public abstract class AbstractHantoGame implements HantoGame {
 		return state.getBoard();
 	}
 
-	/**
-	 * @return the state
-	 */
-	public HantoGameState getState() {
-		return state;
-	}
-
-	/**
-	 * @param state the state to set
-	 */
-	public void setState(HantoGameState state) {
-		this.state = state;
-	}
-
 }
