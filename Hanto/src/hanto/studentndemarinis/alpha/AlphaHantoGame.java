@@ -13,7 +13,6 @@ import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
-import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -49,9 +48,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 	@Override
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
-	{
-		boolean isValid = false;  
-		
+	{	
 		// Starting butterfly should be at origin, or else.
 		if(state.getNumMoves() == 0 && (to.getX() != 0 || to.getY() != 0)) {
 			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
@@ -61,13 +58,6 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		if(pieceType != HantoPieceType.BUTTERFLY) {
 			throw new HantoException("Illegal move:  " +
 					"can't place anyting other than butterflies!");
-		}
-
-		// If there are pieces on the board, look at the existing ones 
-		// to determine if this is a valid move
-		for(HexCoordinate c : state.getBoard()) {
-
-			
 		}
 
 		// If we find any pieces in that location, it's not a legal move.  
