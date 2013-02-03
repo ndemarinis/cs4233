@@ -66,7 +66,6 @@ public class GammaHantoRules implements HantoRuleSet {
 				throw new HantoException("Illegal move:  your can only move pieces" +
 						"of your own color!");
 			}
-
 		}
 
 		// Verify a destination coordinate has actually been provided
@@ -81,8 +80,6 @@ public class GammaHantoRules implements HantoRuleSet {
 			throw new HantoException("Illegal move:  First piece must be placed " +
 					"at origin!");
 		}
-		
-
 		
 		// If we find any pieces at the destination, it's not a legal move.  
 		if(state.getBoard().getPieceAt(to) != null){
@@ -108,20 +105,8 @@ public class GammaHantoRules implements HantoRuleSet {
 	@Override
 	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
 		
-		boolean isValid = true;
-		
-		// Now that we've added the piece, check if it doesn't violate the adjacency rules
-		for(HantoPiece p : state.getBoard())
-		{
-			// If everything is in one contiguous group, we should be able to
-			// pick any piece on the board and find a path from it
-			// to every other piece.  
-			// If one fails, we broke the rules.  
-			isValid = isValid && state.getBoard().thereExistsPathBetween(to, p);
-		}
-		
 		// If we violated the adjacency rules
-		if(!isValid) {
+		if(!state.getBoard().isBoardContiguous()) {
 			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
 		}
 	}
