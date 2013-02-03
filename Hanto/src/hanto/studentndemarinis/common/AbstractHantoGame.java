@@ -23,7 +23,6 @@ import hanto.util.MoveResult;
  */
 public abstract class AbstractHantoGame implements HantoGame {
 
-	protected boolean game_over = false; // Whether or not the game has ended
 	protected HantoGameState state;
 	
 	/**
@@ -129,11 +128,4 @@ public abstract class AbstractHantoGame implements HantoGame {
 		this.state = state;
 	}
 
-	/**
-	 * @return true if the game has ended
-	 * @return
-	 */
-	public boolean isGameOver() {
-		return game_over;
-	}
 }

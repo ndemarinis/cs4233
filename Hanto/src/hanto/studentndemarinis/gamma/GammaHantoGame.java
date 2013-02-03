@@ -80,7 +80,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 	{
 		
 		// Verify the game is not over
-		if(game_over) {
+		if(state.isGameOver()) {
 			throw new HantoException("Illegal move:  game has already ended!");
 		}
 		
@@ -113,7 +113,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		MoveResult ret = rules.evaluateWinConditions();
 		if(ret == MoveResult.DRAW || 
 				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS)
-			game_over = true;
+			state.setGameOver(true);
 		
 		return ret;
 	}

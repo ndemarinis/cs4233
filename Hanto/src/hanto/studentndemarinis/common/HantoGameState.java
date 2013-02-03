@@ -19,6 +19,7 @@ public class HantoGameState {
 
 	private int numMoves = 0; // Total number of moves elapsed in the game so far
 	private HantoPlayerColor currPlayer; // Player that making the current/next move
+	private boolean gameOver = false; // Whether or not the game has ended
 	
 	// Collection of pieces representing the board for now
 	private HantoBoard board = new HantoBoard();
@@ -63,6 +64,21 @@ public class HantoGameState {
 	 */
 	public HantoBoard getBoard() {
 		return board;
+	}
+	
+	/**
+	 * @return true if the game has ended, false otherwise
+	 */
+	public boolean isGameOver() {
+		return gameOver;
+	}
+	
+	/**
+	 * @param gameOver Whether or not the game is over
+	 */
+	public void setGameOver(boolean gameOver)
+	{
+		this.gameOver = gameOver;
 	}
 
 }
