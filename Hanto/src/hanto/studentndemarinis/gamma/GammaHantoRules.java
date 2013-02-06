@@ -30,7 +30,7 @@ public class GammaHantoRules implements HantoRuleSet {
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
-	HantoGameState state;
+	private HantoGameState state;
 	
 	/**
 	 * Make a new set of GammaHanto's rules, given
@@ -117,7 +117,7 @@ public class GammaHantoRules implements HantoRuleSet {
 	 * @throws HantoException if the board is in an illegal state
 	 */
 	@Override
-	public MoveResult evaluateWinConditions() throws HantoException {
+	public MoveResult evaluateMoveResult() throws HantoException {
 		
 		// Check win conditions (max number of moves, butterfly surrounded)
 		MoveResult ret = (state.getNumMoves() != 10) ? MoveResult.OK : MoveResult.DRAW;

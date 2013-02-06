@@ -101,15 +101,12 @@ public class GammaHantoGame extends AbstractHantoGame {
 			players.get(state.getCurrPlayer()).removeFromHand(pieceType);
 		}
 		
-		// After placing the current piece, the current player has made a move, 
-		// so switch the next player
-		state.setCurrPlayer((state.getCurrPlayer() == HantoPlayerColor.BLUE) ? 
-				HantoPlayerColor.RED : HantoPlayerColor.BLUE);
 		
-		state.incNumMoves();
+		// Finish move
+		completeMove();	
 		
 		// Determine if this move ended the game
-		MoveResult ret = rules.evaluateWinConditions();
+		MoveResult ret = rules.evaluateMoveResult();
 		if(ret == MoveResult.DRAW || 
 				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS)
 			state.setGameOver(true);

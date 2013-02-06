@@ -17,12 +17,12 @@ import hanto.util.HantoPlayerColor;
  */
 public class HantoGameState {
 
-	private int numMoves = 0; // Total number of moves elapsed in the game so far
-	private HantoPlayerColor currPlayer; // Player that making the current/next move
-	private boolean gameOver = false; // Whether or not the game has ended
+	int numMoves = 0; // Total number of moves elapsed in the game so far
+	HantoPlayerColor currPlayer; // Player that making the current/next move
+	boolean gameOver = false; // Whether or not the game has ended
 	
 	// Collection of pieces representing the board for now
-	private HantoBoard board = new HantoBoard();
+	HantoBoard board = new HantoBoard();
 	
 	/**
 	 * Contains state information for a HantoGame
@@ -43,13 +43,6 @@ public class HantoGameState {
 	 */
 	public void setNumMoves(int numMoves) {
 		this.numMoves = numMoves;
-	}
-	
-	/**
-	 * @return number of moves after incrementing it by one
-	 */
-	public int incNumMoves(){
-		return ++numMoves;
 	}
 
 	/**

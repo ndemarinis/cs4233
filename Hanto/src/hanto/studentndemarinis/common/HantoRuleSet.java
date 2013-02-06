@@ -49,5 +49,5 @@ public interface HantoRuleSet {
 	 * @return MoveResult with based on the current board's conditions
 	 * @throws HantoException on an invalid board configuration
 	 */
-	public MoveResult evaluateWinConditions() throws HantoException;
+	public MoveResult evaluateMoveResult() throws HantoException;
 }

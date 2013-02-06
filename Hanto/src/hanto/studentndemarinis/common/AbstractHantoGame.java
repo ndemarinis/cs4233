@@ -73,16 +73,32 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
 		final HantoPiece p = new HantoPiece(color, type, c);
-		state.getBoard().add(p);
+		state.board.add(p);
 	}
 
 	/**
 	 * @return the number of moves made in this game
 	 */
 	public int getNumMoves() {
-		return state.getNumMoves();
+		return state.numMoves;
 	}
 
+	/**
+	 * Perform actions necessary to finish a move, 
+	 * committing it as valid
+	 * 
+	 * Currently switches the current player and increments
+	 * the total number of moves
+	 */
+	public void completeMove() {
+		// After placing the current piece, the current player has made a move, 
+		// so switch the next player
+		state.currPlayer = (state.currPlayer == HantoPlayerColor.BLUE) ? 
+				HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+		
+		// Increment the number of moves
+		state.numMoves++;
+	}
 
 	/**
 	 * @param numMoves the number of moves to set
