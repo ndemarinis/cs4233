@@ -36,6 +36,18 @@ public interface HantoRuleSet {
 			throws HantoException;
 	
 	/**
+	 * Make a move, regardless of whether or not it is valid.
+	 * Any piece currently at the source and destination locations
+	 * are REMOVED when this method is called  
+	 * 
+	 * @param type Piece type to place at the destination
+	 * @param from Source coordinate of the piece, null if piece is not on the board
+	 * @param to Destination coordinate of the piece
+	 */
+	public void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to) 
+			throws HantoException;
+	
+	/**
 	 * Perform any checks based on the location of a newly-moved piece, 
 	 * throws HantoException of the move is invalid.  
 	 * @param to Destination coordinate of the piece after the move

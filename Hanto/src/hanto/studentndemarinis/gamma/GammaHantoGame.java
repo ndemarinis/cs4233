@@ -88,7 +88,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 
 	
 		// Now that we know we can make the move, do it for realsies.  
-		actuallyMakeMove(pieceType, from, to);
+		rules.actuallyMakeMove(pieceType, from, to);
 		
 		// Make sure that move we just did was valid
 		// (We're assuming that just throwing an exception is okay here,
@@ -114,25 +114,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		return ret;
 	}
 	
-	/**
-	 * Make a move, regardless of whether or not it is valid.
-	 * Any piece currently at the source and destination locations
-	 * are REMOVED when this method is calle.d  
-	 * 
-	 * @param type Piece type to place at the destination
-	 * @param from Source coordinate of the piece, null if piece is not on the board
-	 * @param to Destination coordinate of the piece
-	 */
-	private void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to)
-	{
-		// Remove the old piece from the board (if we haven't failed yet)
-		if(from != null) {
-			state.getBoard().remove(from);
-		}
-		
-		// Finally, add the new piece to the board.  
-		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), type, to));
-	}
+
 	
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real

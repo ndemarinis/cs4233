@@ -61,7 +61,19 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		}
 
 	}
-
+	
+	@Override
+	public void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to)
+	{
+		// Remove the old piece from the board (if we haven't failed yet)
+		if(from != null) {
+			state.getBoard().remove(from);
+		}
+		
+		// Finally, add the new piece to the board.  
+		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), type, to));
+	}
+	
 	@Override
 	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
 		// If we violated the adjacency rules
