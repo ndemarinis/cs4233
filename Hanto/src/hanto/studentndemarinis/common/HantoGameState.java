@@ -22,13 +22,14 @@ public class HantoGameState {
 	boolean gameOver = false; // Whether or not the game has ended
 	
 	// Collection of pieces representing the board for now
-	HantoBoard board = new HantoBoard();
+	HantoBoard board;
 	
 	/**
 	 * Contains state information for a HantoGame
 	 */
 	public HantoGameState(HantoPlayerColor startingPlayer) {
 		this.currPlayer = startingPlayer;
+		board = new HantoBoard();
 	}
 	
 	/**

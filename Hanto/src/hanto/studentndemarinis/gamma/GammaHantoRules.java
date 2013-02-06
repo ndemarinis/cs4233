@@ -10,6 +10,7 @@
 package hanto.studentndemarinis.gamma;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
@@ -25,12 +26,10 @@ import hanto.util.MoveResult;
  * @version Jan 31, 2013
  *
  */
-public class GammaHantoRules implements HantoRuleSet {
+public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSet {
 
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
-	
-	private HantoGameState state;
 	
 	/**
 	 * Make a new set of GammaHanto's rules, given
@@ -53,39 +52,8 @@ public class GammaHantoRules implements HantoRuleSet {
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from, HantoCoordinate to) 
 			throws HantoException {
-		
-		// Verify the source piece is valid, if provided.  
-		if(from != null) 
-		{
-			if(state.getBoard().getPieceAt(from) == null) {
-				throw new HantoException("Illegal move:  " +
-						"source piece does not exist on board!");
-			}
+		super.doPreMoveChecks(piece, from, to);
 
-			if(state.getBoard().getPieceAt(from).getColor() != state.getCurrPlayer()) {
-				throw new HantoException("Illegal move:  your can only move pieces" +
-						"of your own color!");
-			}
-		}
-
-		// Verify a destination coordinate has actually been provided
-		if(to == null){
-			throw new HantoException("Illegal move:  Destination coordinate must be provided!");
-		}
-		
-		
-		// If this is the first move, we need a piece at the origin
-		if(state.getNumMoves() == 0 && 
-				to.getX() != 0 && to.getY() != 0) {
-			throw new HantoException("Illegal move:  First piece must be placed " +
-					"at origin!");
-		}
-		
-		// If we find any pieces at the destination, it's not a legal move.  
-		if(state.getBoard().getPieceAt(to) != null){
-			throw new HantoException("Illegal move:  can't place a piece " +
-					"on top of an existing piece!");
-		}
 
 		// Verify this move doesn't _need_ to place the butterfly.  
 		if(!state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY) &&
@@ -104,11 +72,7 @@ public class GammaHantoRules implements HantoRuleSet {
 	 */
 	@Override
 	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
-		
-		// If we violated the adjacency rules
-		if(!state.getBoard().isBoardContiguous()) {
-			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
-		}
+		super.doPostMoveChecks(to);
 	}
 
 	/**
