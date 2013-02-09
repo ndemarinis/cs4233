@@ -31,6 +31,9 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
+	// Max number of moves before ending in a draw
+	private final int MAX_MOVES = 10;
+	
 	/**
 	 * Make a new set of GammaHanto's rules, given
 	 * the game itself
@@ -51,17 +54,10 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 */
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
-			throws HantoException {
+			throws HantoException 
+	{
 		super.doPreMoveChecks(piece, from, to);
-
-
-		// Verify this move doesn't _need_ to place the butterfly.  
-		if(!state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY) &&
-				state.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY && piece != HantoPieceType.BUTTERFLY) {
-			throw new HantoException("Illegal move:  " +
-					"Butterfly must be placed by the foruth turn!");
-		}
-
+		verifyButterflyHasBeenPlacedByFourthTurn(piece);
 	}
 
 	/**
@@ -71,7 +67,8 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 * leaving the board in an illegal state
 	 */
 	@Override
-	public void doPostMoveChecks(HexCoordinate to) throws HantoException {
+	public void doPostMoveChecks(HexCoordinate to) throws HantoException 
+	{
 		super.doPostMoveChecks(to);
 	}
 
@@ -81,11 +78,65 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 * @throws HantoException if the board is in an illegal state
 	 */
 	@Override
-	public MoveResult evaluateMoveResult() throws HantoException {
+	public MoveResult evaluateMoveResult() throws HantoException 
+	{	
+		MoveResult ret = winIfButterflyIsSurrounded();
 		
-		// Check win conditions (max number of moves, butterfly surrounded)
-		MoveResult ret = (state.getNumMoves() != 10) ? MoveResult.OK : MoveResult.DRAW;
+		// If the previous condition didn't end the game
+		if(ret == MoveResult.OK) {
+			ret = endInDrawAfter10Moves();
+		}
 		
+		return ret;
+	}
+	
+	/**
+	 * Ensure that a butterfly must be placed by the fourth term,
+	 * as the rules specify.  Therefore, a player moving on/after 
+	 * the fourth turn with no butterfly on the board MUST 
+	 * place their butterfly.  
+	 * 
+	 * @param piece The piece involved in the move
+	 * @throws HantoException if trying to place a butterfly without
+	 * one for that player on the board
+	 */
+	protected void verifyButterflyHasBeenPlacedByFourthTurn(HantoPieceType piece) 
+			throws HantoException	
+	{
+		if(piece != HantoPieceType.BUTTERFLY && 
+		   state.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY &&
+		   !state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY)) 
+		{
+			throw new HantoException("Illegal move:  " +
+					"Butterfly must be placed by the foruth turn!");
+		}
+	}
+	
+	/**
+	 * Give result ending the game in a draw after 10 moves.  
+	 * @return OK if game has been running for less than 10 moves, 
+	 * DRAW otherwise.  
+	 */
+	protected MoveResult endInDrawAfter10Moves()
+	{
+		return (state.getNumMoves() != MAX_MOVES) ?
+				MoveResult.OK : MoveResult.DRAW;
+	}
+	
+	/**
+	 * Check if a player has won by surrounding their opponent's
+	 * butterfly.  If both butterflies are surrounded, it's a DRAW.  
+	 * @return winning player if they have surrounded their opponent's butterfly,
+	 * DRAW if both are surrounded, OK if none of these conditions have been met
+	 */
+	protected MoveResult winIfButterflyIsSurrounded()
+	{
+		MoveResult ret = null;
+		
+		// Do the simplest thing that works and assume we only have one
+		// red and blue butterfly
+		
+		// TODO:  fix for both butterflies surrounded
 		for(HantoPiece p : state.getBoard().getPiecesOfType(HantoPieceType.BUTTERFLY))
 		{
 			if(state.getBoard().isSurrounded(p)) {
