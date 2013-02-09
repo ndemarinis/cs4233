@@ -26,12 +26,11 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	protected HantoGameState state;
 	
 	@Override
-	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from,
-			HantoCoordinate to) throws HantoException {
-
+	public void doPreMoveChecks(HantoPieceType piece, 
+			HantoCoordinate from, HantoCoordinate to) throws HantoException 
+	{
 		verifySourceAndDestinationCoords(from, to);
 		verifyMoveIsLegal(from, to);
-
 	}
 	
 	@Override
@@ -72,7 +71,6 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 				throw new HantoException("Illegal move:  " +
 						"source piece does not exist on board!");
 			}
-
 		}
 
 		// The move must have a destination coordinate
@@ -81,6 +79,14 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		}
 	}
 	
+	/**
+	 * Verify a move is legal, meaning that the first piece must be at the origin, 
+	 * players can only move pieces of their own color, and that the destination
+	 * coordinate must be empty
+	 * @param from Source coordinate of move to verify
+	 * @param to Destination coordinate of move to verify
+	 * @throws HantoException if any of these conditions have been violated
+	 */
 	protected void verifyMoveIsLegal(HantoCoordinate from, HantoCoordinate to) 
 			throws HantoException
 	{
