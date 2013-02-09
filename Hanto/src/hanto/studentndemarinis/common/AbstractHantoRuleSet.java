@@ -28,37 +28,9 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException {
-		// Verify the source piece is valid, if provided.  
-		if(from != null) 
-		{
-			if(state.board.getPieceAt(from) == null) {
-				throw new HantoException("Illegal move:  " +
-						"source piece does not exist on board!");
-			}
 
-			if(state.board.getPieceAt(from).getColor() != state.currPlayer) {
-				throw new HantoException("Illegal move:  your can only move pieces" +
-						"of your own color!");
-			}
-		}
-
-		// Verify a destination coordinate has actually been provided
-		if(to == null){
-			throw new HantoException("Illegal move:  Destination coordinate must be provided!");
-		}
-		
-		// If this is the first move, we need a piece at the origin
-		if(state.numMoves == 0 && 
-				to.getX() != 0 && to.getY() != 0) {
-			throw new HantoException("Illegal move:  First piece must be placed " +
-					"at origin!");
-		}
-		
-		// If we find any pieces at the destination, it's not a legal move.  
-		if(state.board.getPieceAt(to) != null){
-			throw new HantoException("Illegal move:  can't place a piece " +
-					"on top of an existing piece!");
-		}
+		verifySourceAndDestinationCoords(from, to);
+		verifyMoveIsLegal(from, to);
 
 	}
 	
@@ -76,16 +48,75 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	
 	@Override
 	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
+		verifyBoardIsContiguous();
+	}
+
+	public abstract MoveResult evaluateMoveResult() throws HantoException;
+
+	
+	/**
+	 * Verify the source and destination coordinates exist.  
+	 * If a source is provided, it must exist on the board; 
+	 * a destination coordinate must exist for a valid move.  
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if either of these conditions have been violated
+	 */
+	protected void verifySourceAndDestinationCoords(HantoCoordinate from, HantoCoordinate to) 
+			throws HantoException
+	{
+		// If provided, a source piece must exist on the board 
+		if(from != null) 
+		{
+			if(state.board.getPieceAt(from) == null) {
+				throw new HantoException("Illegal move:  " +
+						"source piece does not exist on board!");
+			}
+
+		}
+
+		// The move must have a destination coordinate
+		if(to == null){
+			throw new HantoException("Illegal move:  Destination coordinate must be provided!");
+		}
+	}
+	
+	protected void verifyMoveIsLegal(HantoCoordinate from, HantoCoordinate to) 
+			throws HantoException
+	{
+		// Verify the piece to be moved is owned by the current player  
+		if(from != null) 
+		{
+			if(state.board.getPieceAt(from).getColor() != state.currPlayer) {
+				throw new HantoException("Illegal move:  your can only move pieces" +
+						"of your own color!");
+			}
+		}
+		
+		// If this is the first move, we need a piece at the origin
+		if(state.numMoves == 0 && 
+				to.getX() != 0 && to.getY() != 0) {
+			throw new HantoException("Illegal move:  First piece must be placed " +
+					"at origin!");
+		}
+		
+		// If we find any pieces at the destination, it's not a legal move.  
+		if(state.board.getPieceAt(to) != null){
+			throw new HantoException("Illegal move:  can't place a piece " +
+					"on top of an existing piece!");
+		}
+	}
+	
+	/**
+	 * Verify all of the pieces on the board are in a
+	 * single contiguous grouping.  
+	 * @throws HantoException if any pieces are separated from the group
+	 */
+	protected void verifyBoardIsContiguous() throws HantoException
+	{
 		// If we violated the adjacency rules
 		if(!state.board.isBoardContiguous()) {
 			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
 		}
 	}
-
-	@Override
-	public MoveResult evaluateMoveResult() throws HantoException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
