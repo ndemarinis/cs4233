@@ -9,7 +9,6 @@
  */
 package hanto.studentndemarinis.common;
 
-import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
@@ -59,7 +58,7 @@ public class HantoBoard implements Iterable<HantoPiece> {
 	 * @param c Coordinate to search on the board
 	 * @return the piece matching that coordinate, null if none exists
 	 */
-	public HantoPiece getPieceAt(HantoCoordinate c) 
+	public HantoPiece getPieceAt(HexCoordinate c) 
 	{
 		HantoPiece ret = null;
 		
@@ -77,7 +76,7 @@ public class HantoBoard implements Iterable<HantoPiece> {
 	 * @param c Coordinate to find neighbors
 	 * @return Collection of neighbors, empty if none
 	 */
-	public Collection<HantoPiece> getNeighborsOf(HantoCoordinate c)
+	public Collection<HantoPiece> getNeighborsOf(HexCoordinate c)
 	{
 		final Collection<HantoPiece> res = new Vector<HantoPiece>();
 		
@@ -115,7 +114,7 @@ public class HantoBoard implements Iterable<HantoPiece> {
 	 * @param c Coordinate to check
 	 * @return true if the specified coordinate is surrounded
 	 */
-	public boolean isSurrounded(HantoCoordinate c)
+	public boolean isSurrounded(HexCoordinate c)
 	{
 		return this.getNeighborsOf(c).size() == MAX_NEIGHBORS;
 	}
@@ -171,13 +170,13 @@ public class HantoBoard implements Iterable<HantoPiece> {
 	 * NOTE:  this name makes sense to me.  I don't understand how the suggestions in
 	 * CodePro's audit rule could make more sense here.  
 	 */
-	public boolean thereExistsPathBetween(HantoCoordinate a, HantoCoordinate b) 
+	public boolean thereExistsPathBetween(HexCoordinate a, HexCoordinate b) 
 	{
-		final Queue<HantoCoordinate> q = new LinkedList<HantoCoordinate>(); // Queue for our BFS
+		final Queue<HexCoordinate> q = new LinkedList<HexCoordinate>(); // Queue for our BFS
 		
 		// We also need something to hold visited nodes, preferably which we can
 		// check in constant time.  After some research, a HashSet fills this requirement.  
-		final Set<HantoCoordinate> visited = new HashSet<HantoCoordinate>();
+		final Set<HexCoordinate> visited = new HashSet<HexCoordinate>();
 		
 		boolean ret = false;
 		
@@ -187,12 +186,12 @@ public class HantoBoard implements Iterable<HantoPiece> {
 		
 		while(!ret && !q.isEmpty()) // Run until we find a path or we run out of nodes
 		{
-			HantoCoordinate c = q.remove();
+			HexCoordinate c = q.remove();
 			if(c.getX() == b.getX() && c.getY() == b.getY()) {
 				ret = true;
 			}
 			
-			for(HantoCoordinate neighbor : this.getNeighborsOf(c))
+			for(HexCoordinate neighbor : this.getNeighborsOf(c))
 			{
 				if(!visited.contains(neighbor)) {
 					visited.add(neighbor);
@@ -225,7 +224,7 @@ public class HantoBoard implements Iterable<HantoPiece> {
 	/**
 	 * @param p Piece at HantoCoordinate to remove from the board
 	 */
-	public void remove(HantoCoordinate p)
+	public void remove(HexCoordinate p)
 	{
 		pieces.remove(p);
 	}

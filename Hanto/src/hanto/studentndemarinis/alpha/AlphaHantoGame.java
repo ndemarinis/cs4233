@@ -61,7 +61,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		}
 
 		// If we find any pieces in that location, it's not a legal move.  
-		if(state.getBoard().getPieceAt(to) != null) {
+		if(this.doesPieceExistAt(to)) {
 			throw new HantoException("Illegal move:  can't place a piece " +
 					"on top of an existing piece!");
 		}

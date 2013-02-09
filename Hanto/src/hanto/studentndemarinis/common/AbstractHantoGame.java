@@ -62,7 +62,8 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * CodePro's audit rule could make more sense here.   
 	 */
 	public boolean doesPieceExistAt(HantoCoordinate c) {
-		return state.getBoard().getPieceAt(c) != null;
+		HexCoordinate h = HexCoordinate.extractHexCoordinate(c);
+		return state.getBoard().getPieceAt(h) != null;
 	}
 
 	/**

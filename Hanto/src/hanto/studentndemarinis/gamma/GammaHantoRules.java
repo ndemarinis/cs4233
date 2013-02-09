@@ -131,7 +131,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 */
 	protected MoveResult winIfButterflyIsSurrounded()
 	{
-		MoveResult ret = null;
+		MoveResult ret = MoveResult.OK;
 		
 		// Do the simplest thing that works and assume we only have one
 		// red and blue butterfly
