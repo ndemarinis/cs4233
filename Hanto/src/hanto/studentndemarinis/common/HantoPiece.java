@@ -9,7 +9,6 @@
  */
 package hanto.studentndemarinis.common;
 
-import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
@@ -21,10 +20,11 @@ import hanto.util.HantoPlayerColor;
  * @author ndemarinis
  * @version Jan 22, 2013
  */
-public class HantoPiece extends HexCoordinate{
+public class HantoPiece {
 
 	private HantoPlayerColor color; // The color of the player that placed this piece 
 	private HantoPieceType type; // The type of piece placed here
+	private HexCoordinate coordinate; // The piece's location
 	
 	/**
 	 * Creates a Hanto piece.  
@@ -33,12 +33,12 @@ public class HantoPiece extends HexCoordinate{
 	 * @param type The type of piece as played
 	 * @param loc The coordinate of the piece on the hex grid
 	 */
-	public HantoPiece(HantoPlayerColor color, HantoPieceType type, HantoCoordinate loc) 
-	{
-		super(loc.getX(), loc.getY());
-		
+	public HantoPiece(HantoPlayerColor color, HantoPieceType type, 
+			HexCoordinate coordinate) 
+	{	
 		this.color = color;
 		this.type = type;
+		this.coordinate = coordinate;
 	}
 
 	/**
@@ -69,13 +69,29 @@ public class HantoPiece extends HexCoordinate{
 		this.type = type;
 	}
 	
-
+	/**
+	 * @return Coordinate associated with this piece
+	 */
+	public HexCoordinate getCoordinate() {
+		return coordinate; 
+	}
+	
+	public void setCoordinate(HexCoordinate c) {
+		coordinate = c;
+	}
+	
 	/** 
 	 * @return A string representation of the piece
 	 */
-	public String toString()
+	public String toString() 
 	{
-		return color + " " + type + " at (" + this.getX() + ", " + this.getY() + ")";
+		return color + " " + type + " at " + 
+				((this.coordinate == null) ? "<unplaced>" : this.coordinate);
+	}
+	
+	public int hashCode()
+	{
+		return this.toString().hashCode();
 	}
 
 }

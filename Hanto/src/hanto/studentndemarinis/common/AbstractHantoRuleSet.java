@@ -41,7 +41,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		}
 		
 		// Finally, add the new piece to the board.  
-		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), type, to));
+		state.getBoard().addPieceAt(new HantoPiece(state.getCurrPlayer(), type, to), to);
 	}
 	
 	@Override

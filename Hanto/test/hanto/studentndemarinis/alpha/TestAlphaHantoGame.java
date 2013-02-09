@@ -11,6 +11,7 @@ package hanto.studentndemarinis.alpha;
 
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.HantoPiece;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
@@ -46,7 +47,8 @@ public class TestAlphaHantoGame extends AlphaHantoGame implements
 	 */
 	@Override
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
-		state.getBoard().add(new HantoPiece(color, type, c));
+		HexCoordinate hc = HexCoordinate.extractHexCoordinate(c);
+		state.getBoard().addPieceAt(new HantoPiece(color, type, hc), hc);
 	}
 
 }

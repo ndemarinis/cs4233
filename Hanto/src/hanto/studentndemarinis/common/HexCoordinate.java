@@ -9,6 +9,7 @@
  */
 package hanto.studentndemarinis.common;
 
+
 import hanto.util.HantoCoordinate;
 
 /**
@@ -22,7 +23,7 @@ import hanto.util.HantoCoordinate;
  */
 public class HexCoordinate implements HantoCoordinate {
 
-	final int x, y;
+	private final int x, y;
 	
 	/**
 	 * Make a new HexCoordinate with the specified coordinates
@@ -89,6 +90,17 @@ public class HexCoordinate implements HantoCoordinate {
 			   (other.getX() == x - 1 && other.getY() == y + 1);
 	}
 	
+	public HexCoordinate[] getNeighboringCoordinates()
+	{		
+		HexCoordinate[] coords = {new HexCoordinate(    x, y + 1), 
+								  new HexCoordinate(x + 1,     y), 
+								  new HexCoordinate(x + 1, y - 1),
+								  new HexCoordinate(    x, y - 1),
+								  new HexCoordinate(x - 1,     y), 
+								  new HexCoordinate(x - 1, y + 1)};
+		return coords;
+	}
+	
 	/**
 	 *  @return true if both coordinates have the same
 	 *  x and y coordinates
@@ -97,20 +109,24 @@ public class HexCoordinate implements HantoCoordinate {
 	{
 		boolean ret = false; // I have NO idea why CodePro wants this to be final.  It's wrong.  
 		
-		if(obj instanceof HantoCoordinate) {
-			// I think this cast is making CodePro throw a warning here. 
-			// Since I AM actually comparing things, I am ignoring the warning.  
-			// If I'm dong this wrong, please let me know.  
-			final HantoCoordinate other = (HantoCoordinate)obj;
-			ret = (x == other.getX() && y == other.getY());
+		if(obj == null) {
+			ret = false;
+		} else if(obj instanceof HexCoordinate) {
+			final HexCoordinate hc = (HexCoordinate)obj;
+			ret = (this == obj) || (x == hc.getX() && y == hc.getY());
 		}
-	
+		
 		return ret;
 	}
 	
-	public int HashCode()
+	public int hashCode()
 	{
 		return x*10000+y;
+	}
+	
+	public String toString()
+	{
+		return "(" + x + ", " + y + ")";
 	}
 
 }

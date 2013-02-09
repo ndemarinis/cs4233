@@ -13,6 +13,7 @@ import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -49,8 +50,10 @@ public class AlphaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{	
+		HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
+		
 		// Starting butterfly should be at origin, or else.
-		if(state.getNumMoves() == 0 && (to.getX() != 0 || to.getY() != 0)) {
+		if(state.getNumMoves() == 0 && (dest.getX() != 0 || dest.getY() != 0)) {
 			throw new HantoException("Illegal move:  starting butterfly must be at origin!");
 		}
 
@@ -61,14 +64,14 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		}
 
 		// If we find any pieces in that location, it's not a legal move.  
-		if(this.doesPieceExistAt(to)) {
+		if(this.doesPieceExistAt(dest)) {
 			throw new HantoException("Illegal move:  can't place a piece " +
 					"on top of an existing piece!");
 		}
 		
 		// Finally, if we haven't thrown an error already, this move is valid, 
 		// so add it to the "board"
-		state.getBoard().add(new HantoPiece(state.getCurrPlayer(), pieceType, to));
+		state.getBoard().addPieceAt(new HantoPiece(state.getCurrPlayer(), pieceType, dest), dest);
 		
 		
 		// Make sure the pieces are in a contiguous group after adding the new one.  

@@ -44,13 +44,7 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 */
 	@Override
 	public String getPrintableBoard() {
-		String ret = "";
-		
-		for(HantoPiece p : state.getBoard()) {
-			ret += (p + "\n");
-		}
-		
-		return ret;
+		return state.getBoard().getPrintableBoard();
 	}
 	
 	/**
@@ -73,8 +67,10 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * @param c location of new piece
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c) {
-		final HantoPiece p = new HantoPiece(color, type, c);
-		state.board.add(p);
+		final HexCoordinate hc = HexCoordinate.extractHexCoordinate(c);
+		final HantoPiece p = new HantoPiece(color, type, hc);
+		
+		state.board.addPieceAt(p, hc);
 	}
 
 	/**
