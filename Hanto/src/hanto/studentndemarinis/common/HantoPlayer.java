@@ -7,7 +7,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package hanto.studentndemarinis.gamma;
+package hanto.studentndemarinis.common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ import hanto.util.HantoPieceType;
  * @author ndemarinis
  * @version Jan 23, 2012
  */
-public class GammaHantoPlayer {
+public class HantoPlayer {
 
 	private final int MAX_BUTTERFLIES = 1;
 	private final int MAX_SPARROWS = 5;
@@ -34,7 +34,7 @@ public class GammaHantoPlayer {
 	 * to be the simplest thing that works.  
 	 * It' s making me cringe, but I am TRYING to embrace TDD.  
 	 */
-	public GammaHantoPlayer() {
+	public HantoPlayer() {
 		pieces.put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
 		pieces.put(HantoPieceType.SPARROW, MAX_SPARROWS);
 	}

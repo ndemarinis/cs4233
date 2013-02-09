@@ -22,8 +22,8 @@ import hanto.util.HantoPlayerColor;
  */
 public class HantoPiece {
 
-	private HantoPlayerColor color; // The color of the player that placed this piece 
-	private HantoPieceType type; // The type of piece placed here
+	private final HantoPlayerColor color; // The color of the player that placed this piece 
+	private final HantoPieceType type; // The type of piece placed here
 	private HexCoordinate coordinate; // The piece's location
 	
 	/**
@@ -48,12 +48,6 @@ public class HantoPiece {
 		return color;
 	}
 
-	/**
-	 * @param color the color of the player that placed this piece
-	 */
-	public void setColor(HantoPlayerColor color) {
-		this.color = color;
-	}
 
 	/**
 	 * @return The type of the piece placed here
@@ -62,12 +56,6 @@ public class HantoPiece {
 		return type;
 	}
 
-	/**
-	 * @param type The type of the piece placed here
-	 */
-	public void setType(HantoPieceType type) {
-		this.type = type;
-	}
 	
 	/**
 	 * @return Coordinate associated with this piece

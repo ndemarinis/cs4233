@@ -24,12 +24,27 @@ public class HantoGameState {
 	// Collection of pieces representing the board for now
 	HantoBoard board;
 	
+	// Maintain the player's hands here (as separate objects for now)
+	HantoPlayer redPlayer, bluePlayer;
+	
 	/**
-	 * Contains state information for a HantoGame
+	 * Construct a state object for a HantoGame
+	 * 
 	 */
-	public HantoGameState(HantoPlayerColor startingPlayer) {
+	public HantoGameState(HantoPlayerColor startingPlayer, 
+			HantoPlayer redPlayer, HantoPlayer bluePlayer) {
 		this.currPlayer = startingPlayer;
 		board = new HantoBoard();
+		
+		this.redPlayer = redPlayer;
+		this.bluePlayer = bluePlayer;
+	}
+	
+	/**
+	 * Construct a state object for a HantoGame
+	 */
+	public HantoGameState(HantoPlayerColor startingPlayer) {
+		this(startingPlayer, null, null);
 	}
 	
 	/**
@@ -52,12 +67,21 @@ public class HantoGameState {
 	public HantoPlayerColor getCurrPlayer() {
 		return currPlayer;
 	}
-
+	
 	/**
 	 * @param currPlayer the currPlayer to set
 	 */
 	public void setCurrPlayer(HantoPlayerColor currPlayer) {
 		this.currPlayer = currPlayer;
+	}
+	
+	/**
+	 * Get the hand information for a given player
+	 * @param p The desired player
+	 * @return Hand information for that player
+	 */
+	public HantoPlayer getPlayersHand(HantoPlayerColor p) {
+		return (p == HantoPlayerColor.RED) ? redPlayer : bluePlayer; 
 	}
 
 	/**

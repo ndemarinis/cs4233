@@ -65,6 +65,7 @@ public class HantoBoard {
 		return pieces.get(c);
 	}
 	
+	
 	/**
 	 * Find neighboring pieces of a specific coordinate on the board
 	 * @param c Coordinate to find neighbors

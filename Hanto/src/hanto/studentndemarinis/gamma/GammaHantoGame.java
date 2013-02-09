@@ -12,15 +12,13 @@ package hanto.studentndemarinis.gamma;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
+import hanto.studentndemarinis.common.HantoPlayer;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * GammaHanto - Extended hanto implementation
@@ -44,10 +42,6 @@ public class GammaHantoGame extends AbstractHantoGame {
 
 	private HantoRuleSet rules;
 	
-	// Map of player colors to their hands (for now)
-	Map<HantoPlayerColor, GammaHantoPlayer> players = 
-			new HashMap<HantoPlayerColor, GammaHantoPlayer>();
-	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
@@ -61,12 +55,12 @@ public class GammaHantoGame extends AbstractHantoGame {
 	// the interface.  
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
-		state = new HantoGameState(firstPlayer);
-		rules = new GammaHantoRules(state);
 		
-		// Initialize each player's hand.  
-		players.put(HantoPlayerColor.BLUE, new GammaHantoPlayer());
-		players.put(HantoPlayerColor.RED, new GammaHantoPlayer());
+		HantoPlayer redPlayer = new HantoPlayer();
+		HantoPlayer bluePlayer = new HantoPlayer();
+		
+		state = new HantoGameState(firstPlayer, redPlayer, bluePlayer);
+		rules = new GammaHantoRules(state);
 		
 		// Based on the specification, red can move first even though it's
 		// technically not in the rules if we initialize the board that way,
@@ -100,7 +94,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 		
 		// If this move involved placing a new piece, remove it from the player's hand
 		if(from == null) {
-			players.get(state.getCurrPlayer()).removeFromHand(pieceType);
+			state.getPlayersHand(state.getCurrPlayer()).removeFromHand(pieceType);
 		}
 		
 		

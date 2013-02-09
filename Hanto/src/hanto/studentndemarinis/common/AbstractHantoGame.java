@@ -51,6 +51,8 @@ public abstract class AbstractHantoGame implements HantoGame {
 	 * @return true if a piece exists on the board
 	 * @param c coordinate to check for a piece
 	 * 
+	 * TODO:  Move this to the test harness?
+	 * 
 	 * NOTE:  this name makes sense to me.  
 	 * I don't understand how the suggestions in
 	 * CodePro's audit rule could make more sense here.   
@@ -62,6 +64,9 @@ public abstract class AbstractHantoGame implements HantoGame {
 
 	/**
 	 * Add a coordinate to the board
+	 * 
+	 * TODO:  Move this to the test harness
+	 * 
 	 * @param color color of new piece
 	 * @param type type of new piece
 	 * @param c location of new piece
