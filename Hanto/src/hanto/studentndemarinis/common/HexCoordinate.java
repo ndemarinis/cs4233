@@ -12,8 +12,10 @@ package hanto.studentndemarinis.common;
 import hanto.util.HantoCoordinate;
 
 /**
- * This class provides the implementation for 
- * Hanto's Hexagonal coordinates
+ * This class provides an internal implementation
+ * for representing HantoCoordinates on a Hexagonal
+ * board.  
+ *   
  * @author ndemarinis
  * @version Jan 21, 2013
  *
@@ -33,15 +35,26 @@ public class HexCoordinate implements HantoCoordinate {
 	}
 	
 	/**
-	 * Make a new HexCoordinate based on a generic
-	 * HantoCoordinate.  
+	 * Static method to create or extract HexCoordinates from
+	 * given HantoCoordinates.  
 	 * 
-	 * @param c The HantoCoordinate to turn into a HexCoordinate
+	 * I had a constructor for this, but after seeing Prof. Pollice's
+	 * "factory method" implementation in class, I wanted to try it instead.  
+	 * This is neat because it doesn't create a new object if the coordinate
+	 * is already a HexCoordinate. 
+	 *  
+	 * @param c Coordinate to check
+	 * @return a HexCoordinate representing the given coordinate.  If c is
+	 * a HantoCoordinate, a HexCoordinate will be made with its coordinates.  
+	 * If c is a HexCoordinate, it will be returned unchanged.  
+	 * For any other inputs, this function returns null.  
 	 */
-	public HexCoordinate(HantoCoordinate c)
+	public static HexCoordinate extractHexCoordinate(HantoCoordinate c)
 	{
-		x = c.getX();
-		y = c.getY();
+		return (c == null) 					  ?                                  null :
+			   (c instanceof HexCoordinate)   ?                    (HexCoordinate)(c) :
+			   (c instanceof HantoCoordinate) ? new HexCoordinate(c.getX(), c.getY()) :
+				   			                                                      null;
 	}
 	
 	/**

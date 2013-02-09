@@ -10,7 +10,6 @@
 package hanto.studentndemarinis.common;
 
 import hanto.common.HantoException;
-import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.MoveResult;
 
@@ -27,14 +26,14 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, 
-			HantoCoordinate from, HantoCoordinate to) throws HantoException 
+			HexCoordinate from, HexCoordinate to) throws HantoException 
 	{
 		verifySourceAndDestinationCoords(from, to);
 		verifyMoveIsLegal(from, to);
 	}
 	
 	@Override
-	public void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to)
+	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to)
 	{
 		// Remove the old piece from the board (if we haven't failed yet)
 		if(from != null) {
@@ -46,7 +45,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	}
 	
 	@Override
-	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
+	public void doPostMoveChecks(HexCoordinate to) throws HantoException {
 		verifyBoardIsContiguous();
 	}
 
@@ -61,7 +60,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 * @param to Destination coordinate
 	 * @throws HantoException if either of these conditions have been violated
 	 */
-	protected void verifySourceAndDestinationCoords(HantoCoordinate from, HantoCoordinate to) 
+	protected void verifySourceAndDestinationCoords(HexCoordinate from, HexCoordinate to) 
 			throws HantoException
 	{
 		// If provided, a source piece must exist on the board 
@@ -87,7 +86,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 * @param to Destination coordinate of move to verify
 	 * @throws HantoException if any of these conditions have been violated
 	 */
-	protected void verifyMoveIsLegal(HantoCoordinate from, HantoCoordinate to) 
+	protected void verifyMoveIsLegal(HexCoordinate from, HexCoordinate to) 
 			throws HantoException
 	{
 		// Verify the piece to be moved is owned by the current player  

@@ -14,7 +14,7 @@ import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
-import hanto.util.HantoCoordinate;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
@@ -50,7 +50,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 * leaving the board in an illegal state
 	 */
 	@Override
-	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from, HantoCoordinate to) 
+	public void doPreMoveChecks(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
 			throws HantoException {
 		super.doPreMoveChecks(piece, from, to);
 
@@ -71,7 +71,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 * leaving the board in an illegal state
 	 */
 	@Override
-	public void doPostMoveChecks(HantoCoordinate to) throws HantoException {
+	public void doPostMoveChecks(HexCoordinate to) throws HantoException {
 		super.doPostMoveChecks(to);
 	}
 

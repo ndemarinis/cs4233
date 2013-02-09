@@ -10,7 +10,6 @@
 package hanto.studentndemarinis.common;
 
 import hanto.common.HantoException;
-import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.MoveResult;
 
@@ -32,7 +31,7 @@ public interface HantoRuleSet {
 	 * @param to Destination coordinate of piece after the move
 	 * @throws HantoException if proposed move violates a rule.  
 	 */
-	public void doPreMoveChecks(HantoPieceType piece, HantoCoordinate from, HantoCoordinate to) 
+	public void doPreMoveChecks(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
 			throws HantoException;
 	
 	/**
@@ -44,7 +43,7 @@ public interface HantoRuleSet {
 	 * @param from Source coordinate of the piece, null if piece is not on the board
 	 * @param to Destination coordinate of the piece
 	 */
-	public void actuallyMakeMove(HantoPieceType type, HantoCoordinate from, HantoCoordinate to) 
+	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
 			throws HantoException;
 	
 	/**
@@ -53,7 +52,7 @@ public interface HantoRuleSet {
 	 * @param to Destination coordinate of the piece after the move
 	 * @throws HantoException if the proposed move violates a rule
 	 */
-	public void doPostMoveChecks(HantoCoordinate to) throws HantoException;
+	public void doPostMoveChecks(HexCoordinate to) throws HantoException;
 	
 	/**
 	 * Check conditions to determine if the game needs to end.  This is used for

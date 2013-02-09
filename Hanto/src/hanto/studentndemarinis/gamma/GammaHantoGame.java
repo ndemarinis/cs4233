@@ -12,8 +12,8 @@ package hanto.studentndemarinis.gamma;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
-import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
@@ -77,6 +77,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
+		HexCoordinate src = HexCoordinate.extractHexCoordinate(from);
+		HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
 		
 		// Verify the game is not over
 		if(state.isGameOver()) {
@@ -84,16 +86,16 @@ public class GammaHantoGame extends AbstractHantoGame {
 		}
 		
 		// Verify the source piece is valid, if provided.  
-		rules.doPreMoveChecks(pieceType, from, to);
+		rules.doPreMoveChecks(pieceType, src, dest);
 
 	
 		// Now that we know we can make the move, do it for realsies.  
-		rules.actuallyMakeMove(pieceType, from, to);
+		rules.actuallyMakeMove(pieceType, src, dest);
 		
 		// Make sure that move we just did was valid
 		// (We're assuming that just throwing an exception is okay here,
 		// the incorrect move is applied and NOT changed for now.)
-		rules.doPostMoveChecks(to);
+		rules.doPostMoveChecks(dest);
 		
 		
 		// If this move involved placing a new piece, remove it from the player's hand
