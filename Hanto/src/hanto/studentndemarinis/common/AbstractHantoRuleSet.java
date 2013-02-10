@@ -135,7 +135,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		
 		// If this is the first move, we need a piece at the origin
 		if(state.numMoves == 0 && 
-				to.getX() != 0 && to.getY() != 0) {
+				(to.getX() != 0 || to.getY() != 0)) {
 			throw new HantoException("Illegal move:  First piece must be placed " +
 					"at origin!");
 		}
