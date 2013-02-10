@@ -58,6 +58,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	{
 		super.doPreMoveChecks(piece, from, to);
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
+		verifyPieceCanMove(piece, from, to);
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	{
 		verifyBoardIsContiguous();
 	}
-
+	
 	/**
 	 * Evaluate whether the game needs to end based on the board configuration.  
 	 * Intended to be called after each move to determine if a win has occurred.  
@@ -92,6 +93,8 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 		
 		return ret;
 	}
+	
+	/* ******************** RULE METHODS START HERE **************************/
 	
 	/**
 	 * Ensure that a butterfly must be placed by the fourth term,
@@ -114,6 +117,22 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 					"Butterfly must be placed by the foruth turn!");
 		}
 	}
+
+	protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
+			throws HantoException
+	{
+		if(from != null && piece != HantoPieceType.BUTTERFLY) {
+			throw new HantoException("Illegal move:  " +
+					"Movement is only supported by butterflies in GammaHanto!");
+		}
+		
+		if(from != null && 
+				piece == HantoPieceType.BUTTERFLY && !from.isAdjacentTo(to)) {
+			throw new HantoException("Illegal move:  " +
+					"Butterflies can only move one hex!");
+		}
+	}
+	
 	
 	/**
 	 * Give result ending the game in a draw after 10 moves.  
@@ -125,7 +144,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 		return (state.getNumMoves() != MAX_MOVES) ?
 				MoveResult.OK : MoveResult.DRAW;
 	}
-	
+
 	/**
 	 * Check if a player has won by surrounding their opponent's
 	 * butterfly.  If both butterflies are surrounded, it's a DRAW.  
