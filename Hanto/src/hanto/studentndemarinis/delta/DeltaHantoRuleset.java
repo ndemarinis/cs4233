@@ -137,7 +137,7 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		boolean ret = (type == null && from == null && to == null);
 		
 		// Record if the player resigned so it can affect the move result
-		// I don't know how kosher it is for the rules to modify the state, 
+		// I don't know how good a practice it is for the rules to modify the state, 
 		// but I'm not sure if there's a better way to do it (aside from 
 		// overriding most of my abstract rules).  
 		if(ret){

@@ -203,12 +203,13 @@ public class HantoBoard {
 	 * @param from Source coordinate
 	 * @param to Destination coordinate
 	 * @return true if piece can slide from from to to, false otherwise
+	 * @throws HantoException if run with coordinates with distance > 1
 	 */
 	public boolean canSlideTo(HexCoordinate from, HexCoordinate to) throws HantoException
 	{
-		Collection<HexCoordinate> srcNeighbors; 
-		Collection<HexCoordinate> destNeighbors; 
-		Collection<HexCoordinate> commonNeighbors;
+		final Collection<HexCoordinate> srcNeighbors; 
+		final Collection<HexCoordinate> destNeighbors; 
+		final Collection<HexCoordinate> commonNeighbors;
 		
 		if(!from.isAdjacentTo(to)) {
 			throw new HantoException("Sliding for distances of more than " +
