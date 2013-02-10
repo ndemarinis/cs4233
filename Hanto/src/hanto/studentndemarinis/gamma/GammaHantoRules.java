@@ -69,7 +69,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	@Override
 	public void doPostMoveChecks(HexCoordinate to) throws HantoException 
 	{
-		super.doPostMoveChecks(to);
+		verifyBoardIsContiguous();
 	}
 
 	/**
@@ -86,6 +86,9 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 		if(ret == MoveResult.OK) {
 			ret = endInDrawAfter10Moves();
 		}
+		
+		// Set the gameOver flag based on the result
+		determineIfGameHasEnded(ret);
 		
 		return ret;
 	}

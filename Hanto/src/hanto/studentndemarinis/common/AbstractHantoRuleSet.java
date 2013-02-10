@@ -33,8 +33,13 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	}
 	
 	@Override
-	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to)
+	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) throws HantoException
 	{
+		// If this move involved placing a new piece, remove it from the player's hand
+		if(from == null) {
+			state.getPlayersHand(state.getCurrPlayer()).removeFromHand(type);
+		}
+		
 		// Remove the old piece from the board (if we haven't failed yet)
 		if(from != null) {
 			state.getBoard().remove(from);
@@ -123,5 +128,15 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		if(!state.board.isBoardContiguous()) {
 			throw new HantoException("Illegal move:  pieces must retain a contiguous group!");
 		}
+	}
+	
+	/**
+	 * Set whether or not the game has ended based on the current move result
+	 * @param res Result to determine game's ending state
+	 */
+	protected void determineIfGameHasEnded(MoveResult res)
+	{
+		state.setGameOver(res == MoveResult.DRAW || 
+				res == MoveResult.BLUE_WINS || res == MoveResult.RED_WINS);
 	}
 }

@@ -21,7 +21,7 @@ import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 /**
- * GammaHanto - Extended hanto implementation
+ * GammaHanto - Extended Hanto implementation
  * supporting Butterflies, Sparrows, and movement 
  * of pieces.  Ends after 10 turns or when butterfly 
  * is surrounded.  
@@ -91,21 +91,11 @@ public class GammaHantoGame extends AbstractHantoGame {
 		// the incorrect move is applied and NOT changed for now.)
 		rules.doPostMoveChecks(dest);
 		
-		
-		// If this move involved placing a new piece, remove it from the player's hand
-		if(from == null) {
-			state.getPlayersHand(state.getCurrPlayer()).removeFromHand(pieceType);
-		}
-		
-		
 		// Finish move
 		completeMove();	
 		
 		// Determine if this move ended the game
 		MoveResult ret = rules.evaluateMoveResult();
-		if(ret == MoveResult.DRAW || 
-				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS)
-			state.setGameOver(true);
 		
 		return ret;
 	}
