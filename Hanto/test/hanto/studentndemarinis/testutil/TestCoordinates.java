@@ -26,13 +26,13 @@ public class TestCoordinates {
 	public final static TestHantoCoordinate origin = new TestHantoCoordinate(0, 0);
 	
 	// The following coordinates are adjacent to (0, 0)
-	public final static  TestHantoCoordinate c00 = new TestHantoCoordinate(0, 0);
+	public final static TestHantoCoordinate c00 = new TestHantoCoordinate(0, 0);
 	public final static TestHantoCoordinate c01 = new TestHantoCoordinate(0, 1);
 	public final static TestHantoCoordinate c10 = new TestHantoCoordinate(1, 0);
 	public final static TestHantoCoordinate c1_1 = new TestHantoCoordinate(1, -1);
-	public final static TestHantoCoordinate c0_1 = new TestHantoCoordinate(0, 1);
+	public final static TestHantoCoordinate c0_1 = new TestHantoCoordinate(0, -1);
 	public final static TestHantoCoordinate c_10 = new TestHantoCoordinate(1, 0);
-	public final static TestHantoCoordinate c_11 = new TestHantoCoordinate(1, 1);
+	public final static TestHantoCoordinate c_11 = new TestHantoCoordinate(-1, 1);
 	
 	
 	public final static TestHantoCoordinate c11 = new TestHantoCoordinate(1, 1);
