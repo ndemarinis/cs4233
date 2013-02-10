@@ -45,6 +45,10 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		// Since blue always moves first, I'm not sure how we could possibly
 		// violate the rules to throw an exception here.  
 	}
+	
+	public void setupGame() throws HantoException {
+		// This is a stub for maintaining backwards compatibility.  
+	}
 
 	@Override
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,

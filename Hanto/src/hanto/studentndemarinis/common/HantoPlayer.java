@@ -22,17 +22,21 @@ import java.util.Map;
 public class HantoPlayer {
 	
 	// Map representing number of pieces of each type available for play
-	private final Map<HantoPieceType,Integer> hand = new HashMap<HantoPieceType, Integer>();
+	private final Map<HantoPieceType,Integer> hand;
 	
 	/**
 	 * This class provides an abstraction for each player in GammaHanto.  
 	 * It maintains the types and numbers of pieces available for play.
+	 * 
+	 * @param hand Map of pieces to the number of which the player has
+	 * available to use
+	 * 
 	 */
-	public HantoPlayer(Map<HantoPieceType,Integer> hand) throws HantoException
+	public HantoPlayer(Map<HantoPieceType,Integer> hand)
 	{
-		if(hand == null) {
-			throw new HantoException("Player must be initialized with a hand!");
-		} else {
+		this.hand = new HashMap<HantoPieceType, Integer>();
+		
+		if(hand != null) {
 			this.hand.putAll(hand);
 		}
 	}
@@ -51,6 +55,20 @@ public class HantoPlayer {
 		} else {
 			throw new HantoException("Illegal move:  " +
 				 "Current player has no pieces of type " + type + " to play!");
+		}
+	}
+	
+	/**
+	 * Sets a player's hand, overwriting its previous hand.  
+	 * @param hand Map of pieces to counts indicating how many of each the player can use, 
+	 * setting this to null will clear the player's hand.  
+	 */
+	public void setHand(Map<HantoPieceType, Integer> hand)
+	{
+		this.hand.clear();
+		
+		if(hand != null) {
+			this.hand.putAll(hand);
 		}
 	}
 

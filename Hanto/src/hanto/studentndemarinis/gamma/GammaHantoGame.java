@@ -49,34 +49,26 @@ public class GammaHantoGame extends AbstractHantoGame {
 	private static final int MAX_BUTTERFLIES = 1;
 	private static final int MAX_SPARROWS = 5;
 	
-	private static final Map<HantoPieceType,Integer> startingHand = 
-			new HashMap<HantoPieceType,Integer>() 
-			{{ put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
-			   put(HantoPieceType.SPARROW, MAX_SPARROWS); }};
+	// Representation for pieces given to a player on initialization
+	// This is controlled by the factory method getStartingHand()
+	private static Map<HantoPieceType,Integer> startingHand = null;
 	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
 	public GammaHantoGame() throws HantoException {
-		this.initialize(HantoPlayerColor.BLUE); // By default, starting player is blue
+		initialize(HantoPlayerColor.BLUE); // By default, starting player is blue
+		setupGame();
 	}
 	
-	
-	// NOTE:  CodePro throws a warning here about the missing exception.  
-	// 	While it's not technically necessary, I'm leaving it since it's in
-	// the interface.  
-	@Override
-	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
+	public void setupGame() throws HantoException {	
+		state.setNumMoves(0);
+		state.setGameOver(false);
 		
-		final HantoPlayer redPlayer = new HantoPlayer(startingHand);
-		final HantoPlayer bluePlayer = new HantoPlayer(startingHand);
+		state.setPlayersHand(HantoPlayerColor.BLUE, getStartingHand());
+		state.setPlayersHand(HantoPlayerColor.RED, getStartingHand());
 		
-		state = new HantoGameState(firstPlayer, redPlayer, bluePlayer);
 		rules = new GammaHantoRules(state);
-		
-		// Based on the specification, red can move first even though it's
-		// technically not in the rules if we initialize the board that way,
-		// therefore, I don't see how we can be breaking a rule here.  
 	}
 
 	@Override
@@ -107,13 +99,27 @@ public class GammaHantoGame extends AbstractHantoGame {
 		// Finish move
 		completeMove();	
 		
-		// Determine if this move ended the game
-		final MoveResult ret = rules.evaluateMoveResult();
-		
-		
-		return ret;
+		// Return the result of the move
+		return rules.evaluateMoveResult();
 	}
 	
+	/**
+	 * "Factory method" for creating the hand with which each
+	 * player starts.  If the hand has not already been setup, 
+	 * this method creates it.  
+	 * 
+	 * @return the player's initial hand
+	 */
+	protected static Map<HantoPieceType,Integer> getStartingHand()
+	{
+		if(startingHand == null){
+			startingHand = new HashMap<HantoPieceType, Integer>();
+			startingHand.put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
+			startingHand.put(HantoPieceType.SPARROW, MAX_SPARROWS);
+		}
+		
+		return startingHand;
+	}
 
 	
 	// TODO:  When we know more about the board, I can write

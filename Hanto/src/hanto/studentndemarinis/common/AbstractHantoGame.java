@@ -32,12 +32,22 @@ public abstract class AbstractHantoGame implements HantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		state = new HantoGameState(firstPlayer);
+		setupGame();
 	}
 	
 	@Override
 	public abstract MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException;
 
+	
+	/**
+	 * Game-specific method for performing any necessary setup tasks,
+	 * called by initialize().    
+	 * @throws HantoException if any errors occur during the setup.  
+	 */
+	public abstract void setupGame() throws HantoException;
+	
+	
 	/**
 	 * Return a string representing the current state of the board,
 	 * empty string if the board is empty.  

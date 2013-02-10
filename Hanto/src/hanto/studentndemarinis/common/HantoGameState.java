@@ -9,6 +9,10 @@
  */
 package hanto.studentndemarinis.common;
 
+import java.util.Map;
+
+import hanto.common.HantoException;
+import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 /**
@@ -20,9 +24,9 @@ import hanto.util.HantoPlayerColor;
  */
 public class HantoGameState {
 
-	int numMoves = 0; // Total number of moves elapsed in the game so far
+	int numMoves; // Total number of moves elapsed in the game so far
 	HantoPlayerColor currPlayer; // Player that making the current/next move
-	boolean gameOver = false; // Whether or not the game has ended
+	boolean gameOver; // Whether or not the game has ended
 	
 	// Collection of pieces representing the board for now
 	HantoBoard board;
@@ -33,21 +37,26 @@ public class HantoGameState {
 	/**
 	 * Construct a state object for a HantoGame
 	 * 
+	 * @param startingPlayer Color of player to start
+	 * @param startingHand Map of Piece->Count indicating how many of 
+	 * each piece the player has available for play.  
 	 */
 	public HantoGameState(HantoPlayerColor startingPlayer, 
-			HantoPlayer redPlayer, HantoPlayer bluePlayer) {
+			Map<HantoPieceType, Integer> startingHand) {
 		currPlayer = startingPlayer;
 		board = new HantoBoard();
 		
-		this.redPlayer = redPlayer;
-		this.bluePlayer = bluePlayer;
+		redPlayer = new HantoPlayer(startingHand);
+		bluePlayer = new HantoPlayer(startingHand);
 	}
 	
 	/**
 	 * Construct a state object for a HantoGame
+	 * 
+	 * @param startingPlayer Color of player to start
 	 */
 	public HantoGameState(HantoPlayerColor startingPlayer) {
-		this(startingPlayer, null, null);
+		this(startingPlayer, null);
 	}
 	
 	/**
@@ -85,6 +94,19 @@ public class HantoGameState {
 	 */
 	public HantoPlayer getPlayersHand(HantoPlayerColor p) {
 		return (p == HantoPlayerColor.RED) ? redPlayer : bluePlayer; 
+	}
+	
+	/**
+	 * Set the hand information for a given player
+	 * @param p The desired player
+	 * @param hand The hand to give the player
+	 */
+	public void setPlayersHand(HantoPlayerColor p, Map<HantoPieceType, Integer> hand) {
+		if(p == HantoPlayerColor.RED) {
+			redPlayer.setHand(hand);
+		} else {
+			bluePlayer.setHand(hand);
+		}
 	}
 
 	/**
