@@ -36,7 +36,7 @@ public class HantoBoard {
 	// Maximum number of possible neighbors on a hex grid
 	private final int MAX_NEIGHBORS = 6;
 	
-	private Map<HexCoordinate, HantoPiece> pieces;
+	private final Map<HexCoordinate, HantoPiece> pieces;
 	
 	public HantoBoard(){
 		pieces = new HashMap<HexCoordinate, HantoPiece>();
@@ -153,7 +153,8 @@ public class HantoBoard {
 		final Set<HantoPiece> visited = new HashSet<HantoPiece>();
 
 		// Add the starting node.
-		HantoPiece p = pieces.values().iterator().next();
+		final HantoPiece p = pieces.values().iterator().next();
+		
 		q.add(p);
 		visited.add(p);
 

@@ -12,7 +12,10 @@ package hanto.studentndemarinis.common;
 import hanto.util.HantoPlayerColor;
 
 /**
+ * Encapsulation of stat information for a HantoGame.  
+ * 
  * @author ndemarinis
+ * @version Feb 7, 2013
  *
  */
 public class HantoGameState {
@@ -33,7 +36,7 @@ public class HantoGameState {
 	 */
 	public HantoGameState(HantoPlayerColor startingPlayer, 
 			HantoPlayer redPlayer, HantoPlayer bluePlayer) {
-		this.currPlayer = startingPlayer;
+		currPlayer = startingPlayer;
 		board = new HantoBoard();
 		
 		this.redPlayer = redPlayer;

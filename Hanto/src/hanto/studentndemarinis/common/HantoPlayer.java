@@ -9,34 +9,32 @@
  */
 package hanto.studentndemarinis.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import hanto.common.HantoException;
 import hanto.util.HantoPieceType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ndemarinis
  * @version Jan 23, 2012
  */
 public class HantoPlayer {
-
-	private final int MAX_BUTTERFLIES = 1;
-	private final int MAX_SPARROWS = 5;
 	
-	private final Map<HantoPieceType,Integer> pieces = new HashMap<HantoPieceType,Integer>();
+	// Map representing number of pieces of each type available for play
+	private final Map<HantoPieceType,Integer> hand = new HashMap<HantoPieceType, Integer>();
 	
 	/**
 	 * This class provides an abstraction for each player in GammaHanto.  
 	 * It maintains the types and numbers of pieces available for play.
-	 * 
-	 * This is all completely hard-coded now because it's supposed
-	 * to be the simplest thing that works.  
-	 * It' s making me cringe, but I am TRYING to embrace TDD.  
 	 */
-	public HantoPlayer() {
-		pieces.put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
-		pieces.put(HantoPieceType.SPARROW, MAX_SPARROWS);
+	public HantoPlayer(Map<HantoPieceType,Integer> hand) throws HantoException
+	{
+		if(hand == null) {
+			throw new HantoException("Player must be initialized with a hand!");
+		} else {
+			this.hand.putAll(hand);
+		}
 	}
 	
 	/**
@@ -46,13 +44,13 @@ public class HantoPlayer {
 	 */
 	public void removeFromHand(HantoPieceType type) throws HantoException
 	{
-		Integer remaining = pieces.get(type);
+		Integer remaining = hand.get(type);
 		
 		if(remaining != null && remaining > 0) {
-			pieces.put(type, --remaining);
+			hand.put(type, --remaining);
 		} else {
 			throw new HantoException("Illegal move:  " +
-					"Current player has no pieces to play of specified type!");
+				 "Current player has no pieces of type " + type + " to play!");
 		}
 	}
 
