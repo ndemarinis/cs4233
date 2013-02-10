@@ -22,6 +22,8 @@ import hanto.testutil.TestHantoGame;
 import hanto.util.HantoGameID;
 import hanto.util.MoveResult;
 
+import static hanto.studentndemarinis.testutil.TestCoordinates.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,11 +36,7 @@ import org.junit.Test;
 public class TestGammaHanto {
 
 	private HantoGame game;
-	
-	private final HexCoordinate origin = new HexCoordinate(0, 0);
-	private final HexCoordinate adjToOrigin10 = new HexCoordinate(1, 0);
-	private final HexCoordinate adjToOrigin01 = new HexCoordinate(0, 1);
-	private final HexCoordinate wayOffOrigin = new HexCoordinate(3, 5);
+
 	
 	/**
 	 * @throws java.lang.Exception

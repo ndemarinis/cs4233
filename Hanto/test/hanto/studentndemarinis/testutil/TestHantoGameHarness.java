@@ -7,7 +7,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package hanto.studentndemarinis.common;
+package hanto.studentndemarinis.testutil;
 
 import hanto.testutil.TestHantoGame;
 import hanto.util.HantoCoordinate;

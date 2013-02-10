@@ -14,7 +14,7 @@ import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.alpha.AlphaHantoGame;
 import hanto.studentndemarinis.common.HexCoordinate;
-import hanto.studentndemarinis.common.TestHantoGameHarness;
+import hanto.studentndemarinis.testutil.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;

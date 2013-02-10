@@ -12,7 +12,7 @@ package hanto.studentndemarinis.alpha;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
-import hanto.studentndemarinis.common.TestHantoGameHarness;
+import hanto.studentndemarinis.testutil.TestHantoGameHarness;
 import hanto.testutil.HexPiece;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;

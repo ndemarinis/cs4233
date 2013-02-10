@@ -21,6 +21,8 @@ import static hanto.util.HantoPieceType.*;
 import static hanto.util.HantoPlayerColor.*;
 import static hanto.util.MoveResult.*;
 
+import static hanto.studentndemarinis.testutil.TestCoordinates.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,23 +35,6 @@ import org.junit.Test;
 public class TestDeltaHanto {
 
 	private HantoGame game;
-	private HantoFactory factory = HantoFactory.getInstance();
-	
-	private TestHantoCoordinate origin = new TestHantoCoordinate(0, 0);
-	
-	// The following coordinates are adjacent to (0, 0)
-	private TestHantoCoordinate c00 = new TestHantoCoordinate(0, 0);
-	private TestHantoCoordinate c01 = new TestHantoCoordinate(0, 1);
-	private TestHantoCoordinate c10 = new TestHantoCoordinate(1, 0);
-	private TestHantoCoordinate c1_1 = new TestHantoCoordinate(1, -1);
-	private TestHantoCoordinate c0_1 = new TestHantoCoordinate(0, 1);
-	private TestHantoCoordinate c_10 = new TestHantoCoordinate(1, 0);
-	private TestHantoCoordinate c_11 = new TestHantoCoordinate(1, 1);
-	
-	
-	
-	private TestHantoCoordinate c11 = new TestHantoCoordinate(1, 1);
-	
 	
 	/**
 	 * Initialize DeltaHanto for testing
@@ -69,4 +54,11 @@ public class TestDeltaHanto {
 	public void canPlaceButterflyAtOrigin() throws HantoException {
 		game.makeMove(BUTTERFLY, null, origin);
 	}
+	
+	@Test(expected=HantoException.class)
+	public void cantPlaceFirstPieceAtNonOrigin() throws HantoException {
+		game.makeMove(BUTTERFLY, null, c10);
+	}
+	
+	
 }
