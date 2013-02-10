@@ -317,4 +317,10 @@ public class TestDeltaHanto {
 		game.makeMove(BUTTERFLY, c01, c_11);
 		game.makeMove(CRAB, c10, new TestHantoCoordinate(-1, 2));	
 	}
+	
+	@Test
+	public void blueResignsRedWins() throws HantoException
+	{
+		assertEquals(RED_WINS, game.makeMove(null, null, null));
+	}
 }

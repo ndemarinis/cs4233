@@ -15,11 +15,13 @@ import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 /**
  * Ruleset for Delta Hanto
  * @author ndemarinis
+ * @version Feb 9, 2013
  *
  */
 public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
@@ -45,11 +47,14 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 			HexCoordinate from, HexCoordinate to) throws HantoException {
 		
 		verifyGameIsNotOver();
-		verifySourceAndDestinationCoords(from, to);
-		verifyButterflyHasBeenPlacedByFourthTurn(piece);
-		verifyMoveIsLegal(from, to);
-		verifyPlayerCanMovePieces(from, to);
-		verifyPieceCanMoveToDest(piece, from, to);
+		
+		if(!playerHasResigned(piece, from, to)) {
+			verifySourceAndDestinationCoords(from, to);
+			verifyButterflyHasBeenPlacedByFourthTurn(piece);
+			verifyMoveIsLegal(from, to);
+			verifyPlayerCanMovePieces(from, to);
+			verifyPieceCanMoveToDest(piece, from, to);
+		}
 	}
 
 	/**
@@ -60,8 +65,17 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 */
 	@Override
 	public MoveResult evaluateMoveResult() throws HantoException {
-		MoveResult ret = winIfButterflyIsSurrounded();
 		
+		// If this player resigned, the opponent wins.  
+		// This result overrides all others
+		MoveResult ret = otherPlayerWinsIfThisPlayerResigned();
+		
+		// If this player didn't resign, check the other conditions
+		if(ret == MoveResult.OK) {
+			ret = winIfButterflyIsSurrounded();
+		}
+		
+		// Based on those conditions, set whether or not the game is over
 		determineIfGameHasEnded(ret);
 		
 		return ret;
@@ -108,6 +122,43 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 			throw new HantoException("Illegal move:  " +
 					"Players cannot move until their butterfly has been placed!");
 		}
+	}
+	
+	/**
+	 * 
+	 * @param type piece type for the move
+	 * @param from source coordinate
+	 * @param to destination coordinate
+	 * @return true if the player has resigned, false otherwise
+	 */
+	protected boolean playerHasResigned(HantoPieceType type, 
+			HexCoordinate from, HexCoordinate to)
+	{
+		boolean ret = (type == null && from == null && to == null);
+		
+		// Record if the player resigned so it can affect the move result
+		// I don't know how kosher it is for the rules to modify the state, 
+		// but I'm not sure if there's a better way to do it (aside from 
+		// overriding most of my abstract rules).  
+		if(ret){
+			state.setResignee(state.getCurrPlayer());
+		}
+
+		return ret;
+	}
+	
+	/**
+	 * Check whether or not this player has resigned and 
+	 * set the win condition appropriately.  
+	 *  
+	 * @return win for the opponent if the current player has resigned,
+	 * OK otherwise
+	 */
+	protected MoveResult otherPlayerWinsIfThisPlayerResigned() {
+		return (state.getResignee() != null) ? 
+				(state.getResignee() == HantoPlayerColor.BLUE) ?  
+						MoveResult.RED_WINS : MoveResult.BLUE_WINS : 
+				MoveResult.OK;
 	}
 
 }

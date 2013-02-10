@@ -47,18 +47,20 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
 			throws HantoException
 	{
-		// If this move involved placing a new piece, remove it from the player's hand
-		if(from == null) {
-			state.getPlayersHand(state.getCurrPlayer()).removeFromHand(type);
+		if(to != null) {
+			// If this move involved placing a new piece, remove it from the player's hand
+			if(from == null) {
+				state.getPlayersHand(state.getCurrPlayer()).removeFromHand(type);
+			}
+
+			// Remove the old piece from the board (if we haven't failed yet)
+			if(from != null) {
+				state.getBoard().remove(from);
+			}
+
+			// Finally, add the new piece to the board.  
+			state.getBoard().addPieceAt(new HantoPiece(state.getCurrPlayer(), type, to), to);
 		}
-		
-		// Remove the old piece from the board (if we haven't failed yet)
-		if(from != null) {
-			state.getBoard().remove(from);
-		}
-		
-		// Finally, add the new piece to the board.  
-		state.getBoard().addPieceAt(new HantoPiece(state.getCurrPlayer(), type, to), to);
 	}
 	
 	/**
@@ -68,7 +70,9 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 */
 	@Override
 	public void doPostMoveChecks(HexCoordinate to) throws HantoException {
-		verifyBoardIsContiguous();
+		if(to != null) {
+			verifyBoardIsContiguous();
+		}
 	}
 
 	/**

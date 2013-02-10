@@ -27,6 +27,10 @@ public class HantoGameState {
 	HantoPlayerColor currPlayer; // Player that making the current/next move
 	boolean gameOver; // Whether or not the game has ended
 	
+	// Whether or not the current player resigned
+	// This is kind of gross, but it's simple.  I like TDD.  =)
+	HantoPlayerColor resignee = null;
+	
 	// Collection of pieces representing the board for now
 	HantoBoard board;
 	
@@ -128,6 +132,20 @@ public class HantoGameState {
 	public void setGameOver(boolean gameOver)
 	{
 		this.gameOver = gameOver;
+	}
+
+	/**
+	 * @return the player that resigned
+	 */
+	public HantoPlayerColor getResignee() {
+		return resignee;
+	}
+
+	/**
+	 * @param resignee player that resigned
+	 */
+	public void setResignee(HantoPlayerColor resignee) {
+		this.resignee = resignee;
 	}
 
 }

@@ -64,7 +64,7 @@ public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame 
 
 		// Return the result of the move
 		return rules.evaluateMoveResult();
-			}
+	}
 
 	
 	/**
