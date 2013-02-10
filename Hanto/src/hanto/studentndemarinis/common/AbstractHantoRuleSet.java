@@ -24,6 +24,10 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	protected HantoGameState state;
 	
+	/**
+	 * Perform checks that must take place before a move.  
+	 * See HantoRuleSet for details
+	 */
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, 
 			HexCoordinate from, HexCoordinate to) throws HantoException 
@@ -33,6 +37,10 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		verifyMoveIsLegal(from, to);
 	}
 	
+	/**
+	 * Perform a move for real
+	 * See HantoRuleSet for details.  
+	 */
 	@Override
 	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) throws HantoException
 	{
@@ -50,11 +58,20 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		state.getBoard().addPieceAt(new HantoPiece(state.getCurrPlayer(), type, to), to);
 	}
 	
+	/**
+	 * Perform any checks that must take place after a move
+	 * @param to Destination coordinate
+	 * @throws HantoException if any of these rules have been violated
+	 */
 	@Override
 	public void doPostMoveChecks(HexCoordinate to) throws HantoException {
 		verifyBoardIsContiguous();
 	}
 
+	/**
+	 * Determine the result of a move based on the game's rules.  
+	 * Must be overridden by concrete realization.  
+	 */
 	public abstract MoveResult evaluateMoveResult() throws HantoException;
 
 	

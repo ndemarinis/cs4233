@@ -15,13 +15,8 @@ import java.util.Map;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
-import hanto.studentndemarinis.common.HantoPlayer;
-import hanto.studentndemarinis.common.HantoRuleSet;
-import hanto.studentndemarinis.common.HexCoordinate;
-import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
-import hanto.util.MoveResult;
 
 /**
  * GammaHanto - Extended Hanto implementation
@@ -57,7 +52,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 	// the interface.  
 	public GammaHantoGame() throws HantoException {	
 		state = new HantoGameState(HantoPlayerColor.BLUE);
-		rules = new GammaHantoRules(state);
+		rules = new GammaHantoRuleset(state);
 		
 		initialize(HantoPlayerColor.BLUE); // By default, starting player is blue
 		setupGame();

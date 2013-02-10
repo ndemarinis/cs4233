@@ -26,7 +26,7 @@ import hanto.util.MoveResult;
  * @version Jan 31, 2013
  *
  */
-public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSet {
+public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRuleSet {
 
 	// Number of moves before we MUST place a butterfly
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
@@ -39,7 +39,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	 * the game itself
 	 * @param state The HantoGame we'll be checking
 	 */
-	public GammaHantoRules(HantoGameState state) {
+	public GammaHantoRuleset(HantoGameState state) {
 		this.state = state;
 	}
 
@@ -118,6 +118,14 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 		}
 	}
 
+	/**
+	 * Verify that a move that requires moving a piece is legal.  
+	 * This ensures that only butterflies can move one hex.  
+	 * @param piece Piece being moved
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if this condition has been violated
+	 */
 	protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
 			throws HantoException
 	{
