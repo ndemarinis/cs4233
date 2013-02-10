@@ -9,6 +9,8 @@
  */
 package hanto.studentndemarinis.common;
 
+import hanto.common.HantoException;
+import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 /**

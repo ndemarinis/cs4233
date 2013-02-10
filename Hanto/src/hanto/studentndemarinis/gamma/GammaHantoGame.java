@@ -9,6 +9,9 @@
  */
 package hanto.studentndemarinis.gamma;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
@@ -42,6 +45,14 @@ public class GammaHantoGame extends AbstractHantoGame {
 
 	private HantoRuleSet rules;
 	
+	// Maximum piece counts for this game
+	private static final int MAX_BUTTERFLIES = 1;
+	private static final int MAX_SPARROWS = 5;
+	
+	private static final Map<HantoPieceType,Integer> startingHand = new HashMap<HantoPieceType,Integer>() 
+			{{ put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
+			   put(HantoPieceType.SPARROW, MAX_SPARROWS); }};
+	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
@@ -56,8 +67,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		
-		HantoPlayer redPlayer = new HantoPlayer();
-		HantoPlayer bluePlayer = new HantoPlayer();
+		HantoPlayer redPlayer = new HantoPlayer(startingHand);
+		HantoPlayer bluePlayer = new HantoPlayer(startingHand);
 		
 		state = new HantoGameState(firstPlayer, redPlayer, bluePlayer);
 		rules = new GammaHantoRules(state);
@@ -96,7 +107,6 @@ public class GammaHantoGame extends AbstractHantoGame {
 		if(from == null) {
 			state.getPlayersHand(state.getCurrPlayer()).removeFromHand(pieceType);
 		}
-		
 		
 		// Finish move
 		completeMove();	
