@@ -13,6 +13,8 @@ import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoRuleSet;
+import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.util.HantoPieceType;
 import hanto.util.MoveResult;
 
 /**
@@ -28,6 +30,15 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 */
 	public DeltaHantoRuleset(HantoGameState state) {
 		this.state = state;
+	}
+	
+	@Override
+	public void doPreMoveChecks(HantoPieceType piece, 
+			HexCoordinate from, HexCoordinate to) throws HantoException {
+		
+		verifyGameIsNotOver();
+		verifySourceAndDestinationCoords(from, to);
+		verifyMoveIsLegal(from, to);
 	}
 
 	@Override

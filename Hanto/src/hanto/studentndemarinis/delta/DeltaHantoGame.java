@@ -57,7 +57,6 @@ public class DeltaHantoGame extends AbstractHantoGame {
 		if(startingHand == null) {
 			startingHand = new HashMap<HantoPieceType, Integer>();
 			startingHand.put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
-			startingHand.put(HantoPieceType.SPARROW, MAX_BUTTERFLIES);
 		}
 		
 		return startingHand;
