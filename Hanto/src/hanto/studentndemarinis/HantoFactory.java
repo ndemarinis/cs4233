@@ -12,6 +12,7 @@ package hanto.studentndemarinis;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.alpha.AlphaHantoGame;
+import hanto.studentndemarinis.delta.DeltaHantoGame;
 import hanto.studentndemarinis.gamma.GammaHantoGame;
 import hanto.util.HantoGameID;
 
@@ -67,6 +68,10 @@ public class HantoFactory {
 		
 		case GAMMA_HANTO:
 			ret = new GammaHantoGame();
+			break;
+			
+		case DELTA_HANTO:
+			ret = new DeltaHantoGame();
 			break;
 			
 		default:
