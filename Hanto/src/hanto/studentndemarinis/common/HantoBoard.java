@@ -9,6 +9,7 @@
  */
 package hanto.studentndemarinis.common;
 
+import hanto.common.HantoException;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
@@ -80,6 +81,25 @@ public class HantoBoard {
 		{
 			if((p = pieces.get(n)) != null) {
 				res.add(p);
+			}
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * Get the empty neighbor coordinates of a specific coordinate
+	 * @param c Coordinate to find empty neighbors
+	 * @return Collection of neighbors, empty if none
+	 */
+	public Collection<HexCoordinate> getEmptyNeighborCoordinatesOf(HexCoordinate c)
+	{
+		final Collection<HexCoordinate> res = new Vector<HexCoordinate>();
+		
+		for(HexCoordinate n : c.getNeighboringCoordinates())
+		{
+			if(pieces.get(n) == null) {
+				res.add(n);
 			}
 		}
 		
@@ -176,6 +196,44 @@ public class HantoBoard {
 		return visited.size() == pieces.size();
 	}
 	
+	
+	/**
+	 * Determine if there is enough room for a piece to slide to its destination
+	 * Currently only supports sliding for distances of one
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @return true if piece can slide from from to to, false otherwise
+	 */
+	public boolean canSlideTo(HexCoordinate from, HexCoordinate to) throws HantoException
+	{
+		Collection<HexCoordinate> srcNeighbors; 
+		Collection<HexCoordinate> destNeighbors; 
+		Collection<HexCoordinate> commonNeighbors;
+		
+		if(!from.isAdjacentTo(to)) {
+			throw new HantoException("Sliding for distances of more than " +
+					"one space is currently unsupported!");
+		}
+		
+		// Find the empty spaces around the source and destination
+		srcNeighbors = getEmptyNeighborCoordinatesOf(from);
+		destNeighbors = getEmptyNeighborCoordinatesOf(to);
+		
+		commonNeighbors = new Vector<HexCoordinate>();
+		
+		// Take the intersection of the two sets
+		for(HexCoordinate c : srcNeighbors)
+		{
+			if(destNeighbors.contains(c)) {
+				commonNeighbors.add(c);
+			}
+		}
+		
+		// We need at least two open spaces to slide to a destion,
+		// one of those spaces IS the destination.  So, if we have
+		// at least one more common space, we can slide to the dest.  
+		return commonNeighbors.size() >= 1;
+	}
 	
 	/**
 	 * 

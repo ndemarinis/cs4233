@@ -257,7 +257,6 @@ public class TestDeltaHanto {
 	}
 	
 	@Test(expected=HantoException.class)
-	@Ignore
 	public void cantMoveButterflyWithoutRoomToSlide() throws HantoException
 	{
 		game.makeMove(BUTTERFLY, null, origin);

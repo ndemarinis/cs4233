@@ -48,7 +48,7 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		verifySourceAndDestinationCoords(from, to);
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
 		verifyMoveIsLegal(from, to);
-		verifyPlayerCanMovePieces(from);
+		verifyPlayerCanMovePieces(from, to);
 		verifyPieceCanMoveToDest(piece, from, to);
 	}
 
@@ -85,6 +85,12 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 			throw new HantoException("Illegal move:  " +
 					"Pieces of type " + piece + " can only move one hex!");
 		}
+		
+		if(from != null && (piece == HantoPieceType.BUTTERFLY || piece == HantoPieceType.CRAB) && 
+				!state.getBoard().canSlideTo(from, to)) {
+			throw new HantoException("Illegal move:  " +
+					"not enough space to slide to destination hex!");
+		}
 	}
 	
 	/**
@@ -94,7 +100,8 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 * @param from source coordinate
 	 * @throws HantoException if this condition has been violated
 	 */
-	protected void verifyPlayerCanMovePieces(HexCoordinate from) throws HantoException
+	protected void verifyPlayerCanMovePieces(HexCoordinate from, HexCoordinate to) 
+			throws HantoException
 	{
 		if(from != null && !state.getBoard().contains(state.getCurrPlayer(), 
 				HantoPieceType.BUTTERFLY)) {
