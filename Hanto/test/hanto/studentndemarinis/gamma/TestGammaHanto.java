@@ -155,7 +155,7 @@ public class TestGammaHanto {
 	@Test
 	public void gameShouldEndOnTenthMove() throws HantoException
 	{
-		((GammaHantoGame)(game)).setNumMoves(9); // Nine moves have completed, next is tenth.  
+		((GammaHantoGame)(game)).setNumMoves(19); // Nine moves have completed, next is tenth.  
 		MoveResult ret = game.makeMove(BUTTERFLY, null, origin);
 		
 		assertEquals(DRAW, ret);
@@ -235,7 +235,7 @@ public class TestGammaHanto {
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), RED, BUTTERFLY)};
 		testGame.initialize(RED, config);
 		
-		MoveResult ret = testGame.makeMove(SPARROW, origin, adjToOrigin01);
+		MoveResult ret = testGame.makeMove(BUTTERFLY, origin, adjToOrigin01);
 		assertEquals(OK, ret);
 	}
 	
