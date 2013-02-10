@@ -240,12 +240,11 @@ public class TestDeltaHanto {
 	}
 	
 	@Test(expected=HantoException.class)
-	@Ignore
 	public void cantMoveUntilPlacedButterflyBlue() throws HantoException
 	{
 		game.makeMove(SPARROW, null, origin);
 		game.makeMove(SPARROW, null,  c10);
-		game.makeMove(SPARROW, origin, c01);
+		game.makeMove(SPARROW, origin, c01); // Blue moves before placing butterfly
 	}
 	
 	@Test(expected=HantoException.class)
@@ -254,16 +253,21 @@ public class TestDeltaHanto {
 		game.makeMove(BUTTERFLY, null, origin);
 		game.makeMove(CRAB, null, c01);
 		game.makeMove(SPARROW, null, c10);
-		game.makeMove(CRAB, c01, c11);
+		game.makeMove(CRAB, c01, c11); // Should fail since butterfly hasn't been placed
 	}
 	
 	@Test(expected=HantoException.class)
+	@Ignore
 	public void cantMoveButterflyWithoutRoomToSlide() throws HantoException
 	{
 		game.makeMove(BUTTERFLY, null, origin);
+	
+		// Box in the butterfly
 		game.makeMove(CRAB, null, c0_1);
-		game.makeMove(SPARROW, null, c_11);
+		game.makeMove(SPARROW, null, c_11); 
 		game.makeMove(BUTTERFLY, null, new TestHantoCoordinate(1, -1));
+		
+		// Now try to move it
 		game.makeMove(BUTTERFLY, origin, c_10);
 	}
 	
@@ -279,6 +283,20 @@ public class TestDeltaHanto {
 			
 		assertEquals(OK, game.makeMove(SPARROW, new TestHantoCoordinate(0, 2), 
 				new TestHantoCoordinate(0, -4)));
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantFlyToHexAndBreakGrouping() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c0_1);
+		game.makeMove(CRAB, null, c01);
+		game.makeMove(SPARROW, null, new TestHantoCoordinate(0, -2));
+		game.makeMove(SPARROW, null, new TestHantoCoordinate(0, 2));
+		game.makeMove(CRAB, null, new TestHantoCoordinate(0, -3));
+			
+		assertEquals(OK, game.makeMove(SPARROW, new TestHantoCoordinate(0, 2), 
+				new TestHantoCoordinate(-2, 1)));
 	}
 	
 	@Test
