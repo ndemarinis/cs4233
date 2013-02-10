@@ -155,15 +155,13 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	{
 		MoveResult ret = MoveResult.OK;
 		
-		// Do the simplest thing that works and assume we only have one
-		// red and blue butterfly
-		
-		// TODO:  fix for both butterflies surrounded
 		for(HantoPiece p : state.getBoard().getPiecesOfType(HantoPieceType.BUTTERFLY))
 		{
 			if(state.getBoard().isSurrounded(p)) {
-				ret = (p.getColor() == HantoPlayerColor.BLUE) ? 
-						MoveResult.RED_WINS : MoveResult.BLUE_WINS;
+				ret = (ret != MoveResult.OK) ? // If we have already found a surrounded butterfly
+						MoveResult.DRAW :      // It's a draw
+							((p.getColor() == HantoPlayerColor.BLUE) ?      
+									MoveResult.RED_WINS : MoveResult.BLUE_WINS); 
 			}
 		}
 		
