@@ -15,9 +15,11 @@ import static hanto.util.HantoPlayerColor.*;
 import static hanto.util.MoveResult.*;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.testutil.HexPiece;
 import hanto.testutil.TestHantoGame;
+import hanto.util.HantoGameID;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
@@ -43,7 +45,7 @@ public class TestGammaHanto {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		game = new GammaHantoGame();
+		game = HantoFactory.getInstance().makeHantoGame(HantoGameID.GAMMA_HANTO);
 	}
 
 	@Test
