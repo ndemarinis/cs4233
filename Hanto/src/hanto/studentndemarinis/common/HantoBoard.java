@@ -207,6 +207,7 @@ public class HantoBoard {
 	/**
 	 * Return a string representing the current state of the board,
 	 * empty string if the board is empty.  
+	 * @return string representing the board
 	 */
 	public String getPrintableBoard() {
 		String ret = "";

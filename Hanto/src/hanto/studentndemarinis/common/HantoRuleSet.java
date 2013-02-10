@@ -42,6 +42,7 @@ public interface HantoRuleSet {
 	 * @param type Piece type to place at the destination
 	 * @param from Source coordinate of the piece, null if piece is not on the board
 	 * @param to Destination coordinate of the piece
+	 * @throws HantoException if an error occurs during the move
 	 */
 	void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
 			throws HantoException;

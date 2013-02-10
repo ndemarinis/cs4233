@@ -89,6 +89,9 @@ public class HexCoordinate implements HantoCoordinate {
 			   (other.getX() == x - 1 && other.getY() == y + 1);
 	}
 	
+	/**
+	 * @return array of coordiantes that are adjacent to this one
+	 */
 	public HexCoordinate[] getNeighboringCoordinates()
 	{		
 		final HexCoordinate[] coords = {new HexCoordinate(    x, y + 1), 

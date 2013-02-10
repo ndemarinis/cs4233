@@ -58,12 +58,12 @@ public class GammaHantoGame extends AbstractHantoGame {
 		setupGame();
 	}
 	
-	public void setupGame() throws HantoException {	
+	public void setupGame() {	
 		state.setNumMoves(0);
 		state.setGameOver(false);
 		
-		state.setPlayersHand(HantoPlayerColor.BLUE, getStartingHand());
-		state.setPlayersHand(HantoPlayerColor.RED, getStartingHand());
+		state.setPlayersHand(HantoPlayerColor.BLUE, makeStartingHand());
+		state.setPlayersHand(HantoPlayerColor.RED, makeStartingHand());
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 	 * 
 	 * @return the player's initial hand
 	 */
-	protected static Map<HantoPieceType,Integer> getStartingHand()
+	protected static Map<HantoPieceType,Integer> makeStartingHand()
 	{
 		if(startingHand == null){
 			startingHand = new HashMap<HantoPieceType, Integer>();

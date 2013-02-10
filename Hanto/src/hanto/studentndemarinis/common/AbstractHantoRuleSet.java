@@ -42,7 +42,8 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 * See HantoRuleSet for details.  
 	 */
 	@Override
-	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) throws HantoException
+	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
+			throws HantoException
 	{
 		// If this move involved placing a new piece, remove it from the player's hand
 		if(from == null) {

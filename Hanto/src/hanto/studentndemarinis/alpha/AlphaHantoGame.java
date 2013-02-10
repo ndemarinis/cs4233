@@ -46,7 +46,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		// violate the rules to throw an exception here.  
 	}
 	
-	public void setupGame() throws HantoException {
+	public void setupGame(){
 		// This is a stub for maintaining backwards compatibility.  
 	}
 

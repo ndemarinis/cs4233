@@ -69,10 +69,9 @@ public abstract class AbstractHantoGame implements HantoGame {
 	
 	/**
 	 * Game-specific method for performing any necessary setup tasks,
-	 * called by initialize().    
-	 * @throws HantoException if any errors occur during the setup.  
+	 * called by initialize().     
 	 */
-	public abstract void setupGame() throws HantoException;
+	public abstract void setupGame();
 	
 	
 	/**

@@ -32,7 +32,7 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
 	// Max number of moves before ending in a draw
-	private final int MAX_MOVES = 10*2; // Two turns/move * 10 turns max, as specified
+	private final int MAX_MOVES = 10 * 2; // Two turns/move * 10 turns max, as specified
 	
 	/**
 	 * Make a new set of GammaHanto's rules, given

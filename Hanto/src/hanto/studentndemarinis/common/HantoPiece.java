@@ -31,7 +31,7 @@ public class HantoPiece {
 	 * 
 	 * @param color The color of the player placing the piece
 	 * @param type The type of piece as played
-	 * @param loc The coordinate of the piece on the hex grid
+	 * @param coordinate The coordinate of the piece on the hex grid
 	 */
 	public HantoPiece(HantoPlayerColor color, HantoPieceType type, 
 			HexCoordinate coordinate) 
@@ -80,6 +80,22 @@ public class HantoPiece {
 	public int hashCode()
 	{
 		return this.toString().hashCode();
+	}
+	
+
+	public boolean equals(Object o)
+	{
+		HantoPiece other = null;
+		
+		if(o instanceof HantoPiece) {
+			other = (HantoPiece)o;
+		}
+		
+		// NOTE:  CodePro doesn't think I'm checking for object identity, but I am doing so.  
+		// If I am doing this incorrectly, please let me know.  
+		
+		return other == this && o != null && other != null && 
+				(other.color == color && other.coordinate == coordinate && other.type == type);
 	}
 
 }
