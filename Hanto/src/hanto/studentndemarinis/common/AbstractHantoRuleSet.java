@@ -211,7 +211,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 				   !state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY)) 
 				{
 					throw new HantoException("Illegal move:  " +
-							"Butterfly must be placed by the foruth turn!");
+							"Butterfly must be placed by the foruth move!");
 				}
 			}
 }

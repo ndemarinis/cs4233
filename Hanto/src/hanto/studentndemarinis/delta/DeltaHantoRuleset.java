@@ -46,8 +46,9 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		
 		verifyGameIsNotOver();
 		verifySourceAndDestinationCoords(from, to);
-		verifyMoveIsLegal(from, to);
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
+		verifyMoveIsLegal(from, to);
+		verifyPieceCanMove(piece, from, to);
 	}
 
 	/**
@@ -63,6 +64,24 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		determineIfGameHasEnded(ret);
 		
 		return ret;
+	}
+	
+	/**
+	 * Verify that a move that requires moving a piece is legal.  
+	 * This ensures that only butterflies and crabs can move one hex.  
+	 * @param piece Piece being moved
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if this condition has been violated
+	 */
+	protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
+			throws HantoException
+	{
+		if(from != null && (piece == HantoPieceType.BUTTERFLY || piece == HantoPieceType.CRAB) &&
+				!from.isAdjacentTo(to)) {
+			throw new HantoException("Illegal move:  " +
+					"Pieces of type " + piece + " can only move one hex!");
+		}
 	}
 
 }

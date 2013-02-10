@@ -15,6 +15,7 @@ import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.InternalHantoGame;
+import hanto.testutil.TestHantoCoordinate;
 
 import hanto.util.MoveResult;
 
@@ -26,6 +27,7 @@ import static hanto.util.MoveResult.*;
 import static hanto.studentndemarinis.testutil.TestCoordinates.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -225,5 +227,77 @@ public class TestDeltaHanto {
 	public void moveWithInvalidDestination() throws HantoException
 	{
 		game.makeMove(BUTTERFLY, null, null);
+	}
+	
+	/* ********* NEW TESTS BEGIN HERE *************************/
+	
+	@Test(expected=HantoException.class)
+	public void cantMoveButterflyTwoHexes() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c01);
+		game.makeMove(BUTTERFLY, origin, new TestHantoCoordinate(0, 2));
+	}
+	
+	@Test(expected=HantoException.class)
+	@Ignore
+	public void cantMoveUntilPlacedButterflyBlue() throws HantoException
+	{
+		game.makeMove(SPARROW, null, origin);
+		game.makeMove(SPARROW, null,  c10);
+		game.makeMove(SPARROW, origin, c01);
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantMoveUntilPlacedButterflyRed() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(CRAB, null, c01);
+		game.makeMove(SPARROW, null, c10);
+		game.makeMove(CRAB, c01, c11);
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantMoveButterflyWithoutRoomToSlide() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(CRAB, null, c0_1);
+		game.makeMove(SPARROW, null, c_11);
+		game.makeMove(BUTTERFLY, null, new TestHantoCoordinate(1, -1));
+		game.makeMove(BUTTERFLY, origin, c_10);
+	}
+	
+	@Test
+	public void canFlyToHexInGroup() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c0_1);
+		game.makeMove(CRAB, null, c01);
+		game.makeMove(SPARROW, null, new TestHantoCoordinate(0, -2));
+		game.makeMove(SPARROW, null, new TestHantoCoordinate(0, 2));
+		game.makeMove(CRAB, null, new TestHantoCoordinate(0, -3));
+			
+		assertEquals(OK, game.makeMove(SPARROW, new TestHantoCoordinate(0, 2), 
+				new TestHantoCoordinate(0, -4)));
+	}
+	
+	@Test
+	public void crabCanWalkOneHex() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c01);
+		game.makeMove(CRAB, null, c10);
+		game.makeMove(BUTTERFLY, c01, c_11);
+		game.makeMove(CRAB, c10, c01);
+	}
+	
+	@Test(expected=HantoException.class)
+	public void crabCantWalkMoreThanOneHex() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c01);
+		game.makeMove(CRAB, null, c10);
+		game.makeMove(BUTTERFLY, c01, c_11);
+		game.makeMove(CRAB, c10, new TestHantoCoordinate(-1, 2));	
 	}
 }
