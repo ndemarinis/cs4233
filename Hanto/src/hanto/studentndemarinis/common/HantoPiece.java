@@ -74,7 +74,7 @@ public class HantoPiece {
 	public String toString() 
 	{
 		return color + " " + type + " at " + 
-				((this.coordinate == null) ? "<unplaced>" : this.coordinate);
+				((coordinate == null) ? "<unplaced>" : coordinate);
 	}
 	
 	public int hashCode()

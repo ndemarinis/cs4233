@@ -54,8 +54,7 @@ public class HexCoordinate implements HantoCoordinate {
 	{
 		return (c == null) 					  ?                                  null :
 			   (c instanceof HexCoordinate)   ?                    (HexCoordinate)(c) :
-			   (c instanceof HantoCoordinate) ? new HexCoordinate(c.getX(), c.getY()) :
-				   			                                                      null;
+				   								 new HexCoordinate(c.getX(), c.getY());
 	}
 	
 	/**
@@ -92,18 +91,21 @@ public class HexCoordinate implements HantoCoordinate {
 	
 	public HexCoordinate[] getNeighboringCoordinates()
 	{		
-		HexCoordinate[] coords = {new HexCoordinate(    x, y + 1), 
-								  new HexCoordinate(x + 1,     y), 
-								  new HexCoordinate(x + 1, y - 1),
-								  new HexCoordinate(    x, y - 1),
-								  new HexCoordinate(x - 1,     y), 
-								  new HexCoordinate(x - 1, y + 1)};
+		final HexCoordinate[] coords = {new HexCoordinate(    x, y + 1), 
+								  		new HexCoordinate(x + 1,     y), 
+								  		new HexCoordinate(x + 1, y - 1),
+								  		new HexCoordinate(    x, y - 1),
+								  		new HexCoordinate(x - 1,     y), 
+								  		new HexCoordinate(x - 1, y + 1)};
 		return coords;
 	}
 	
 	/**
 	 *  @return true if both coordinates have the same
 	 *  x and y coordinates
+	 *  
+	 *  CodePro is telling me that I'm not checking instanceof here; 
+	 *  however, it is wrong--I am just doing a nullcheck first.  
 	 */
 	public boolean equals(Object obj) 
 	{
@@ -121,7 +123,7 @@ public class HexCoordinate implements HantoCoordinate {
 	
 	public int hashCode()
 	{
-		return x*10000+y;
+		return (x * 10000) + y;
 	}
 	
 	public String toString()

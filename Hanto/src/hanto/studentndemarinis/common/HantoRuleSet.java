@@ -18,7 +18,7 @@ import hanto.util.MoveResult;
  * Hanto Game.  
  * 
  * @author ndemarinis
- * @vresion Jan 31, 2013
+ * @version Jan 31, 2013
  */
 public interface HantoRuleSet {
 
@@ -31,7 +31,7 @@ public interface HantoRuleSet {
 	 * @param to Destination coordinate of piece after the move
 	 * @throws HantoException if proposed move violates a rule.  
 	 */
-	public void doPreMoveChecks(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
+	void doPreMoveChecks(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
 			throws HantoException;
 	
 	/**
@@ -43,7 +43,7 @@ public interface HantoRuleSet {
 	 * @param from Source coordinate of the piece, null if piece is not on the board
 	 * @param to Destination coordinate of the piece
 	 */
-	public void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
+	void actuallyMakeMove(HantoPieceType type, HexCoordinate from, HexCoordinate to) 
 			throws HantoException;
 	
 	/**
@@ -52,7 +52,7 @@ public interface HantoRuleSet {
 	 * @param to Destination coordinate of the piece after the move
 	 * @throws HantoException if the proposed move violates a rule
 	 */
-	public void doPostMoveChecks(HexCoordinate to) throws HantoException;
+	void doPostMoveChecks(HexCoordinate to) throws HantoException;
 	
 	/**
 	 * Check conditions to determine if the game needs to end.  This is used for
@@ -60,5 +60,5 @@ public interface HantoRuleSet {
 	 * @return MoveResult with based on the current board's conditions
 	 * @throws HantoException on an invalid board configuration
 	 */
-	public MoveResult evaluateMoveResult() throws HantoException;
+	MoveResult evaluateMoveResult() throws HantoException;
 }

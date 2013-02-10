@@ -49,7 +49,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	private static final int MAX_BUTTERFLIES = 1;
 	private static final int MAX_SPARROWS = 5;
 	
-	private static final Map<HantoPieceType,Integer> startingHand = new HashMap<HantoPieceType,Integer>() 
+	private static final Map<HantoPieceType,Integer> startingHand = 
+			new HashMap<HantoPieceType,Integer>() 
 			{{ put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
 			   put(HantoPieceType.SPARROW, MAX_SPARROWS); }};
 	
@@ -67,8 +68,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		
-		HantoPlayer redPlayer = new HantoPlayer(startingHand);
-		HantoPlayer bluePlayer = new HantoPlayer(startingHand);
+		final HantoPlayer redPlayer = new HantoPlayer(startingHand);
+		final HantoPlayer bluePlayer = new HantoPlayer(startingHand);
 		
 		state = new HantoGameState(firstPlayer, redPlayer, bluePlayer);
 		rules = new GammaHantoRules(state);
@@ -82,8 +83,8 @@ public class GammaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{
-		HexCoordinate src = HexCoordinate.extractHexCoordinate(from);
-		HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
+		final HexCoordinate src = HexCoordinate.extractHexCoordinate(from);
+		final HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
 		
 		// Verify the game is not over
 		if(state.isGameOver()) {
@@ -112,10 +113,12 @@ public class GammaHantoGame extends AbstractHantoGame {
 		completeMove();	
 		
 		// Determine if this move ended the game
-		MoveResult ret = rules.evaluateMoveResult();
+		final MoveResult ret = rules.evaluateMoveResult();
+		
 		if(ret == MoveResult.DRAW || 
-				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS)
+				ret == MoveResult.RED_WINS || ret == MoveResult.BLUE_WINS) {
 			state.setGameOver(true);
+		}
 		
 		return ret;
 	}

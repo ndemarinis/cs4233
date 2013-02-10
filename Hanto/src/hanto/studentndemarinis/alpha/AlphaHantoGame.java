@@ -50,7 +50,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
 			HantoCoordinate to) throws HantoException 
 	{	
-		HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
+		final HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
 		
 		// Starting butterfly should be at origin, or else.
 		if(state.getNumMoves() == 0 && (dest.getX() != 0 || dest.getY() != 0)) {
@@ -86,7 +86,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 					HantoPlayerColor.RED : HantoPlayerColor.BLUE);
 		
 		// First move is OK if valid, then the game ends in a draw on the second move
-		MoveResult ret = (state.getNumMoves() == 0) ? MoveResult.OK : MoveResult.DRAW;
+		final MoveResult ret = (state.getNumMoves() == 0) ? MoveResult.OK : MoveResult.DRAW;
 		state.setNumMoves(state.getNumMoves() + 1);
 		
 		return ret;

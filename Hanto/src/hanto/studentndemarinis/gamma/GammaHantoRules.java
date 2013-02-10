@@ -37,7 +37,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	/**
 	 * Make a new set of GammaHanto's rules, given
 	 * the game itself
-	 * @param game The HantoGame we'll be checking
+	 * @param state The HantoGame we'll be checking
 	 */
 	public GammaHantoRules(HantoGameState state) {
 		this.state = state;
@@ -69,7 +69,7 @@ public class GammaHantoRules extends AbstractHantoRuleSet implements HantoRuleSe
 	@Override
 	public void doPostMoveChecks(HexCoordinate to) throws HantoException 
 	{
-		super.doPostMoveChecks(to);
+		verifyBoardIsContiguous();
 	}
 
 	/**
