@@ -21,7 +21,7 @@ import hanto.util.MoveResult;
  * @version Jan 31, 2013
  *
  */
-public abstract class AbstractHantoGame implements HantoGame {
+public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame {
 
 	protected HantoGameState state;
 	protected HantoRuleSet rules;

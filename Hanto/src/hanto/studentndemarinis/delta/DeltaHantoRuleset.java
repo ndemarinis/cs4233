@@ -27,11 +27,19 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 
 	/**
 	 * Create a ruleset for Delta Hanto
+	 * @param state the game's state object
 	 */
 	public DeltaHantoRuleset(HantoGameState state) {
 		this.state = state;
 	}
 	
+	/**
+	 * Perform checks to be made before a move
+	 * @param piece Piece to move
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if any conditions have been violated
+	 */
 	@Override
 	public void doPreMoveChecks(HantoPieceType piece, 
 			HexCoordinate from, HexCoordinate to) throws HantoException {
@@ -39,12 +47,22 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		verifyGameIsNotOver();
 		verifySourceAndDestinationCoords(from, to);
 		verifyMoveIsLegal(from, to);
+		verifyButterflyHasBeenPlacedByFourthTurn(piece);
 	}
 
+	/**
+	 * Determine result of a move based on specification; 
+	 * sets gameOver state if game has ended.  
+	 * 
+	 * @throws HantoException if board state is invalid
+	 */
 	@Override
 	public MoveResult evaluateMoveResult() throws HantoException {
-		// TODO Auto-generated method stub
-		return null;
+		MoveResult ret = winIfButterflyIsSurrounded();
+		
+		determineIfGameHasEnded(ret);
+		
+		return ret;
 	}
 
 }

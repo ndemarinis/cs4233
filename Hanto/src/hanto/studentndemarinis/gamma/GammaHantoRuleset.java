@@ -12,11 +12,9 @@ package hanto.studentndemarinis.gamma;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
-import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.util.HantoPieceType;
-import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 /**
@@ -28,9 +26,6 @@ import hanto.util.MoveResult;
  */
 public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRuleSet {
 
-	// Number of moves before we MUST place a butterfly
-	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
-	
 	// Max number of moves before ending in a draw
 	private final int MAX_MOVES = 10 * 2; // Two turns/move * 10 turns max, as specified
 	
@@ -60,18 +55,6 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
 		verifyPieceCanMove(piece, from, to);
 	}
-
-	/**
-	 * Checks to perform after a move has been made.  
-	 * @param to Destination coordinate of newly-moved piece
-	 * @throws HantoException if the a rule has been violated, 
-	 * leaving the board in an illegal state
-	 */
-	@Override
-	public void doPostMoveChecks(HexCoordinate to) throws HantoException 
-	{
-		verifyBoardIsContiguous();
-	}
 	
 	/**
 	 * Evaluate whether the game needs to end based on the board configuration.  
@@ -96,28 +79,6 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	
 	/* ******************** RULE METHODS START HERE **************************/
 	
-	/**
-	 * Ensure that a butterfly must be placed by the fourth term,
-	 * as the rules specify.  Therefore, a player moving on/after 
-	 * the fourth turn with no butterfly on the board MUST 
-	 * place their butterfly.  
-	 * 
-	 * @param piece The piece involved in the move
-	 * @throws HantoException if trying to place a butterfly without
-	 * one for that player on the board
-	 */
-	protected void verifyButterflyHasBeenPlacedByFourthTurn(HantoPieceType piece) 
-			throws HantoException	
-	{
-		if(piece != HantoPieceType.BUTTERFLY && 
-		   state.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY &&
-		   !state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY)) 
-		{
-			throw new HantoException("Illegal move:  " +
-					"Butterfly must be placed by the foruth turn!");
-		}
-	}
-
 	/**
 	 * Verify that a move that requires moving a piece is legal.  
 	 * This ensures that only butterflies can move one hex.  
@@ -151,29 +112,6 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	{
 		return (state.getNumMoves() != MAX_MOVES) ?
 				MoveResult.OK : MoveResult.DRAW;
-	}
-
-	/**
-	 * Check if a player has won by surrounding their opponent's
-	 * butterfly.  If both butterflies are surrounded, it's a DRAW.  
-	 * @return winning player if they have surrounded their opponent's butterfly,
-	 * DRAW if both are surrounded, OK if none of these conditions have been met
-	 */
-	protected MoveResult winIfButterflyIsSurrounded()
-	{
-		MoveResult ret = MoveResult.OK;
-		
-		for(HantoPiece p : state.getBoard().getPiecesOfType(HantoPieceType.BUTTERFLY))
-		{
-			if(state.getBoard().isSurrounded(p)) {
-				ret = (ret != MoveResult.OK) ? // If we have already found a surrounded butterfly
-						MoveResult.DRAW :      // It's a draw
-							((p.getColor() == HantoPlayerColor.BLUE) ?      
-									MoveResult.RED_WINS : MoveResult.BLUE_WINS); 
-			}
-		}
-		
-		return ret;
 	}
 
 }

@@ -31,6 +31,8 @@ public class DeltaHantoGame extends AbstractHantoGame {
 	
 	// Counts of pieces in a player's hand
 	private static final int MAX_BUTTERFLIES = 1;
+	private static final int MAX_SPARROWS = 4;
+	private static final int MAX_CRABS = 4;
 	
 	/**
 	 * Create an instance of DeltaHanto
@@ -57,6 +59,8 @@ public class DeltaHantoGame extends AbstractHantoGame {
 		if(startingHand == null) {
 			startingHand = new HashMap<HantoPieceType, Integer>();
 			startingHand.put(HantoPieceType.BUTTERFLY, MAX_BUTTERFLIES);
+			startingHand.put(HantoPieceType.SPARROW, MAX_SPARROWS);
+			startingHand.put(HantoPieceType.CRAB, MAX_CRABS);
 		}
 		
 		return startingHand;

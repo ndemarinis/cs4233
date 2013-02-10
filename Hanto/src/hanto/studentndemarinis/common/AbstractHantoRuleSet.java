@@ -11,6 +11,7 @@ package hanto.studentndemarinis.common;
 
 import hanto.common.HantoException;
 import hanto.util.HantoPieceType;
+import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 /**
@@ -23,6 +24,7 @@ import hanto.util.MoveResult;
 public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	protected HantoGameState state;
+	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
 	/**
 	 * Perform checks that must take place before a move.  
@@ -169,4 +171,47 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		state.setGameOver(res == MoveResult.DRAW || 
 				res == MoveResult.BLUE_WINS || res == MoveResult.RED_WINS);
 	}
+
+	/**
+	 * Check if a player has won by surrounding their opponent's
+	 * butterfly.  If both butterflies are surrounded, it's a DRAW.  
+	 * @return winning player if they have surrounded their opponent's butterfly,
+	 * DRAW if both are surrounded, OK if none of these conditions have been met
+	 */
+	protected MoveResult winIfButterflyIsSurrounded() {
+		MoveResult ret = MoveResult.OK;
+		
+		for(HantoPiece p : state.getBoard().getPiecesOfType(HantoPieceType.BUTTERFLY))
+		{
+			if(state.getBoard().isSurrounded(p)) {
+				ret = (ret != MoveResult.OK) ? // If we have already found a surrounded butterfly
+						MoveResult.DRAW :      // It's a draw
+							((p.getColor() == HantoPlayerColor.BLUE) ?      
+									MoveResult.RED_WINS : MoveResult.BLUE_WINS); 
+			}
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * Ensure that a butterfly must be placed by the fourth term,
+	 * as the rules specify.  Therefore, a player moving on/after 
+	 * the fourth turn with no butterfly on the board MUST 
+	 * place their butterfly.  
+	 * 
+	 * @param piece The piece involved in the move
+	 * @throws HantoException if trying to place a butterfly without
+	 * one for that player on the board
+	 */
+	protected void verifyButterflyHasBeenPlacedByFourthTurn(HantoPieceType piece)
+			throws HantoException {
+				if(piece != HantoPieceType.BUTTERFLY && 
+				   state.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY &&
+				   !state.getBoard().contains(state.getCurrPlayer(), HantoPieceType.BUTTERFLY)) 
+				{
+					throw new HantoException("Illegal move:  " +
+							"Butterfly must be placed by the foruth turn!");
+				}
+			}
 }
