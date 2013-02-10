@@ -28,6 +28,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	public void doPreMoveChecks(HantoPieceType piece, 
 			HexCoordinate from, HexCoordinate to) throws HantoException 
 	{
+		verifyGameIsNotOver();
 		verifySourceAndDestinationCoords(from, to);
 		verifyMoveIsLegal(from, to);
 	}
@@ -56,6 +57,17 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	public abstract MoveResult evaluateMoveResult() throws HantoException;
 
+	
+	/**
+	 * Verify the game is not over
+	 * @throws HantoException if the game is over
+	 */
+	protected void verifyGameIsNotOver() throws HantoException
+	{
+		if(state.isGameOver()) {
+			throw new HantoException("Illegal move:  game has already ended!");
+		}
+	}
 	
 	/**
 	 * Verify the source and destination coordinates exist.  

@@ -42,8 +42,6 @@ import hanto.util.MoveResult;
  */
 
 public class GammaHantoGame extends AbstractHantoGame {
-
-	private HantoRuleSet rules;
 	
 	// Maximum piece counts for this game
 	private static final int MAX_BUTTERFLIES = 1;
@@ -53,10 +51,14 @@ public class GammaHantoGame extends AbstractHantoGame {
 	// This is controlled by the factory method getStartingHand()
 	private static Map<HantoPieceType,Integer> startingHand = null;
 	
+	
 	// NOTE:  CodePro throws a warning here about the missing exception.  
 	// While it's not technically necessary, I'm leaving it since it's in
 	// the interface.  
-	public GammaHantoGame() throws HantoException {
+	public GammaHantoGame() throws HantoException {	
+		state = new HantoGameState(HantoPlayerColor.BLUE);
+		rules = new GammaHantoRules(state);
+		
 		initialize(HantoPlayerColor.BLUE); // By default, starting player is blue
 		setupGame();
 	}
@@ -67,40 +69,6 @@ public class GammaHantoGame extends AbstractHantoGame {
 		
 		state.setPlayersHand(HantoPlayerColor.BLUE, getStartingHand());
 		state.setPlayersHand(HantoPlayerColor.RED, getStartingHand());
-		
-		rules = new GammaHantoRules(state);
-	}
-
-	@Override
-	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
-			HantoCoordinate to) throws HantoException 
-	{
-		final HexCoordinate src = HexCoordinate.extractHexCoordinate(from);
-		final HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
-		
-		// Verify the game is not over
-		if(state.isGameOver()) {
-			throw new HantoException("Illegal move:  game has already ended!");
-		}
-		
-		// Verify the source piece is valid, if provided.  
-		rules.doPreMoveChecks(pieceType, src, dest);
-
-	
-		// Now that we know we can make the move, do it for realsies.  
-		rules.actuallyMakeMove(pieceType, src, dest);
-		
-		// Make sure that move we just did was valid
-		// (We're assuming that just throwing an exception is okay here,
-		// the incorrect move is applied and NOT changed for now.)
-		rules.doPostMoveChecks(dest);
-		
-
-		// Finish move
-		completeMove();	
-		
-		// Return the result of the move
-		return rules.evaluateMoveResult();
 	}
 	
 	/**

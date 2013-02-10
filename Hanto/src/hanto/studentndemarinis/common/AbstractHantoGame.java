@@ -24,6 +24,7 @@ import hanto.util.MoveResult;
 public abstract class AbstractHantoGame implements HantoGame {
 
 	protected HantoGameState state;
+	protected HantoRuleSet rules;
 	
 	/**
 	 * Abstract HantoGame providing basic implementation
@@ -31,13 +32,39 @@ public abstract class AbstractHantoGame implements HantoGame {
 	
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
-		state = new HantoGameState(firstPlayer);
+		
+		// Setup all of the initial conditions
+		state.setCurrPlayer(firstPlayer);
 		setupGame();
+		
+		// Reset the board
+		state.board.reset();
 	}
 	
 	@Override
-	public abstract MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
-			HantoCoordinate to) throws HantoException;
+	public MoveResult makeMove(HantoPieceType pieceType, HantoCoordinate from,
+			HantoCoordinate to) throws HantoException {
+		final HexCoordinate src = HexCoordinate.extractHexCoordinate(from);
+		final HexCoordinate dest = HexCoordinate.extractHexCoordinate(to);
+
+		// Verify the source piece is valid, if provided.  
+		rules.doPreMoveChecks(pieceType, src, dest);
+
+		// Now that we know we can make the move, do it for realsies.  
+		rules.actuallyMakeMove(pieceType, src, dest);
+
+		// Make sure that move we just did was valid
+		// (We're assuming that just throwing an exception is okay here,
+		// the incorrect move is applied and NOT changed for now.)
+		rules.doPostMoveChecks(dest);
+
+
+		// Finish move
+		completeMove();	
+
+		// Return the result of the move
+		return rules.evaluateMoveResult();
+			}
 
 	
 	/**

@@ -196,6 +196,15 @@ public class HantoBoard {
 	}
 	
 	/**
+	 * Remove all pieces from the board
+	 */
+	public void reset()
+	{
+		pieces.clear();
+	}
+	
+	
+	/**
 	 * Return a string representing the current state of the board,
 	 * empty string if the board is empty.  
 	 */
