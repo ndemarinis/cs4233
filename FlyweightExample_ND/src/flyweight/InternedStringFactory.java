@@ -10,9 +10,7 @@
 package flyweight;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Factory to manage and create flyweights
@@ -24,7 +22,7 @@ public class InternedStringFactory {
 	private static InternedStringFactory instance = null;
 	
 	// This is our flyweight pool, indexed by the original string
-	private Map<String, InternedString> strings;
+	private final Map<String, InternedString> strings;
 	
 	/**
 	 * Creates interned strings
@@ -33,10 +31,14 @@ public class InternedStringFactory {
 		strings = new HashMap<String, InternedString>();
 	}
 	
+	/**
+	 * @return instance of this Flyweight factory 
+	 */
 	public static InternedStringFactory getInstance()
 	{	
-		if(instance == null)
+		if(instance == null) {
 			instance = new InternedStringFactory();
+		}	
 		
 		return instance;
 	}

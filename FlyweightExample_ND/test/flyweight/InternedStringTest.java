@@ -82,6 +82,10 @@ public class InternedStringTest {
 		
 		// These two references should point to the same flyweight object
 		assertTrue(helloInterned == helloAgainInterned);
+		
+		// Just to be sure, equals() should work, too
+		assertTrue(helloInterned.equals(helloAgainInterned));
+
 	}
 	
 	@Test
@@ -92,6 +96,9 @@ public class InternedStringTest {
 		
 		// These two references should not point to the same object
 		assertFalse(helloInterned == otherString);
+		
+		// Just to be sure, equals() should work, too
+		assertFalse(helloInterned.equals(otherString));
 	}
 
 	
@@ -102,6 +109,7 @@ public class InternedStringTest {
 		InternedString loremIpsumModifiedInterned = stringFactory.makeInternedString(loremIpsumModified);
 		
 		assertFalse(loremIpsumInterned == loremIpsumModifiedInterned);
+		assertFalse(loremIpsumInterned.equals(loremIpsumModifiedInterned));
 	}
 	
 	@Test

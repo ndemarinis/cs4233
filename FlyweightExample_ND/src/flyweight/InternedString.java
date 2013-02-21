@@ -76,4 +76,14 @@ public class InternedString {
 		
 		return o != null && other != null && other == this;
 	}
+	
+	/**
+	 * Since we literally are doing object identity by reference,
+	 * we can literally use the memory address here.  
+	 * If an implementation shared pools across devices, we would need something better. 
+	 */
+	public int hashCode()
+	{
+		return super.hashCode();
+	}
 }
