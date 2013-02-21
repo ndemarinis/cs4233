@@ -10,6 +10,7 @@
 package flyweight;
 
 import static org.junit.Assert.*;
+import static flyweight.FlyweightTestStrings.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,10 +27,12 @@ public class InternedStringTest {
 
 	InternedStringFactory stringFactory;
 	
-	String hello = "Hello world!";
-	String helloAgain = "Hello world!";
-	String notHello = "Goodbye, cruel world!";
+	final String hello = "Hello world!";
+	final String helloAgain = "Hello world!";
+	final String notHello = "Goodbye, cruel world!";
+	final String helloFormat = "Hello %s!";
 	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -71,7 +74,7 @@ public class InternedStringTest {
 	}
 	
 	@Test
-	public void canCompareTwoDifferentInternedStrings()
+	public void canCompareTwoDifferentInternedStringsSameContent()
 	{
 		// Make a string, then make another one (which should just return the previous one)
 		InternedString helloInterned = stringFactory.makeInternedString(hello);
@@ -80,5 +83,42 @@ public class InternedStringTest {
 		// These two references should point to the same flyweight object
 		assertTrue(helloInterned == helloAgainInterned);
 	}
+	
+	@Test
+	public void canCompareTwoDifferentInternedStringsDiffContent()
+	{
+		InternedString helloInterned = stringFactory.makeInternedString(hello);
+		InternedString otherString = stringFactory.makeInternedString(notHello);
+		
+		// These two references should not point to the same object
+		assertFalse(helloInterned == otherString);
+	}
 
+	
+	@Test
+	public void compareTwoReallyLongStringsWhenInterned()
+	{
+		InternedString loremIpsumInterned = stringFactory.makeInternedString(loremIpsum);
+		InternedString loremIpsumModifiedInterned = stringFactory.makeInternedString(loremIpsumModified);
+		
+		assertFalse(loremIpsumInterned == loremIpsumModifiedInterned);
+	}
+	
+	@Test
+	public void compareTwoReallyLongStringsWhenNotInterned()
+	{
+		// Unless Java optimizes this (and I'm sure it does), this should resort
+		// to a byte-by-byte compare, which obviously takes longer than our interened method.  
+		assertFalse(loremIpsum.equals(loremIpsumModified));
+	}
+	
+	@Test
+	public void passContextToFlyweightWithFormattedString()
+	{
+		// Intern a string with a format parameter
+		InternedString helloFormatInterned = stringFactory.makeInternedString(helloFormat);
+		
+		// Give it an external context (the string "grader") and then check the output
+		assertTrue(helloFormatInterned.formatWithString("grader").equals("Hello grader!"));
+	}
 }

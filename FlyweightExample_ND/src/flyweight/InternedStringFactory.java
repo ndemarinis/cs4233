@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Factory to manage and create flyweights
  * @author ndemarinis
  * @version Feb 19, 2013
  */
@@ -22,6 +23,7 @@ public class InternedStringFactory {
 
 	private static InternedStringFactory instance = null;
 	
+	// This is our flyweight pool, indexed by the original string
 	private Map<String, InternedString> strings;
 	
 	/**
@@ -39,12 +41,21 @@ public class InternedStringFactory {
 		return instance;
 	}
 	
+	/**
+	 * Completely clears the instance to start over with a new blank pool
+	 */
 	public static void resetInstance()
 	{
-		instance = null;
-		getInstance();
+		instance = new InternedStringFactory();
 	}
 	
+	/**
+	 * Creates an interned string based on the given string
+	 * Two strings with the same content map to the same object
+	 * If it is already in the pool, the existing one will be returned
+	 * @param str String to be created
+	 * @return The interned string object
+	 */
 	public InternedString makeInternedString(String str)
 	{
 		if(strings.get(str) == null) {

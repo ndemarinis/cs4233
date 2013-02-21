@@ -10,26 +10,52 @@
 package flyweight;
 
 /**
+ * This provides an example Flyweight.  
+ * In this case, it's just a wrapper around a string
+ * 
  * @author ndemarinis
  * @version Feb 19, 2013
  */
 public class InternedString {
 
-	private String str;
+	// By definition, the flyweight's intrinsic state should be immuatble
+	private final String str;
 	
 	/**
-	 * Class representing an interned string, or our flyweight
+	 * Create a new flyweight based on a given string
+	 * @param str The string to represent
 	 */
 	public InternedString(String str) 
 	{
 		this.str = str;
 	}
 	
-	
+	/**
+	 * 
+	 * @return the flyweight's string
+	 */
 	public String getString()
 	{
 		return str;
 	}
+	
+	/**
+	 * Simple example for string formatting/context passing
+	 * Outputs the given string replacing the format parameter %s
+	 * with given string f.  
+	 * If %s is not found in the stored string, the original string is returned
+	 * 
+	 * This functionality has been kept incredibly simple by design--the only
+	 * point of this is to demonstrate passing of an external context to a flyweight.  
+	 * 
+	 * @param f Format string
+	 * @return Stored string with format string in place of %s
+	 */
+	public String formatWithString(String f)
+	{
+		return str.replace("%s", f);
+	}
+	
 	
 	/**
 	 * Compare two interned strings
