@@ -54,7 +54,7 @@ public class InternedStringTest {
 	
 	@Test
 	public void canAddSomeString() {
-		InternedString helloInterned = stringFactory.makeInternedString(hello);
+		InternedString helloInterned = (InternedString)stringFactory.makeInternedString(hello);
 		
 		assertEquals(helloInterned.getString(), hello);
 	}
@@ -77,8 +77,10 @@ public class InternedStringTest {
 	public void canCompareTwoDifferentInternedStringsSameContent()
 	{
 		// Make a string, then make another one (which should just return the previous one)
-		InternedString helloInterned = stringFactory.makeInternedString(hello);
-		InternedString helloAgainInterned = stringFactory.makeInternedString(helloAgain);
+		InternedString helloInterned = 
+				(InternedString)stringFactory.makeInternedString(hello);
+		InternedString helloAgainInterned = 
+				(InternedString)stringFactory.makeInternedString(helloAgain);
 		
 		// These two references should point to the same flyweight object
 		assertTrue(helloInterned == helloAgainInterned);
@@ -91,8 +93,8 @@ public class InternedStringTest {
 	@Test
 	public void canCompareTwoDifferentInternedStringsDiffContent()
 	{
-		InternedString helloInterned = stringFactory.makeInternedString(hello);
-		InternedString otherString = stringFactory.makeInternedString(notHello);
+		InternedString helloInterned = (InternedString)stringFactory.makeInternedString(hello);
+		InternedString otherString = (InternedString)stringFactory.makeInternedString(notHello);
 		
 		// These two references should not point to the same object
 		assertFalse(helloInterned == otherString);
@@ -105,8 +107,10 @@ public class InternedStringTest {
 	@Test
 	public void compareTwoReallyLongStringsWhenInterned()
 	{
-		InternedString loremIpsumInterned = stringFactory.makeInternedString(loremIpsum);
-		InternedString loremIpsumModifiedInterned = stringFactory.makeInternedString(loremIpsumModified);
+		InternedString loremIpsumInterned = 
+				(InternedString)stringFactory.makeInternedString(loremIpsum);
+		InternedString loremIpsumModifiedInterned = 
+				(InternedString)stringFactory.makeInternedString(loremIpsumModified);
 		
 		assertFalse(loremIpsumInterned == loremIpsumModifiedInterned);
 		assertFalse(loremIpsumInterned.equals(loremIpsumModifiedInterned));
@@ -124,7 +128,8 @@ public class InternedStringTest {
 	public void passContextToFlyweightWithFormattedString()
 	{
 		// Intern a string with a format parameter
-		InternedString helloFormatInterned = stringFactory.makeInternedString(helloFormat);
+		InternedString helloFormatInterned = 
+				(InternedString)stringFactory.makeInternedString(helloFormat);
 		
 		// Give it an external context (the string "grader") and then check the output
 		assertTrue(helloFormatInterned.formatWithString("grader").equals("Hello grader!"));

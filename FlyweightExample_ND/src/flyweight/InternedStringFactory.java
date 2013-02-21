@@ -22,13 +22,13 @@ public class InternedStringFactory {
 	private static InternedStringFactory instance = null;
 	
 	// This is our flyweight pool, indexed by the original string
-	private final Map<String, InternedString> strings;
+	private final Map<String, StringFlyweight> strings;
 	
 	/**
 	 * Creates interned strings
 	 */
 	private InternedStringFactory() {
-		strings = new HashMap<String, InternedString>();
+		strings = new HashMap<String, StringFlyweight>();
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class InternedStringFactory {
 	 * @param str String to be created
 	 * @return The interned string object
 	 */
-	public InternedString makeInternedString(String str)
+	public StringFlyweight makeInternedString(String str)
 	{
 		if(strings.get(str) == null) {
 			strings.put(str, new InternedString(str));

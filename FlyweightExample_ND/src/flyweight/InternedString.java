@@ -16,7 +16,7 @@ package flyweight;
  * @author ndemarinis
  * @version Feb 19, 2013
  */
-public class InternedString {
+public class InternedString implements StringFlyweight {
 
 	// By definition, the flyweight's intrinsic state should be immuatble
 	private final String str;
