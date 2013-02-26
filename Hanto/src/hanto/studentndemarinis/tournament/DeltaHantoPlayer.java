@@ -9,8 +9,14 @@
  */
 package hanto.studentndemarinis.tournament;
 
+import hanto.common.HantoException;
+import hanto.studentndemarinis.HantoFactory;
+import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
+import hanto.util.HantoGameID;
+import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 
 /**
@@ -20,13 +26,18 @@ import hanto.util.HantoPlayerColor;
  */
 public class DeltaHantoPlayer implements HantoGamePlayer {
 
+	private boolean isStarting;
+	private InternalHantoGame game;
+	
 	/**
 	 * Create a new DeltaHantoPlayer, as given
 	 * @param color Player of color, given by tournament
 	 * @param starting true if this player is making the starting move
 	 */
-	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) {
-		// TODO Auto-generated constructor stub
+	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) throws HantoException{
+		this.isStarting = isStarting;
+		game = (InternalHantoGame)(HantoFactory.getInstance().
+				makeHantoGame(HantoGameID.DELTA_HANTO));
 	}
 	
 	/**
@@ -37,7 +48,25 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 */
 	public HantoMoveRecord makeMove(HantoMoveRecord opponentsMove)
 	{
-		return null;
+		HexCoordinate opponentDest;
+		HexCoordinate[] opponentNeighbors;
+		
+		HantoMoveRecord ret;
+		
+		if(opponentsMove != null) // If this wasn't the starting move 
+		{
+			opponentDest = HexCoordinate.extractHexCoordinate(opponentsMove.getTo());
+			opponentNeighbors = opponentDest.getNeighboringCoordinates();
+			
+			ret = new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, opponentNeighbors[0]);
+		} 
+		else 
+		{
+			ret = new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, 
+					new HexCoordinate(0, 0));
+		}
+		
+		return ret;
 	}
 
 }

@@ -1,0 +1,13 @@
+TESTS
+ - Telling the starting player to move places a butterfly at the origin
+ - Giving them another move makes them make another valid move
+ - Do the above, but with a different location so we can't fake it
+ 
+ 
+ 
+DESIGN RATIONALE
+ - Take the player's move and simulate it
+ - Get the set of all possible moves
+ - Reduce it to the set of all possible VALID moves
+ - Pick The Best Move(tm)
+ - Profit
