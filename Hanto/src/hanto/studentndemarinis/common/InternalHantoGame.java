@@ -47,6 +47,11 @@ public interface InternalHantoGame extends HantoGame {
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
 	
 	/**
+	 * @return The Hanto Board.  
+	 */
+	public HantoBoard getBoard();
+	
+	/**
 	 * @return the number of moves made in this game
 	 */
 	public int getNumMoves();

@@ -107,6 +107,22 @@ public class HantoBoard {
 	}
 	
 	/**
+	 * Find all empty coordinates that are adjacent to pieces on the board
+	 * @return Collection of all empty neighboring coordinates
+	 */
+	public Collection<HexCoordinate> getAllEmptyNeighborCoordinates()
+	{
+		final Set<HexCoordinate> res = new HashSet<HexCoordinate>();
+		
+		for(HexCoordinate c : pieces.keySet())
+		{
+			res.addAll(this.getEmptyNeighborCoordinatesOf(c));
+		}
+		
+		return res;
+	}
+	
+	/**
 	 * Get pieces with a specific PieceType
 	 * @param t The type for which to search on the board
 	 * @return Collection of matching pieces

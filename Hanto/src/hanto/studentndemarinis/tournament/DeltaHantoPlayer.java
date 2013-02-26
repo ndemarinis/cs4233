@@ -9,6 +9,10 @@
  */
 package hanto.studentndemarinis.tournament;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HexCoordinate;
@@ -26,8 +30,10 @@ import hanto.util.HantoPlayerColor;
  */
 public class DeltaHantoPlayer implements HantoGamePlayer {
 
-	private boolean isStarting;
 	private InternalHantoGame game;
+	
+	private enum MoveDestinationState { STARTING, PRE_BUTTERFLY, POST_BUTTERFLY };
+	MoveDestinationState moveState;
 	
 	/**
 	 * Create a new DeltaHantoPlayer, as given
@@ -35,7 +41,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 * @param starting true if this player is making the starting move
 	 */
 	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) throws HantoException{
-		this.isStarting = isStarting;
+		moveState = isStarting ? MoveDestinationState.STARTING : MoveDestinationState.PRE_BUTTERFLY;
+		
 		game = (InternalHantoGame)(HantoFactory.getInstance().
 				makeHantoGame(HantoGameID.DELTA_HANTO));
 	}
@@ -67,6 +74,26 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		}
 		
 		return ret;
+	}
+	
+	private Collection<HexCoordinate> getValidMoveDestinations()
+	{
+		Set<HexCoordinate> moves = new HashSet<HexCoordinate>();
+		
+		switch(moveState)
+		{
+		case STARTING: // If this is the first move, we can only place at the origin.  
+			moves.add(new HexCoordinate(0, 0));
+			break;
+		case PRE_BUTTERFLY: 
+			
+			break;
+		case POST_BUTTERFLY:
+
+			break;
+		}
+		
+		return moves;
 	}
 
 }
