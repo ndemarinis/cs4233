@@ -37,4 +37,11 @@ public class TestHantoCoordinate implements HantoCoordinate
 	{
 		return yCoordinate;
 	}
+	
+	// TODO:  Yes, I am modifying the given code here
+	// Even if it's an innocuous change, I should not do this.  
+	public String toString()
+	{
+		return "(" + xCoordinate + ", " + yCoordinate + ")";
+	}
 }
