@@ -43,8 +43,7 @@ public class MoveFactory {
 		return instance;
 	}
 	
-	public HantoMoveStrategy makeMoveStrategy(HantoGameState state, 
-			HantoMoveType type, int distance)
+	public HantoMoveStrategy makeMoveStrategy(HantoMoveType type, int distance)
 	{
 		HantoMoveStrategy ret = strategies.get(type);
 		
@@ -53,15 +52,15 @@ public class MoveFactory {
 			switch(type)
 			{
 			case WALK:
-				ret =  new WalkStrategy(state, distance);
+				ret =  new WalkStrategy(distance);
 				break;
 
 			case SLIDE:
-				ret = new SlideStrategy(state, distance);
+				ret = new SlideStrategy(distance);
 				break;
 
 			case FLY:
-				ret = new FlyStrategy(state, distance);
+				ret = new FlyStrategy(distance);
 				break;
 			}
 			

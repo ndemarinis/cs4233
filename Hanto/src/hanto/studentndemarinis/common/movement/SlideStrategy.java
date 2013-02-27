@@ -23,26 +23,24 @@ public class SlideStrategy implements HantoMoveStrategy {
 
 	private int distance;
 	
-	HantoGameState state;
-	
 	/**
 	 * Initialize a sliding strategy
 	 */
-	public SlideStrategy(HantoGameState state, int distance) {
-		this.state = state;
-		
+	public SlideStrategy(int distance) {
 		this.distance = distance;
 	}
 
 	@Override
-	public boolean canMoveTo(HexCoordinate from, HexCoordinate to) throws HantoException {
+	public boolean canMoveTo(HantoGameState state,
+			HexCoordinate from, HexCoordinate to) throws HantoException {
 		return from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to);
 	}
 	
 	@Override
-	public void tryMoveTo(HexCoordinate from, HexCoordinate to) throws HantoException
+	public void tryMoveTo(HantoGameState state, 
+			HexCoordinate from, HexCoordinate to) throws HantoException
 	{
-		if(!canMoveTo(from, to)) {
+		if(!canMoveTo(state, from, to)) {
 			throw new HantoException("Illegal move:  " +
 					"piece can only slide one hex!");
 		}

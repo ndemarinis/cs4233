@@ -10,6 +10,7 @@
 package hanto.studentndemarinis.common.movement;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HexCoordinate;
 
 /**
@@ -24,16 +25,21 @@ public interface HantoMoveStrategy {
 
 	/**
 	 * Try to move to a given coordinate using the above strategy
+	 * @param state State of the current game--passing it in 
+	 * means strategies are immutable
 	 * @param from Source coordinate
 	 * @param to Destination coordinate
 	 * @throws HantoException if the move was invalid
 	 */
-	public void tryMoveTo(HexCoordinate from, HexCoordinate to) throws HantoException;
+	public void tryMoveTo(HantoGameState state, 
+			HexCoordinate from, HexCoordinate to) throws HantoException;
 	
 	/**
 	 * Determine whether a given piece can move to a given coordinate
 	 * based on its unique strategy
 	 * 
+	 * @param state State of the current game--passing it in 
+	 * means strategies are immutable
 	 * @param from Source coordinate
 	 * @param to Destination coordinate
 	 * @return true if the move is possible
@@ -41,6 +47,7 @@ public interface HantoMoveStrategy {
 	 * @throws HantoException if something went wrong calculating the move
 	 * This method does NOT throw an exception if the move was invalid
 	 */
-	public boolean canMoveTo(HexCoordinate from, HexCoordinate to) throws HantoException;
+	public boolean canMoveTo(HantoGameState state, 
+			HexCoordinate from, HexCoordinate to) throws HantoException;
 	
 }

@@ -41,11 +41,11 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	private void setupMoveStrategies()
 	{
 		moveStrategies.put(HantoPieceType.BUTTERFLY, 
-				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().makeMoveStrategy(HantoMoveType.SLIDE, 1));
 		moveStrategies.put(HantoPieceType.CRAB, 
-				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().makeMoveStrategy(HantoMoveType.SLIDE, 1));
 		moveStrategies.put(HantoPieceType.SPARROW, 
-				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.FLY, -1));
+				MoveFactory.getInstance().makeMoveStrategy(HantoMoveType.FLY, -1));
 	}
 	
 	/**
@@ -68,8 +68,9 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 			verifyPlayerCanMovePieces(from, to);
 			
 			if(from != null){ // If this is a move, verify it is valid
-				moveStrategies.get(piece).tryMoveTo(from, to);
+				moveStrategies.get(piece).tryMoveTo(state, from, to);
 			}
+			verifyPieceCanMoveToDest(piece,  from,  to);
 		}
 	}
 
