@@ -9,7 +9,11 @@
  */
 package hanto.studentndemarinis.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.movement.HantoMoveStrategy;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
@@ -24,6 +28,9 @@ import hanto.util.MoveResult;
 public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	protected HantoGameState state;
+	protected Map<HantoPieceType, HantoMoveStrategy> moveStrategies = 
+			new HashMap<HantoPieceType, HantoMoveStrategy>();
+	
 	private final int NUM_MOVES_PRE_BUTTERFLY = 3;
 	
 	/**

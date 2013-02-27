@@ -14,6 +14,8 @@ import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.movement.HantoMoveType;
+import hanto.studentndemarinis.common.movement.MoveFactory;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
@@ -33,6 +35,17 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 */
 	public DeltaHantoRuleset(HantoGameState state) {
 		this.state = state;
+		setupMoveStrategies();
+	}
+	
+	private void setupMoveStrategies()
+	{
+		moveStrategies.put(HantoPieceType.BUTTERFLY, 
+				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.SLIDE, 1));
+		moveStrategies.put(HantoPieceType.CRAB, 
+				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.SLIDE, 1));
+		moveStrategies.put(HantoPieceType.SPARROW, 
+				MoveFactory.getInstance().makeMoveStrategy(state, HantoMoveType.FLY, -1));
 	}
 	
 	/**
@@ -53,7 +66,10 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 			verifyButterflyHasBeenPlacedByFourthTurn(piece);
 			verifyMoveIsLegal(from, to);
 			verifyPlayerCanMovePieces(from, to);
-			verifyPieceCanMoveToDest(piece, from, to);
+			
+			if(from != null){ // If this is a move, verify it is valid
+				moveStrategies.get(piece).tryMoveTo(from, to);
+			}
 		}
 	}
 
