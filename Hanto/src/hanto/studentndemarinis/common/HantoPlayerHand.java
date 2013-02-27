@@ -71,5 +71,17 @@ public class HantoPlayerHand {
 			this.hand.putAll(hand);
 		}
 	}
+	
+	/**
+	 * Get number of pieces a player has available for play
+	 * @param p the piece to check
+	 * @return number of pieces available, 0 if none exist
+	 */
+	public int getRemainingPiecesToPlay(HantoPieceType p)
+	{
+		Integer numPieces = hand.get(p);
+		
+		return numPieces == null ? 0 : numPieces.intValue();
+	}
 
 }

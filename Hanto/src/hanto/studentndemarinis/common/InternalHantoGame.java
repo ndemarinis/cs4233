@@ -55,6 +55,12 @@ public interface InternalHantoGame extends HantoGame {
 	public Map<HantoPieceType, Integer> getStartingHand();
 	
 	/**
+	 * @param p Color of a HantoPlayer
+	 * @return The hand for that player, containing the numbers of each piece available
+	 */
+	public HantoPlayerHand getPlayersHand(HantoPlayerColor p);
+	
+	/**
 	 * @return The Hanto Board.  
 	 */
 	public HantoBoard getBoard();

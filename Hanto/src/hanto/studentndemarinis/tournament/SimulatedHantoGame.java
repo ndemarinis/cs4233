@@ -12,6 +12,7 @@ package hanto.studentndemarinis.tournament;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HantoPlayerHand;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.tournament.HantoMoveRecord;
@@ -103,6 +104,14 @@ public class SimulatedHantoGame implements InternalHantoGame {
 	public Map<HantoPieceType, Integer> getStartingHand()
 	{
 		return game.getStartingHand();
+	}
+	
+	/**
+	 * @param p Color of a HantoPlayer
+	 * @return The hand for that player, containing the numbers of each piece available
+	 */
+	public HantoPlayerHand getPlayersHand(HantoPlayerColor p) {
+		return game.getPlayersHand(p);
 	}
 
 	/**

@@ -16,6 +16,7 @@ import static hanto.studentndemarinis.testutil.TestCoordinates.*;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.HantoFactory;
+import hanto.testutil.TestHantoCoordinate;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoGameID;
@@ -131,6 +132,31 @@ public class TestDeltaHantoPlayer {
 		tourn.manualMove(SPARROW, null, tourn.game.getRandomValidEmptyCoordinate());
 	}
 	
+	@Test
+	public void playerCorrectlyPicksPiecesWhenOneExhausted() throws HantoException {
+		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c00), 
+								   new HantoMoveRecord(SPARROW,   null, c0_1),
+								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -2)), 
+								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -3)),
+								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -4))};
+		
+		tourn = new FakeHantoTournament(BLUE, BLUE, new PartialFakedSelectStrategy(moves));
+		
+		tourn.playerMove();
+		tourn.manualMove(BUTTERFLY, null, c01);
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, new TestHantoCoordinate(0, 2));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, new TestHantoCoordinate(0, 3));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, new TestHantoCoordinate(0, 4));
+		tourn.playerMove();
+		tourn.manualMove(CRAB,   null, new TestHantoCoordinate(0, 5));
+		tourn.playerMove();
+		
+		assertEquals(CRAB, tourn.lastMove.getPiece());
+		
+	}
 	
 	
 	@Test

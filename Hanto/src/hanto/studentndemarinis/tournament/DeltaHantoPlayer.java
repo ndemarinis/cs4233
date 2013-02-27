@@ -10,8 +10,8 @@
 package hanto.studentndemarinis.tournament;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HantoPlayerHand;
 import hanto.studentndemarinis.common.HexCoordinate;
-import hanto.studentndemarinis.common.movement.HantoMoveStrategy;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoGameID;
@@ -101,15 +101,18 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		possibleMoves = findPlacementMoves();
 		
 		// Pick a random move based on those given strategy
-		HantoMoveRecord ret = strategy.selectMove(game, possibleMoves);
+		// If no moves are available, resign.  
+		HantoMoveRecord ret = possibleMoves.isEmpty() ? new HantoMoveRecord(null, null, null) :
+			strategy.selectMove(game, possibleMoves);
 
-		// Run this move on our game, not only so we upate our state, 
+		// Run this move on our game, not only so we update our state, 
 		// but to verify it against the rules.  
 		try {
 			game.makeMove(ret);
 		} catch(HantoException e) {
 			throw new HantoPlayerException("NOO!  Our move was bad! " +
-					"Something has gone horribly wrong!   Message was:  " + e.getMessage());
+					"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
+					"Move was:  " + getPrintableMove(ret));
 		}
 		
 		return ret;
@@ -156,7 +159,12 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		case PLACE_ONLY:     // For these, we can place any piece that is available
 		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
-			piecesToPlace.addAll(game.getStartingHand().keySet());
+			
+			for(HantoPieceType p : game.getStartingHand().keySet()) {
+				if(game.getPlayersHand(color).getRemainingPiecesToPlay(p) > 0) {
+					piecesToPlace.add(p);
+				}
+			}
 			break;
 		}
 		
@@ -173,6 +181,13 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		}
 		
 		return ret;
+	}
+	
+	private String getPrintableMove(HantoMoveRecord r)
+	{
+		return ((r.getFrom() == null) ? "PLACE " : " MOVE  ") + r.getPiece() +
+		((r.getFrom() == null) ? (" at " + r.getTo()) : 
+			(r.getFrom() + " -> " + r.getTo()));
 	}
 
 }
