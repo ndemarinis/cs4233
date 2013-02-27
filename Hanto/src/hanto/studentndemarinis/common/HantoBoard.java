@@ -130,10 +130,10 @@ public class HantoBoard {
 	 * @return true if piece has neighbors of that color
 	 */
 	public boolean hasNeighborsOfColor(HexCoordinate coord, HantoPlayerColor color) {
-		boolean ret = true;
+		boolean ret = false;
 		
 		for(HantoPiece p : this.getNeighborsOf(coord)) {
-			ret = ret && (p.getColor() == color);
+			ret = ret || (p.getColor() == color);
 		}
 		
 		return ret;

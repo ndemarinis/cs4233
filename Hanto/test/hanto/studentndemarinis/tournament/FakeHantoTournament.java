@@ -98,9 +98,7 @@ public class FakeHantoTournament {
 		ret = game.makeMove(piece, from,  to);
 		lastMove = new HantoMoveRecord(piece, from, to);
 		
-		System.out.println("TESTER" + 
-						((from == null) ? " placed " : " moved ") + piece +
-						((from == null) ? (" at " + to) : (from + " -> " + to)));
+		printMove(playerMovingNext, lastMove);
 		
 		completeMove();
 		
@@ -127,20 +125,29 @@ public class FakeHantoTournament {
 		// Perform this move in the test game
 		ret = game.makeMove(playerMove.getPiece(), playerMove.getFrom(), playerMove.getTo());
 		
+		printMove(playerMovingNext, playerMove);
+		
+		
 		// Update our state information
 		completeMove();
 		lastMove = playerMove;
 		
-		System.out.println("PLAYER" + 
-				((playerMove.getFrom() == null) ? " placed " : " moved ") + playerMove.getPiece() +
-				((playerMove.getFrom() == null) ? (" at " + playerMove.getTo()) : 
-					(playerMove.getFrom() + " -> " + playerMove.getTo())));
-		
+
 		return ret;
 	}
 	
 	private void completeMove() {
 		playerMovingNext = (playerMovingNext == HantoPlayerColor.BLUE) ? 
 				HantoPlayerColor.RED : HantoPlayerColor.BLUE;
+	}
+	
+	private void printMove(HantoPlayerColor color, HantoMoveRecord r) {
+		System.out.printf("%s %s %4s %9s %s\n", 
+				(color == colorOfUUT) ? "PLAYER" : "TESTER", 
+				(r.getFrom() == null) ? "placed" : "moved",
+				color,
+				r.getPiece(),
+				((r.getFrom() == null) ? 
+						(" at " + r.getTo()) : (r.getTo() + " -> " + r.getTo())));
 	}
 }

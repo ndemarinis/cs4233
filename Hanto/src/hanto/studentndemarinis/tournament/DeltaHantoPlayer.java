@@ -44,6 +44,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	MoveState moveState;
 	
 	private static final int NUM_MOVES_PRE_BUTTERFLY = 3; // Fake it and copypaste this
+	private static final int NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY = 1;
 	
 	/**
 	 * Create a new DeltaHantoPlayer, as given
@@ -119,6 +120,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			}
 			
 		} catch(HantoException e) {
+			System.out.println("Failure:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(ret));
+			
 			throw new HantoPlayerException("NOO!  Our move was bad! " +
 					"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
 					"Move was:  " + getPrintableMove(ret));
@@ -185,8 +188,14 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			// an existing piece--by definition, this preserves the contiguous board condition
 			for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates())
 			{
-				for(HantoPieceType t : piecesToPlace) {
-					ret.add(new HantoMoveRecord(t, null, c));
+				HantoPlayerColor opponentColor = (color == HantoPlayerColor.RED) ? 
+						HantoPlayerColor.BLUE : HantoPlayerColor.RED;
+				
+				if(game.getNumMoves() <= NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY ||  
+						!game.getBoard().hasNeighborsOfColor(c, opponentColor)) {
+					for(HantoPieceType t : piecesToPlace) {
+						ret.add(new HantoMoveRecord(t, null, c));
+					}
 				}
 			}
 		}
