@@ -130,6 +130,8 @@ public class TestDeltaHantoPlayer {
 		tourn.manualMove(SPARROW, null, tourn.game.getRandomValidEmptyCoordinate());
 	}
 	
+	
+	
 	/* *********** HELPER METHODS *****************/
 	
 	/**

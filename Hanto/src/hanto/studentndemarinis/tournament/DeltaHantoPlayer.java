@@ -9,22 +9,19 @@
  */
 package hanto.studentndemarinis.tournament;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
 import hanto.common.HantoException;
-import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HexCoordinate;
-import hanto.studentndemarinis.common.InternalHantoGame;
+import hanto.studentndemarinis.common.movement.HantoMoveStrategy;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoGameID;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Skeleton for eventual DeltaHantoPlayer
@@ -36,6 +33,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	HantoPlayerColor color; // Our color in this game
 	
 	private SimulatedHantoGame game;
+	private HantoPlayerStrategy strategy;
 	
 	// This enum describes how we can place pieces:  
 	private enum MoveState { 	        STARTING,   // This is the first move, we only have one option
@@ -57,6 +55,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
 		
 		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
+		strategy = new RandomSelectStrategy();
 	}
 	
 	/**
@@ -82,8 +81,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		determineCurrentMoveState();
 		possibleMoves = findPlacementMoves();
 		
-		// Pick a random move based on those given
-		HantoMoveRecord ret = possibleMoves.get((int)(Math.random() * possibleMoves.size()));
+		// Pick a random move based on those given strategy
+		HantoMoveRecord ret = strategy.selectMove(game, possibleMoves);
 
 		// Run this move on our game, not only so we upate our state, 
 		// but to verify it against the rules.  
