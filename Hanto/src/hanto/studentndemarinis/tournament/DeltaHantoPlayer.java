@@ -34,6 +34,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	private SimulatedHantoGame game;
 	private HantoPlayerStrategy strategy;
+	private HantoPlayerHand hand; // Available pieces for play, represented similarly in the game itself
 	
 	// This enum describes how we can place pieces:  
 	private enum MoveState { 	        STARTING,   // This is the first move, we only have one option
@@ -68,6 +69,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
 		
 		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
+		hand = new HantoPlayerHand(game.getStartingHand()); // Setup our available pieces
 		
 		// If we've passed in a strategy, use it.  Otherwise, pick the random one.  
 		if(strategy == null) {
@@ -108,12 +110,21 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		// Run this move on our game, not only so we update our state, 
 		// but to verify it against the rules.  
 		try {
+			// Try to actually make the move
 			game.makeMove(ret);
+			
+			// If we are placing a piece, remove it from our hand
+			if(ret.getFrom() == null) { 
+				hand.removeFromHand(ret.getPiece());
+			}
+			
 		} catch(HantoException e) {
 			throw new HantoPlayerException("NOO!  Our move was bad! " +
 					"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
 					"Move was:  " + getPrintableMove(ret));
 		}
+		
+
 		
 		return ret;
 	}
@@ -161,7 +172,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
 			
 			for(HantoPieceType p : game.getStartingHand().keySet()) {
-				if(game.getPlayersHand(color).getRemainingPiecesToPlay(p) > 0) {
+				if(hand.getRemainingPiecesToPlay(p) > 0) {
 					piecesToPlace.add(p);
 				}
 			}
