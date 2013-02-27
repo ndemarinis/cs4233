@@ -9,6 +9,9 @@
  */
 package hanto.studentndemarinis.alpha;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.AbstractHantoGame;
 import hanto.studentndemarinis.common.HantoGameState;
@@ -95,6 +98,15 @@ public class AlphaHantoGame extends AbstractHantoGame {
 		
 		return ret;
 		
+	}
+	
+	public Map<HantoPieceType, Integer> getStartingHand()
+	{
+		Map<HantoPieceType, Integer> ret = new HashMap<HantoPieceType, Integer>();
+		
+		ret.put(HantoPieceType.BUTTERFLY, 1);
+		
+		return ret;
 	}
 
 }

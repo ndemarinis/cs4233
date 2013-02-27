@@ -65,5 +65,13 @@ public class DeltaHantoGame extends AbstractHantoGame {
 		
 		return startingHand;
 	}
+	
+	/**
+	 * @return the player's starting hand
+	 */
+	public Map<HantoPieceType, Integer> getStartingHand()
+	{
+		return startingHand;
+	}
 
 }

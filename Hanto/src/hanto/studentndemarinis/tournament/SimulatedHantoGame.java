@@ -9,6 +9,8 @@
  */
 package hanto.studentndemarinis.tournament;
 
+import java.util.Map;
+
 import hanto.common.HantoException;
 import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.InternalHantoGame;
@@ -66,6 +68,11 @@ public class SimulatedHantoGame implements InternalHantoGame {
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type,
 			HantoCoordinate c) {
 		game.addToBoard(color, type, c);
+	}
+	
+	public Map<HantoPieceType, Integer> getStartingHand()
+	{
+		return game.getStartingHand();
 	}
 
 	/**

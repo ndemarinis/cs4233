@@ -9,6 +9,8 @@
  */
 package hanto.studentndemarinis.common;
 
+import java.util.Map;
+
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.util.HantoCoordinate;
@@ -25,6 +27,8 @@ public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame 
 
 	protected HantoGameState state;
 	protected HantoRuleSet rules;
+	
+	protected static Map<HantoPieceType, Integer> startingHand = null;
 	
 	/**
 	 * Abstract HantoGame providing basic implementation
@@ -73,6 +77,15 @@ public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame 
 	 */
 	public abstract void setupGame();
 	
+	/**
+	 * 
+	 * @return Map of starting pieces and counts with which a player starts
+	 * 
+	 * While both my Delta and Gamma Hanto implementations do this the same
+	 * way, I'm not sure about moving the implementation code here, as it would mean
+	 * that starting hands would no longer be static per game.  
+	 */
+	public abstract Map<HantoPieceType, Integer> getStartingHand();
 	
 	/**
 	 * Return a string representing the current state of the board,

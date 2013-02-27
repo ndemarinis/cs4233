@@ -9,6 +9,8 @@
  */
 package hanto.studentndemarinis.common;
 
+import java.util.Map;
+
 import hanto.common.HantoGame;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
@@ -45,6 +47,12 @@ public interface InternalHantoGame extends HantoGame {
 	 * @param c location of new piece
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
+	
+	/**
+	 * 
+	 * @return the player's starting hand
+	 */
+	public Map<HantoPieceType, Integer> getStartingHand();
 	
 	/**
 	 * @return The Hanto Board.  

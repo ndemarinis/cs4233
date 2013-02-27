@@ -50,4 +50,5 @@ public interface HantoMoveStrategy {
 	public boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException;
 	
+	
 }

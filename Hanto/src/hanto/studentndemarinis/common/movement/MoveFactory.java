@@ -12,8 +12,6 @@ package hanto.studentndemarinis.common.movement;
 import java.util.HashMap;
 import java.util.Map;
 
-import hanto.studentndemarinis.common.HantoGameState;
-
 /**
  * This class creates moves for HantoPieces
  * 

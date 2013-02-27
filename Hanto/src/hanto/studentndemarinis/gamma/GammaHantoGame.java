@@ -73,7 +73,7 @@ public class GammaHantoGame extends AbstractHantoGame {
 	 * 
 	 * @return the player's initial hand
 	 */
-	protected static Map<HantoPieceType,Integer> makeStartingHand()
+	protected static Map<HantoPieceType, Integer> makeStartingHand()
 	{
 		if(startingHand == null){
 			startingHand = new HashMap<HantoPieceType, Integer>();
@@ -84,6 +84,13 @@ public class GammaHantoGame extends AbstractHantoGame {
 		return startingHand;
 	}
 
+	/**
+	 * @retrurn the player's starting hand
+	 */
+	public Map<HantoPieceType, Integer> getStartingHand()
+	{
+		return startingHand;
+	}
 	
 	// TODO:  When we know more about the board, I can write
 	// HashCode in such a way that is works with a real

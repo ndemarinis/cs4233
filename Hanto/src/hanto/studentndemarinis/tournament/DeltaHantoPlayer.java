@@ -86,7 +86,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			moves.add(new HexCoordinate(0, 0));
 			break;
 		case PRE_BUTTERFLY: 
-			
+			moves.addAll(game.getBoard().getAllEmptyNeighborCoordinates());
 			break;
 		case POST_BUTTERFLY:
 
