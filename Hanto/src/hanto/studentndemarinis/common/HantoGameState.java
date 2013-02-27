@@ -35,7 +35,7 @@ public class HantoGameState {
 	HantoBoard board;
 	
 	// Maintain the player's hands here (as separate objects for now)
-	HantoPlayer redPlayer, bluePlayer;
+	HantoPlayerHand redPlayer, bluePlayer;
 	
 	/**
 	 * Construct a state object for a HantoGame
@@ -49,8 +49,8 @@ public class HantoGameState {
 		currPlayer = startingPlayer;
 		board = new HantoBoard();
 		
-		redPlayer = new HantoPlayer(startingHand);
-		bluePlayer = new HantoPlayer(startingHand);
+		redPlayer = new HantoPlayerHand(startingHand);
+		bluePlayer = new HantoPlayerHand(startingHand);
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public class HantoGameState {
 	 * @param p The desired player
 	 * @return Hand information for that player
 	 */
-	public HantoPlayer getPlayersHand(HantoPlayerColor p) {
+	public HantoPlayerHand getPlayersHand(HantoPlayerColor p) {
 		return (p == HantoPlayerColor.RED) ? redPlayer : bluePlayer; 
 	}
 	

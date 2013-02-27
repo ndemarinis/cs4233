@@ -14,7 +14,7 @@ package hanto.tournament;
  * <p>
  * This interface describes the behavior required of an AI player for a
  * version of Hanto. Students will implement this interface in a class called
- * &lt;version&gt;HantoPlayer that is in the <b>hanto.studentx.tournament</b> package.
+ * &lt;version&gt;HantoPlayerHand that is in the <b>hanto.studentx.tournament</b> package.
  * </p><p>
  * For example, for a Delta Hanto game player, the student will implement a class called
  * <code>DeltaHantoPlayer</code>.

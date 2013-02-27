@@ -23,11 +23,11 @@ import hanto.util.MoveResult;
  * This class simulates a Hanto Tournament
  * It basically just runs a game, taking manual 
  * moves for one player and automated moves from 
- * the HantoPlayer, while printing the result and 
+ * the HantoPlayerHand, while printing the result and 
  * simulating each move on a real game.   
  * 
  * This should provide a sensible harness (or fake object?)
- * for testing the HantoPlayer by simulating a real tournament
+ * for testing the HantoPlayerHand by simulating a real tournament
  * 
  * @author ndemarinis
  *
@@ -45,7 +45,7 @@ public class FakeHantoTournament {
 	/**
 	 * Initialize a Fake Hanto Tournament
 	 * @param startingPlayer the player to start
-	 * @param colorOfUUT the color the HantoPlayer (AI) will take
+	 * @param colorOfUUT the color the HantoPlayerHand (AI) will take
 	 * @param strategy Strategy for the player to use in this game
      * @throws HantoException if something went wrong with creation
 	 */
@@ -69,7 +69,7 @@ public class FakeHantoTournament {
 	/**
 	 * Initialize a Fake Hanto Tournament
 	 * @param startingPlayer the player to start
-	 * @param colorOfUUT the color the HantoPlayer (AI) will take
+	 * @param colorOfUUT the color the HantoPlayerHand (AI) will take
      * @throws HantoException if something went wrong with creation
 	 */
 	public FakeHantoTournament(HantoPlayerColor startingPlayer, 

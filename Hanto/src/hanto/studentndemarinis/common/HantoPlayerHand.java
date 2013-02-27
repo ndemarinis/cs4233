@@ -19,7 +19,7 @@ import java.util.Map;
  * @author ndemarinis
  * @version Jan 23, 2012
  */
-public class HantoPlayer {
+public class HantoPlayerHand {
 	
 	// Map representing number of pieces of each type available for play
 	private final Map<HantoPieceType,Integer> hand;
@@ -32,7 +32,7 @@ public class HantoPlayer {
 	 * available to use
 	 * 
 	 */
-	public HantoPlayer(Map<HantoPieceType,Integer> hand)
+	public HantoPlayerHand(Map<HantoPieceType,Integer> hand)
 	{
 		this.hand = new HashMap<HantoPieceType, Integer>();
 		
