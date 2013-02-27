@@ -66,7 +66,6 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
 		
 		verifyPieceCanMove(piece, from, to);
-		//verifyPieceCanMove(piece, from, to);
 	}
 	
 	/**
@@ -91,30 +90,6 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	}
 	
 	/* ******************** RULE METHODS START HERE **************************/
-	
-	/**
-	 * Verify that a move that requires moving a piece is legal.  
-	 * This ensures that only butterflies can move one hex.  
-	 * @param piece Piece being moved
-	 * @param from Source coordinate
-	 * @param to Destination coordinate
-	 * @throws HantoException if this condition has been violated
-	 */
-	/*protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
-			throws HantoException
-	{
-		if(from != null && piece != HantoPieceType.BUTTERFLY) {
-			throw new HantoException("Illegal move:  " +
-					"Movement is only supported by butterflies in GammaHanto!");
-		}
-		
-		if(from != null && 
-				piece == HantoPieceType.BUTTERFLY && !from.isAdjacentTo(to)) {
-			throw new HantoException("Illegal move:  " +
-					"Butterflies can only move one hex!");
-		}
-	}*/
-	
 	
 	/**
 	 * Give result ending the game in a draw after 10 moves.  
