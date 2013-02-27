@@ -59,8 +59,9 @@ public class FakeHantoTournament {
 		
 		player = new DeltaHantoPlayer(colorOfUUT, (colorOfUUT == startingPlayer));
 		
-		System.out.println("\nNew tournament - PLAYER is " + colorOfUUT + ", TESTER is " + 
-		((colorOfUUT == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE));
+		System.out.println("\nNew tournament - PLAYER: " + colorOfUUT + ", TESTER: " + 
+		((colorOfUUT == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE) + ", " +
+				"Starting player:  " + startingPlayer);
 	}
 	
 	/**
