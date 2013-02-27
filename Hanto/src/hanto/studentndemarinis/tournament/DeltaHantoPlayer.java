@@ -9,9 +9,12 @@
  */
 package hanto.studentndemarinis.tournament;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
@@ -30,10 +33,18 @@ import hanto.util.HantoPlayerColor;
  */
 public class DeltaHantoPlayer implements HantoGamePlayer {
 
-	private InternalHantoGame game;
+	HantoPlayerColor color; // Our color in this game
 	
-	private enum MoveDestinationState { STARTING, PRE_BUTTERFLY, POST_BUTTERFLY };
-	MoveDestinationState moveState;
+	private SimulatedHantoGame game;
+	
+	// This enum describes how we can place pieces:  
+	private enum MoveState { 	        STARTING,   // This is the first move, we only have one option
+				 			MUST_PLACE_BUTTERFLY,   // We MUST place the butterfly on this move
+				 				      PLACE_ONLY,   // We can only place pieces
+				 				  PLACE_AND_MOVE }; // We can place and move pieces
+	MoveState moveState;
+	
+	private static final int NUM_MOVES_PRE_BUTTERFLY = 3; // Fake it and copypaste this
 	
 	/**
 	 * Create a new DeltaHantoPlayer, as given
@@ -41,10 +52,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 * @param starting true if this player is making the starting move
 	 */
 	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) throws HantoException{
-		moveState = isStarting ? MoveDestinationState.STARTING : MoveDestinationState.PRE_BUTTERFLY;
 		
-		game = (InternalHantoGame)(HantoFactory.getInstance().
-				makeHantoGame(HantoGameID.DELTA_HANTO));
+		this.color = color;
+		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
+		
+		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
 	}
 	
 	/**
@@ -55,45 +67,82 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 */
 	public HantoMoveRecord makeMove(HantoMoveRecord opponentsMove)
 	{
-		HexCoordinate opponentDest;
-		HexCoordinate[] opponentNeighbors;
-		
-		HantoMoveRecord ret;
+		List<HantoMoveRecord> possibleMoves;
 		
 		if(opponentsMove != null) // If this wasn't the starting move 
 		{
-			opponentDest = HexCoordinate.extractHexCoordinate(opponentsMove.getTo());
-			opponentNeighbors = opponentDest.getNeighboringCoordinates();
-			
-			ret = new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, opponentNeighbors[0]);
-		} 
-		else 
-		{
-			ret = new HantoMoveRecord(HantoPieceType.BUTTERFLY, null, 
-					new HexCoordinate(0, 0));
+			try {
+				game.makeMove(opponentsMove); // Record the opponent's move on our board
+			} catch (HantoException e) {
+				throw new HantoPlayerException("Opponent's move was bad!  You wrote a bad test!");
+			}
 		}
 		
-		return ret;
+		determineCurrentMoveState();
+		possibleMoves = findPlacementMoves();
+		
+		// Pick a random move based on those given
+		return possibleMoves.get((int)(Math.random() * possibleMoves.size()));
 	}
 	
-	private Collection<HexCoordinate> getValidMoveDestinations()
+	private void determineCurrentMoveState()
 	{
-		Set<HexCoordinate> moves = new HashSet<HexCoordinate>();
+		boolean butterflyPlaced = game.getBoard().contains(color, HantoPieceType.BUTTERFLY);
+		
+		// If no moves have been made, we're starting
+		if(game.getNumMoves() == 0){
+			moveState = MoveState.STARTING;
+		}
+		// If we haven't placed our butterfly yet, but it's not the fourth turn,
+		// we can place anything we want, but not move
+		else if(!butterflyPlaced && game.getNumMoves() < NUM_MOVES_PRE_BUTTERFLY) {
+			moveState = MoveState.PLACE_ONLY;
+		} 
+		// If we haven't placed it and it is the fourth turn, we need to place the butterfly
+		else if(!butterflyPlaced && game.getNumMoves() >= NUM_MOVES_PRE_BUTTERFLY) {
+			moveState = MoveState.MUST_PLACE_BUTTERFLY;
+		} 
+		// Otherwise, we can place or move as we like
+		else {
+			moveState = MoveState.PLACE_AND_MOVE;
+		}
+	}
+	
+	private List<HantoMoveRecord> findPlacementMoves()
+	{
+		List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
+		Collection<HantoPieceType> piecesToPlace = new Vector<HantoPieceType>();
 		
 		switch(moveState)
 		{
-		case STARTING: // If this is the first move, we can only place at the origin.  
-			moves.add(new HexCoordinate(0, 0));
+		case STARTING: // We only have one move option
+			ret.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY, 
+					null, new HexCoordinate(0, 0)));
 			break;
-		case PRE_BUTTERFLY: 
-			moves.addAll(game.getBoard().getAllEmptyNeighborCoordinates());
+			
+		case MUST_PLACE_BUTTERFLY: // We can only place the butterfly, nothing else
+			piecesToPlace.add(HantoPieceType.BUTTERFLY);
 			break;
-		case POST_BUTTERFLY:
-
+		
+		case PLACE_ONLY:     // For these, we can place any piece that is available
+		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
+			piecesToPlace.addAll(game.getStartingHand().keySet());
 			break;
 		}
 		
-		return moves;
+		if(moveState != MoveState.STARTING) {
+			
+			// Theoretically, we can place a piece on any space that is adjacent to 
+			// an existing piece--by definition, this preserves the contiguous board condition
+			for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates())
+			{
+				for(HantoPieceType t : piecesToPlace) {
+					ret.add(new HantoMoveRecord(t, null, c));
+				}
+			}
+		}
+		
+		return ret;
 	}
 
 }
