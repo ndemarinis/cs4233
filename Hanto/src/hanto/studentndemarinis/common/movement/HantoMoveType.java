@@ -17,6 +17,7 @@ package hanto.studentndemarinis.common.movement;
  *
  */
 public enum HantoMoveType {
+	NO_MOVE,
 	WALK,
 	SLIDE,
 	FLY

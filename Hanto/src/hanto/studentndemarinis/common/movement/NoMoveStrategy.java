@@ -14,26 +14,26 @@ import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HexCoordinate;
 
 /**
- * This class represents a "strategy" for flying
- * 
+ * This class represents a move strategy 
+ * for a piece that doesn't move
+ *
  * @author ndemarinis
  * @version Feb 26, 2013
  */
-public class FlyStrategy extends AbstractMoveStrategy {
-	
+public class NoMoveStrategy extends AbstractMoveStrategy {
+
 	/**
-	 * Initialize a walking strategy
+	 * Create a nomove strategy
 	 */
-	public FlyStrategy(int distance) {
-		this.distance = distance;
+	public NoMoveStrategy() {
+		// We literally have nothing to do here
 	}
 
 	@Override
-	public boolean canMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException {
-	
-		// TODO:  This is so simple that I KNOW these move strategies should have more functionality.  
-		return true; // We can fly anywhere we want so long as the other checks pass.  
+	public boolean canMoveTo(HantoGameState state, HexCoordinate from,
+			HexCoordinate to) throws HantoException {
+		
+		return false; // We can't move, so always fail.  
 	}
 
 }

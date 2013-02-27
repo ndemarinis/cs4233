@@ -19,10 +19,8 @@ import hanto.studentndemarinis.common.HexCoordinate;
  * @author ndemarinis
  * @version Feb 26, 2013
  */
-public class SlideStrategy implements HantoMoveStrategy {
+public class SlideStrategy extends AbstractMoveStrategy {
 
-	private int distance;
-	
 	/**
 	 * Initialize a sliding strategy
 	 */
@@ -33,17 +31,7 @@ public class SlideStrategy implements HantoMoveStrategy {
 	@Override
 	public boolean canMoveTo(HantoGameState state,
 			HexCoordinate from, HexCoordinate to) throws HantoException {
+		
 		return from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to);
 	}
-	
-	@Override
-	public void tryMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException
-	{
-		if(!canMoveTo(state, from, to)) {
-			throw new HantoException("Illegal move:  " +
-					"piece can only slide one hex!");
-		}
-	}
-
 }

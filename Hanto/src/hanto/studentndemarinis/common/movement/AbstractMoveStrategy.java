@@ -14,26 +14,30 @@ import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HexCoordinate;
 
 /**
- * This class represents a "strategy" for flying
+ * This class encapsulates common functionality for a
+ * Move Strategy.  
  * 
  * @author ndemarinis
  * @version Feb 26, 2013
+ *
  */
-public class FlyStrategy extends AbstractMoveStrategy {
-	
-	/**
-	 * Initialize a walking strategy
-	 */
-	public FlyStrategy(int distance) {
-		this.distance = distance;
+public abstract class AbstractMoveStrategy implements HantoMoveStrategy {
+
+	protected int distance; // Distance for a given move
+
+	@Override
+	public void tryMoveTo(HantoGameState state, HexCoordinate from,
+			HexCoordinate to) throws HantoException {
+		
+		// In the interest of KISS, I am okay with leaving this message ambiguous 
+		if(!canMoveTo(state, from, to)) {
+			throw new HantoException("Illegal move: move strategy violated!");
+		}
+
 	}
 
 	@Override
-	public boolean canMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException {
-	
-		// TODO:  This is so simple that I KNOW these move strategies should have more functionality.  
-		return true; // We can fly anywhere we want so long as the other checks pass.  
-	}
+	public abstract boolean canMoveTo(HantoGameState state, HexCoordinate from,
+			HexCoordinate to) throws HantoException;
 
 }

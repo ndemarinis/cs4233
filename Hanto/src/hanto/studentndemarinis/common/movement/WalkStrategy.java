@@ -19,9 +19,7 @@ import hanto.studentndemarinis.common.HexCoordinate;
  * @author ndemarinis
  * @version Feb 26, 2013
  */
-public class WalkStrategy implements HantoMoveStrategy {
-
-	private int distance;
+public class WalkStrategy extends AbstractMoveStrategy {
 	
 	/**
 	 * Initialize a walking strategy
@@ -33,17 +31,8 @@ public class WalkStrategy implements HantoMoveStrategy {
 	@Override
 	public boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException {
-		return from.isAdjacentTo(to);
-	}
 	
-	@Override
-	public void tryMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException
-	{
-		if(!canMoveTo(state, from, to)) {
-			throw new HantoException("Illegal move:  " +
-					"piece can only walk one hex!");
-		}
+		return from.isAdjacentTo(to);
 	}
 
 }

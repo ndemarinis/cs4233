@@ -14,6 +14,8 @@ import hanto.studentndemarinis.common.AbstractHantoRuleSet;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoRuleSet;
 import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.movement.HantoMoveType;
+import hanto.studentndemarinis.common.movement.MoveFactory;
 import hanto.util.HantoPieceType;
 import hanto.util.MoveResult;
 
@@ -36,8 +38,17 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	 */
 	public GammaHantoRuleset(HantoGameState state) {
 		this.state = state;
+		
+		setupMoveStrategies();
 	}
 
+	protected void setupMoveStrategies() {
+		moveStrategies.put(HantoPieceType.BUTTERFLY, 
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.WALK, 1));
+		moveStrategies.put(HantoPieceType.SPARROW, 
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.NO_MOVE, 0));
+	}
+	
 	/**
 	 * Checks to be performed before a move is made
 	 * 
@@ -53,7 +64,9 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	{
 		super.doPreMoveChecks(piece, from, to);
 		verifyButterflyHasBeenPlacedByFourthTurn(piece);
+		
 		verifyPieceCanMove(piece, from, to);
+		//verifyPieceCanMove(piece, from, to);
 	}
 	
 	/**
@@ -87,7 +100,7 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	 * @param to Destination coordinate
 	 * @throws HantoException if this condition has been violated
 	 */
-	protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
+	/*protected void verifyPieceCanMove(HantoPieceType piece, HexCoordinate from, HexCoordinate to) 
 			throws HantoException
 	{
 		if(from != null && piece != HantoPieceType.BUTTERFLY) {
@@ -100,7 +113,7 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 			throw new HantoException("Illegal move:  " +
 					"Butterflies can only move one hex!");
 		}
-	}
+	}*/
 	
 	
 	/**

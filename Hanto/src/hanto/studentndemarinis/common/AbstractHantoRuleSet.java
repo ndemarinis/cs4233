@@ -28,6 +28,7 @@ import hanto.util.MoveResult;
 public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	protected HantoGameState state;
+	
 	protected Map<HantoPieceType, HantoMoveStrategy> moveStrategies = 
 			new HashMap<HantoPieceType, HantoMoveStrategy>();
 	
@@ -88,6 +89,40 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 */
 	public abstract MoveResult evaluateMoveResult() throws HantoException;
 
+	
+	/**
+	 * Create move strategies for each piece in the ruleset
+	 * Must be overridden by the concrete realization.  
+	 */
+	protected abstract void setupMoveStrategies();
+	
+	/**
+	 * Safely check if a piece can move using the 
+	 * defined move strategies 
+	 * 
+	 * @param piece The piece to move
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if move was invalids
+	 */
+	protected void verifyPieceCanMove(HantoPieceType piece, 
+			HexCoordinate from, HexCoordinate to) throws HantoException
+	{
+		HantoMoveStrategy strat = null;
+		
+		strat = moveStrategies.get(piece);
+		
+		if(strat == null) {
+			throw new HantoException("Illegal move:  " +
+					"Movement is not supported for this piece type in this version of Hanto!");
+		}
+		
+		if(from != null) // If this is a move
+		{
+			strat.tryMoveTo(state, from, to);
+		}
+	}
+	
 	
 	/**
 	 * Verify the game is not over
