@@ -34,7 +34,7 @@ import hanto.util.MoveResult;
  */
 public class FakeHantoTournament {
 
-	protected HantoGame game;
+	protected SimulatedHantoGame game;
 	protected DeltaHantoPlayer player;
 	
 	protected HantoPlayerColor colorOfUUT;
@@ -54,7 +54,7 @@ public class FakeHantoTournament {
 		this.colorOfUUT = colorOfUUT;
 		this.playerMovingNext = startingPlayer;
 		
-		game = HantoFactory.getInstance().makeHantoGame(HantoGameID.DELTA_HANTO);
+		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
 		game.initialize(startingPlayer);
 		
 		player = new DeltaHantoPlayer(colorOfUUT, (colorOfUUT == startingPlayer));

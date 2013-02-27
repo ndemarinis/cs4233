@@ -120,7 +120,15 @@ public class TestDeltaHantoPlayer {
 	}
 	
 	
-	
+	@Test
+	public void tournPlaceTwoPiecesEach() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, BLUE);
+		tourn.playerMove();
+		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, tourn.game.getRandomValidEmptyCoordinate());
+	}
 	
 	/* *********** HELPER METHODS *****************/
 	

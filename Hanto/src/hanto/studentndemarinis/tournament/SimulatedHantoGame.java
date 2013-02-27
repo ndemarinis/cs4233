@@ -14,6 +14,7 @@ import java.util.Map;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoCoordinate;
@@ -55,7 +56,18 @@ public class SimulatedHantoGame implements InternalHantoGame {
 		return game.makeMove(record.getPiece(), record.getFrom(), record.getTo());
 	}
 	
+
 	/* ********** HELPER METHODS ****************/
+
+	/**
+	 * Just get me a valid empty coordinate.  This is gross, but just do it.  
+	 * 
+	 * @return An empty coordinate on the board with at least one adjacent piece
+	 * @throws HantoException if somethign went wrong
+	 */
+	public HexCoordinate getRandomValidEmptyCoordinate() throws HantoException {
+		return game.getBoard().getAllEmptyNeighborCoordinates().iterator().next();
+	}
 	
 	/* ********** GETTERS/SETTERS ****************/
 	

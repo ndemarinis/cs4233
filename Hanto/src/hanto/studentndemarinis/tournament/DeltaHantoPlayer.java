@@ -74,7 +74,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			try {
 				game.makeMove(opponentsMove); // Record the opponent's move on our board
 			} catch (HantoException e) {
-				throw new HantoPlayerException("Opponent's move was bad!  You wrote a bad test!");
+				throw new HantoPlayerException("Opponent's move was bad!  You wrote a bad test!  " +
+						"Exception was:  " + e.getMessage());
 			}
 		}
 		
@@ -82,7 +83,18 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		possibleMoves = findPlacementMoves();
 		
 		// Pick a random move based on those given
-		return possibleMoves.get((int)(Math.random() * possibleMoves.size()));
+		HantoMoveRecord ret = possibleMoves.get((int)(Math.random() * possibleMoves.size()));
+
+		// Run this move on our game, not only so we upate our state, 
+		// but to verify it against the rules.  
+		try {
+			game.makeMove(ret);
+		} catch(HantoException e) {
+			throw new HantoPlayerException("NOO!  Our move was bad! " +
+					"Something has gone horribly wrong!");
+		}
+		
+		return ret;
 	}
 	
 	private void determineCurrentMoveState()
