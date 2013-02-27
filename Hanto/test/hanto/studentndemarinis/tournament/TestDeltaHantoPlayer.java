@@ -22,6 +22,7 @@ import hanto.util.HantoGameID;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -131,6 +132,16 @@ public class TestDeltaHantoPlayer {
 	}
 	
 	
+	
+	@Test
+	@Ignore
+	public void playerIsForcedToPlaceButterflyByFourthTurn() throws HantoException
+	{
+		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c01), 
+		};
+		
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves));
+	}
 	
 	/* *********** HELPER METHODS *****************/
 	

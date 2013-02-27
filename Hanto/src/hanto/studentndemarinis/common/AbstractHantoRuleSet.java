@@ -33,6 +33,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 			new HashMap<HantoPieceType, HantoMoveStrategy>();
 	
 	private static final int NUM_MOVES_PRE_BUTTERFLY = 3;
+	private static final int NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY = 1;
 	
 	/**
 	 * Perform checks that must take place before a move.  
@@ -44,7 +45,8 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	{
 		verifyGameIsNotOver();
 		verifySourceAndDestinationCoords(from, to);
-		verifyMoveIsLegal(from, to);
+		verifyMoveIsLegal(piece, from, to);
+		verifyPlacementIsNotNextToAnotherColor(from, to);
 	}
 	
 	/**
@@ -165,19 +167,27 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 * Verify a move is legal, meaning that the first piece must be at the origin, 
 	 * players can only move pieces of their own color, and that the destination
 	 * coordinate must be empty
+	 * @param piece Type of piece being moved
 	 * @param from Source coordinate of move to verify
 	 * @param to Destination coordinate of move to verify
 	 * @throws HantoException if any of these conditions have been violated
 	 */
-	protected void verifyMoveIsLegal(HexCoordinate from, HexCoordinate to) 
-			throws HantoException
+	protected void verifyMoveIsLegal(HantoPieceType piece, 
+			HexCoordinate from, HexCoordinate to) throws HantoException
 	{
 		// Verify the piece to be moved is owned by the current player  
 		if(from != null) 
 		{
-			if(state.board.getPieceAt(from).getColor() != state.currPlayer) {
+			HantoPiece toPiece = state.board.getPieceAt(from);
+			
+			if(toPiece.getColor() != state.currPlayer) {
 				throw new HantoException("Illegal move:  your can only move pieces" +
 						"of your own color!");
+			}
+			
+			if(toPiece.getType() != piece){
+				throw new HantoException("Illegal move:  piece type specified does " +
+						"not match piece at source coordinate!");
 			}
 		}
 		
@@ -192,6 +202,24 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		if(state.board.getPieceAt(to) != null){
 			throw new HantoException("Illegal move:  can't place a piece " +
 					"on top of an existing piece!");
+		}
+	}
+	
+	protected void verifyPlacementIsNotNextToAnotherColor(HexCoordinate from, HexCoordinate to) 
+			throws HantoException {
+		
+		// We only care about this rule when placing pieces and after the second move
+		// and if this isn't our first placement of either color
+		if(from == null && to != null && 
+				state.numMoves > NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY) { 
+			
+			// If one of the neighbors of this piece is next to a piece of another color
+			for(HantoPiece p : state.board.getNeighborsOf(to)) {
+				if(p.getColor() != state.currPlayer) {
+					throw new HantoException("Illegal move:  " +
+							"you can only place pieces next to those of your own color!");
+				}
+			}
 		}
 	}
 	

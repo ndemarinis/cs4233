@@ -122,6 +122,22 @@ public class HantoBoard {
 		return res;
 	}
 	
+	
+	/**
+	 * Check if a given coordinate has any neighbors of a certain color
+	 * @param coord The coordinate to check
+	 * @param color The color to search
+	 * @return true if piece has neighbors of that color
+	 */
+	public boolean hasNeighborsOfColor(HexCoordinate coord, HantoPlayerColor color) {
+		boolean ret = true;
+		
+		for(HantoPiece p : this.getNeighborsOf(coord)) {
+			ret = ret && (p.getColor() == color);
+		}
+		
+		return ret;
+	}
 	/**
 	 * Get pieces with a specific PieceType
 	 * @param t The type for which to search on the board

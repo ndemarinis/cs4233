@@ -46,10 +46,11 @@ public class FakeHantoTournament {
 	 * Initialize a Fake Hanto Tournament
 	 * @param startingPlayer the player to start
 	 * @param colorOfUUT the color the HantoPlayer (AI) will take
+	 * @param strategy Strategy for the player to use in this game
      * @throws HantoException if something went wrong with creation
 	 */
 	public FakeHantoTournament(HantoPlayerColor startingPlayer, 
-			HantoPlayerColor colorOfUUT) throws HantoException {
+			HantoPlayerColor colorOfUUT, HantoPlayerStrategy strategy) throws HantoException {
 		
 		this.colorOfUUT = colorOfUUT;
 		this.playerMovingNext = startingPlayer;
@@ -57,11 +58,23 @@ public class FakeHantoTournament {
 		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
 		game.initialize(startingPlayer);
 		
-		player = new DeltaHantoPlayer(colorOfUUT, (colorOfUUT == startingPlayer));
+		player = new DeltaHantoPlayer(colorOfUUT, (colorOfUUT == startingPlayer), strategy);
 		
 		System.out.println("\nNew tournament - PLAYER: " + colorOfUUT + ", TESTER: " + 
 		((colorOfUUT == HantoPlayerColor.BLUE) ? HantoPlayerColor.RED : HantoPlayerColor.BLUE) + ", " +
 				"Starting player:  " + startingPlayer);
+	}
+	
+	
+	/**
+	 * Initialize a Fake Hanto Tournament
+	 * @param startingPlayer the player to start
+	 * @param colorOfUUT the color the HantoPlayer (AI) will take
+     * @throws HantoException if something went wrong with creation
+	 */
+	public FakeHantoTournament(HantoPlayerColor startingPlayer, 
+			HantoPlayerColor colorOfUUT) throws HantoException {
+		this(startingPlayer, colorOfUUT, null);
 	}
 	
 	/**

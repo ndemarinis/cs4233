@@ -64,8 +64,9 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 		if(!playerHasResigned(piece, from, to)) {
 			verifySourceAndDestinationCoords(from, to);
 			verifyButterflyHasBeenPlacedByFourthTurn(piece);
-			verifyMoveIsLegal(from, to);
+			verifyMoveIsLegal(piece, from, to);
 			verifyPlayerCanMovePieces(from, to);
+			verifyPlacementIsNotNextToAnotherColor(from, to);
 			
 			verifyPieceCanMove(piece, from, to);
 		}

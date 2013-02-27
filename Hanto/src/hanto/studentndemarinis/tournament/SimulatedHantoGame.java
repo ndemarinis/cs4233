@@ -9,8 +9,6 @@
  */
 package hanto.studentndemarinis.tournament;
 
-import java.util.Map;
-
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HantoBoard;
@@ -22,6 +20,10 @@ import hanto.util.HantoGameID;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a realization of HantoGame used for simulation purposes
@@ -66,7 +68,18 @@ public class SimulatedHantoGame implements InternalHantoGame {
 	 * @throws HantoException if somethign went wrong
 	 */
 	public HexCoordinate getRandomValidEmptyCoordinate() throws HantoException {
-		return game.getBoard().getAllEmptyNeighborCoordinates().iterator().next();
+		
+		List<HexCoordinate> possibleMoves = new ArrayList<HexCoordinate>();
+		HantoPlayerColor oppositePlayer = (game.getCurrPlayer() == HantoPlayerColor.RED) ? 
+				HantoPlayerColor.BLUE : HantoPlayerColor.RED;
+		
+		for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates()) {
+			if(game.getNumMoves() <= 1 || !game.getBoard().hasNeighborsOfColor(c, oppositePlayer)) {
+				possibleMoves.add(c);
+			}
+		}
+		
+		return possibleMoves.get((int)(Math.random() * possibleMoves.size()));
 	}
 	
 	/* ********** GETTERS/SETTERS ****************/

@@ -46,16 +46,35 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	/**
 	 * Create a new DeltaHantoPlayer, as given
-	 * @param color Player of color, given by tournament
+	 * @param color Color for the player, given by tournament
 	 * @param starting true if this player is making the starting move
 	 */
 	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) throws HantoException{
-		
+		this(color, isStarting, null);
+	}
+	
+	/**
+	 * Create a new DeltaHantoPlayer, as given
+	 * @param color Color for the player
+	 * @param isStarting true if this player is making a starting move
+	 * @param strategy PlayerStrategy to use when selecting moves
+	 * @throws HantoException if anything goes wrong
+	 * 
+	 * TODO: THIS SHOULD NOT THROW AN EXCEPTION
+	 */
+	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting, 
+			HantoPlayerStrategy strategy) throws HantoException {
 		this.color = color;
 		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
 		
 		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
-		strategy = new RandomSelectStrategy();
+		
+		// If we've passed in a strategy, use it.  Otherwise, pick the random one.  
+		if(strategy == null) {
+			this.strategy = new RandomSelectStrategy();
+		} else {
+			this.strategy = strategy;
+		}
 	}
 	
 	/**
@@ -90,7 +109,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			game.makeMove(ret);
 		} catch(HantoException e) {
 			throw new HantoPlayerException("NOO!  Our move was bad! " +
-					"Something has gone horribly wrong!");
+					"Something has gone horribly wrong!   Message was:  " + e.getMessage());
 		}
 		
 		return ret;

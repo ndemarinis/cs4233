@@ -303,9 +303,18 @@ public class TestDeltaHanto {
 	{
 		game.makeMove(BUTTERFLY, null, origin);
 		game.makeMove(BUTTERFLY, null, c01);
-		game.makeMove(CRAB, null, c10);
-		game.makeMove(BUTTERFLY, c01, c_11);
-		game.makeMove(CRAB, c10, c01);
+		game.makeMove(CRAB, null, c0_1);
+		game.makeMove(BUTTERFLY, c01, c10);
+		game.makeMove(CRAB, c0_1, c_10);
+	}
+	
+	@Test(expected=HantoException.class)
+	public void cantMovePieceOfWrongType() throws HantoException
+	{
+		game.makeMove(BUTTERFLY, null, origin);
+		game.makeMove(BUTTERFLY, null, c01);
+		game.makeMove(CRAB, null, c0_1);
+		game.makeMove(CRAB, c01, c10);
 	}
 	
 	@Test(expected=HantoException.class)
@@ -313,7 +322,7 @@ public class TestDeltaHanto {
 	{
 		game.makeMove(BUTTERFLY, null, origin);
 		game.makeMove(BUTTERFLY, null, c01);
-		game.makeMove(CRAB, null, c10);
+		game.makeMove(CRAB, null, c0_1);
 		game.makeMove(BUTTERFLY, c01, c_11);
 		game.makeMove(CRAB, c10, new TestHantoCoordinate(-1, 2));	
 	}

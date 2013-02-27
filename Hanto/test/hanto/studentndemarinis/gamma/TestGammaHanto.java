@@ -245,17 +245,18 @@ public class TestGammaHanto {
 		// Initialize the board with a blue butterfly surrounded by red sparrows, save one hex
 		TestHantoGame testGame = new TestGammaHantoGame();
 		HexPiece config[] = {new HexPiece(new HexCoordinate(0, 0), BLUE, BUTTERFLY), 
-							 new HexPiece(new HexCoordinate(0, 1), RED,  BUTTERFLY),
-							 new HexPiece(new HexCoordinate(1, 0), RED,  SPARROW),
-							 new HexPiece(new HexCoordinate(1, -1), RED,  SPARROW),
+							 new HexPiece(new HexCoordinate(1, -1), RED,  SPARROW),	
+							 new HexPiece(new HexCoordinate(2, -1), RED,  BUTTERFLY),
+							 new HexPiece(new HexCoordinate(0, 1), RED,  SPARROW),
 							 new HexPiece(new HexCoordinate(0, -1), RED,  SPARROW),
-							 new HexPiece(new HexCoordinate(-1, 0), RED,  SPARROW)
+							 new HexPiece(new HexCoordinate(-1, 0), RED,  SPARROW),
+							 new HexPiece(new HexCoordinate(-1, 1), RED,  SPARROW)
 							};
 		
 		testGame.initialize(RED, config);
 		
 		// Place that one sparrow in the remaining open hex, which should result in a win.  
-		MoveResult ret = testGame.makeMove(SPARROW, null, new HexCoordinate(-1, 1));
+		MoveResult ret = testGame.makeMove(BUTTERFLY, new HexCoordinate(2, -1), new HexCoordinate(1, 0));
 		assertEquals(RED_WINS, ret);
 	}
 	
