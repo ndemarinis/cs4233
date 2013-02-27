@@ -36,6 +36,8 @@ public class TestDeltaHantoPlayer {
 
 	private HantoMoveRecord butterflyAtOrigin = new HantoMoveRecord(BUTTERFLY, null, origin);
 	private HantoGame game;
+	private FakeHantoTournament tourn;
+	
 	
 	@Before
 	public void setUp() throws HantoException 
@@ -75,6 +77,52 @@ public class TestDeltaHantoPlayer {
 				!(moveNotOrigin.getTo().getX() == 0 && moveNotOrigin.getTo().getY() == 0));
 	}
 	
+	@Test
+	public void canCreateFakeTournament() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, BLUE);
+		
+		assertNotNull(tourn);
+	}
+	
+	@Test
+	public void fakeTournamentPlayerPutsButterflyAtOrigin() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, BLUE);
+		tourn.playerMove();
+		
+		assertTrue(equalsMoveRecord(tourn.lastMove, butterflyAtOrigin));
+	}
+	
+	@Test(expected=HantoPlayerException.class)
+	public void playerCantMoveOutOfTurnInTournament() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, RED);
+		tourn.playerMove();
+	}
+	
+	@Test(expected=HantoPlayerException.class)
+	public void testerCantMoveOutOfTurnInTournament() throws HantoException
+	{
+		tourn = new FakeHantoTournament(RED, RED);
+		tourn.manualMove(null, null, null);
+	}
+	
+	@Test
+	public void tournPlayerPutsButterflyAtNonOrigin() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, RED);
+		tourn.manualMove(BUTTERFLY, null, origin);
+		tourn.playerMove();
+		
+		assertTrue(tourn.lastMove.getFrom() == null && 
+				!(tourn.lastMove.getTo().getX() == 0 && tourn.lastMove.getTo().getY() == 0));
+	}
+	
+	
+	
+	
+	/* *********** HELPER METHODS *****************/
 	
 	/**
 	 * Compare two move records.  Equal records have the same
