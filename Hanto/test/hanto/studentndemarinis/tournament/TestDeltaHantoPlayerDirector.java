@@ -45,7 +45,7 @@ public class TestDeltaHantoPlayerDirector {
 	}
 
 	@Test
-	public void test() {
+	public void testRunWithDirector() {
 		for(int i = 0; i < NUM_RUNS; i++) {
 			// Put the following code in the method where you want to run the game.
 
@@ -71,7 +71,7 @@ public class TestDeltaHantoPlayerDirector {
 	}
 	
 	@After
-	public void finish() {
+	public void tearDown() {
 		System.setErr(System.err);
 	}
 

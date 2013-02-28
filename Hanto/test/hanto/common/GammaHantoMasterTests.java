@@ -22,6 +22,8 @@ import org.junit.*;
 
 /**
  * Test cases for the first project deliverable (homework assignment 2)
+ * NOTE:  some of these have been removed because they violated
+ * the condition for placement near opponent pieces
  * @author gpollice
  * @version Jan 27, 2013
  */
@@ -176,64 +178,7 @@ public class GammaHantoMasterTests
 		gammaGame.makeMove(SPARROW, null, new TestHantoCoordinate(3, -2));
 	}
 
-	@Test
-	@Ignore
-	public void blueWinsWithBlueMove() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Red
-		gammaGame.makeMove(SPARROW, null, tc10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc11); // Red
-		gammaGame.makeMove(SPARROW, null, tc02); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_12); // Red
-		assertThat(gammaGame.makeMove(SPARROW, null, tc_11), is(BLUE_WINS)); // Blue
-	}
 
-	@Test
-	@Ignore
-	public void blueWinsWithRedMove() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Red
-		gammaGame.makeMove(SPARROW, null, tc10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc11); // Red
-		gammaGame.makeMove(SPARROW, null, tc02); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_12); // Red
-		gammaGame.makeMove(SPARROW, null, tc0_1); // Blue
-		assertThat(gammaGame.makeMove(SPARROW, null, tc_11), is(BLUE_WINS));
-	}
-
-	@Test
-	@Ignore
-	public void redWins() throws HantoException
-	{
-		gammaGame.initialize(HantoPlayerColor.RED);
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Red
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Blue
-		gammaGame.makeMove(SPARROW, null, tc10); // Red
-		gammaGame.makeMove(SPARROW, null, tc11); // Blue
-		gammaGame.makeMove(SPARROW, null, tc02); // Red
-		gammaGame.makeMove(SPARROW, null, tc_12); // Blue
-		assertThat(gammaGame.makeMove(SPARROW, null, tc_11), is(RED_WINS)); // Red
-	}
-
-	@Test
-	@Ignore
-	public void redWinsOnLastMove() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Red
-		gammaGame.makeMove(SPARROW, null, tc_10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_12); // Red
-		gammaGame.makeMove(SPARROW, null, new TestHantoCoordinate(-1, 3)); // Blue
-		gammaGame.makeMove(SPARROW, null, tc11); // Red
-		gammaGame.makeMove(SPARROW, null, tc10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc1_1); // Red
-		gammaGame.makeMove(SPARROW, null, tc0_1); // Blue
-		gammaGame.makeMove(SPARROW, null, tc0_2); // Red
-		gammaGame.makeMove(SPARROW, null, new TestHantoCoordinate(0, 3)); // Blue
-		assertThat(gammaGame.makeMove(SPARROW, null, tc_11), is(RED_WINS)); // RED
-	}
 
 	@Test(expected = HantoException.class)
 	public void attemptToPlaceTwoBlueButterflies() throws HantoException
@@ -252,21 +197,6 @@ public class GammaHantoMasterTests
 		gammaGame.makeMove(BUTTERFLY, null, tc10);
 	}
 
-	@Test
-	@Ignore
-	public void drawBySurroundingBothButterflies() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Red
-		gammaGame.makeMove(SPARROW, null, tc_10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_12); // Red
-		gammaGame.makeMove(SPARROW, null, tc02); // Blue
-		gammaGame.makeMove(SPARROW, null, tc11); // Red
-		gammaGame.makeMove(SPARROW, null, tc10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc1_1); // Red
-		gammaGame.makeMove(SPARROW, null, tc0_1); // Blue
-		assertThat(gammaGame.makeMove(SPARROW, null, tc_11), is(DRAW)); // Red
-	}
 
 	@Test
 	public void drawByExhaustingMoves() throws HantoException
@@ -340,25 +270,7 @@ public class GammaHantoMasterTests
 		gammaGame.makeMove(SPARROW, null, new TestHantoCoordinate(2, 0));
 	}
 
-	@Test
-	@Ignore
-	public void printableBoardTest() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); // Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); // Red
-		gammaGame.makeMove(SPARROW, null, tc_10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_12); // Red
-		gammaGame.makeMove(SPARROW, null, tc02); // Blue
-		gammaGame.makeMove(SPARROW, null, tc11); // Red
-		gammaGame.makeMove(SPARROW, null, tc10); // Blue
-		gammaGame.makeMove(SPARROW, null, tc1_1); // Red
-		gammaGame.makeMove(SPARROW, null, tc0_1); // Blue
-		gammaGame.makeMove(SPARROW, null, tc_11); // Red
-		String pb = gammaGame.getPrintableBoard();
-		assertNotNull(pb);
-		assertTrue(pb.length() > 0);
-		System.out.println(pb);
-	}
+
 
 	@Test(expected = HantoException.class)
 	public void moveFromUnoccupiedHex() throws HantoException
@@ -388,20 +300,6 @@ public class GammaHantoMasterTests
 		gammaGame.makeMove(BUTTERFLY, tc01, tc11); // Blue
 	}
 
-	@Test
-	@Ignore
-	public void winByMovingButterfly() throws HantoException
-	{
-		gammaGame.makeMove(BUTTERFLY, null, tc00); 	// Blue
-		gammaGame.makeMove(BUTTERFLY, null, tc01); 	// Red
-		gammaGame.makeMove(SPARROW, null, tc10); 	// Blue
-		gammaGame.makeMove(SPARROW, null, tc11); 	// Red
-		gammaGame.makeMove(BUTTERFLY, tc00, tc1_1);	// Blue
-		gammaGame.makeMove(SPARROW, null, tc02); 	// Red
-		gammaGame.makeMove(SPARROW, null, tc_12); 	// Blue
-		gammaGame.makeMove(SPARROW, null, tc_11);	// Red
-		assertThat(gammaGame.makeMove(BUTTERFLY, tc1_1, tc00), is(BLUE_WINS));	// Blue
-	}
 	
 	@Test(expected = HantoException.class)
 	public void attemptToMoveSparrow() throws HantoException
