@@ -9,10 +9,16 @@
  */
 package hanto.studentndemarinis.tournament;
 
-import static org.junit.Assert.*;
-import static hanto.util.HantoPlayerColor.*;
+import static hanto.studentndemarinis.testutil.TestCoordinates.c00;
+import static hanto.studentndemarinis.testutil.TestCoordinates.c01;
+import static hanto.studentndemarinis.testutil.TestCoordinates.c0_1;
+import static hanto.studentndemarinis.testutil.TestCoordinates.origin;
 import static hanto.util.HantoPieceType.*;
-import static hanto.studentndemarinis.testutil.TestCoordinates.*;
+import static hanto.util.HantoPlayerColor.*;
+import static hanto.util.MoveResult.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.HantoFactory;
@@ -23,7 +29,6 @@ import hanto.util.HantoGameID;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -172,6 +177,36 @@ public class TestDeltaHantoPlayer {
 		
 		assertEquals(BUTTERFLY, tourn.lastMove.getPiece());
 	}
+	
+	@Test
+	public void playerResignsWhenOutOfMoves() throws HantoException
+	{
+		tourn = new FakeHantoTournament(BLUE, BLUE);
+
+		tourn.playerMove();
+		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.playerMove();
+		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		
+		assertEquals(RED_WINS, tourn.playerMove()); // Player (BLUE) should be out of pieces now.  	
+	}
+	
+	
+	
 	
 	/* *********** HELPER METHODS *****************/
 	

@@ -105,31 +105,33 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		// Pick a random move based on those given strategy
 		// If no moves are available, resign.  
-		HantoMoveRecord ret = possibleMoves.isEmpty() ? new HantoMoveRecord(null, null, null) :
+		HantoMoveRecord selectedMove = possibleMoves.isEmpty() ? null : 
 			strategy.selectMove(game, possibleMoves);
 
-		// Run this move on our game, not only so we update our state, 
-		// but to verify it against the rules.  
-		try {
-			// Try to actually make the move
-			game.makeMove(ret);
-			
-			// If we are placing a piece, remove it from our hand
-			if(ret.getFrom() == null) { 
-				hand.removeFromHand(ret.getPiece());
+		if(selectedMove != null) {
+			// Run this move on our game, not only so we update our state, 
+			// but to verify it against the rules.  
+			try {
+				// Try to actually make the move
+				game.makeMove(selectedMove);
+
+				// If we are placing a piece, remove it from our hand
+				if(selectedMove.getFrom() == null) { 
+					hand.removeFromHand(selectedMove.getPiece());
+				}
+
+			} catch(HantoException e) {
+				System.out.println("Failure:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(selectedMove));
+
+				throw new HantoPlayerException("NOO!  Our move was bad! " +
+						"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
+						"Move was:  " + getPrintableMove(selectedMove));
 			}
-			
-		} catch(HantoException e) {
-			System.out.println("Failure:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(ret));
-			
-			throw new HantoPlayerException("NOO!  Our move was bad! " +
-					"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
-					"Move was:  " + getPrintableMove(ret));
 		}
 		
 
 		
-		return ret;
+		return selectedMove;
 	}
 	
 	private void determineCurrentMoveState()
@@ -205,7 +207,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	private String getPrintableMove(HantoMoveRecord r)
 	{
-		return ((r.getFrom() == null) ? "PLACE " : " MOVE  ") + r.getPiece() +
+		return ((r.getFrom() == null) ? "PLACE " : " MOVE  ") + 
+				((r.getPiece() == null) ? "(null)" : r.getPiece()) +
 		((r.getFrom() == null) ? (" at " + r.getTo()) : 
 			(r.getFrom() + " -> " + r.getTo()));
 	}

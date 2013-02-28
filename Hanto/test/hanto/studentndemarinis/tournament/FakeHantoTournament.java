@@ -122,16 +122,18 @@ public class FakeHantoTournament {
 		// Tell the player to move
 		playerMove = player.makeMove(lastMove);
 		
-		// Perform this move in the test game
-		ret = game.makeMove(playerMove.getPiece(), playerMove.getFrom(), playerMove.getTo());
-		
-		printMove(playerMovingNext, playerMove);
-		
+		// If the player resigned, simulate it to see what happens
+		if(playerMove == null) { 
+			ret = game.makeMove(null, null, null); 
+		} else {
+			// Otherwise, run their move in the test game
+			ret = game.makeMove(playerMove.getPiece(), playerMove.getFrom(), playerMove.getTo());
+			printMove(playerMovingNext, playerMove);
+		}
 		
 		// Update our state information
 		completeMove();
 		lastMove = playerMove;
-		
 
 		return ret;
 	}
