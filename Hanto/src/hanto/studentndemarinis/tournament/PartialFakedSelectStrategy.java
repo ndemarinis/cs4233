@@ -26,17 +26,33 @@ import java.util.List;
 public class PartialFakedSelectStrategy implements HantoPlayerStrategy {
 
 	private HantoMoveRecord[] moves;
-	private HantoPlayerStrategy randomStrategy = new RandomSelectStrategy();
+	private HantoPlayerStrategy randomStrategy;
 	
 	private int moveIndex;
 	
 	/**
 	 * Create a partially-faked strategy
 	 * @param moves Array of moves this player should make
+	 * @param selectPlaces whether or not we want to move with 
+	 * placements when moves are exhausted
+	 * @param selectMoves whether or not we want to move with 
+	 * moves when moves are exhausted
 	 */
-	public PartialFakedSelectStrategy(HantoMoveRecord[] moves) {
+	public PartialFakedSelectStrategy(HantoMoveRecord[] moves, 
+			boolean selectPlaces, boolean selectMoves) {
+		
+		randomStrategy = new RandomSelectStrategy(selectPlaces, selectMoves);
+		
 		this.moves = moves;
 		moveIndex = 0;
+	}
+	
+	/**
+	 * Create a partially-faked strategy
+	 * @param moves Array of moves this player should make
+	 */
+	public PartialFakedSelectStrategy(HantoMoveRecord[] moves) {
+		this(moves, true, true);
 	}
 
 	@Override

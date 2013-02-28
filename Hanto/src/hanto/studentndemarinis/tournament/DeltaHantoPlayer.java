@@ -142,7 +142,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 
 				throw new HantoPlayerException("NOO!  Our move was bad! " +
 						"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
-						"Move was:  " + getPrintableMove(selectedMove));
+						"  Move was:  " + getPrintableMove(selectedMove));
 			}
 		}
 		

@@ -130,7 +130,7 @@ public class TestDeltaHantoPlayer {
 	@Test
 	public void tournPlaceTwoPiecesEach() throws HantoException
 	{
-		tourn = new FakeHantoTournament(BLUE, BLUE);
+		tourn = new FakeHantoTournament(BLUE, BLUE, new RandomSelectStrategy(true, false));
 		tourn.playerMove();
 		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
 		tourn.playerMove();
@@ -145,7 +145,7 @@ public class TestDeltaHantoPlayer {
 								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -3)),
 								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -4))};
 		
-		tourn = new FakeHantoTournament(BLUE, BLUE, new PartialFakedSelectStrategy(moves));
+		tourn = new FakeHantoTournament(BLUE, BLUE, new PartialFakedSelectStrategy(moves, true, false));
 		
 		tourn.playerMove();
 		tourn.manualMove(BUTTERFLY, null, c01);
@@ -182,7 +182,7 @@ public class TestDeltaHantoPlayer {
 	@Test
 	public void playerResignsWhenOutOfMoves() throws HantoException
 	{
-		tourn = new FakeHantoTournament(BLUE, BLUE);
+		tourn = new FakeHantoTournament(BLUE, BLUE, new RandomSelectStrategy(true, false));
 
 		tourn.playerMove();
 		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
@@ -203,9 +203,28 @@ public class TestDeltaHantoPlayer {
 		tourn.playerMove();
 		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
 		
-		assertEquals(OK, tourn.playerMove()); // Player (BLUE) should be out of pieces now.  	
+		// Player (BLUE) should be out of pieces now, so it should resign.  
+		assertEquals(RED_WINS, tourn.playerMove());  	
 	}
 	
+	@Test
+	public void playerCanMoveAPiece() throws HantoException {
+		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c0_1),
+								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -2))};
+		
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves));
+		
+		tourn.manualMove(BUTTERFLY, null, c00);
+		tourn.playerMove();
+		tourn.manualMove(CRAB, null, new TestHantoCoordinate(0, 1));
+		tourn.playerMove();
+		// Player should be required to move now.  
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, 2));
+		tourn.playerMove();
+		
+		// The last move should not be a placement, meaning it has a valid source
+		assertNotNull(tourn.lastMove.getFrom());
+	}
 	
 	
 	
