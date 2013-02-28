@@ -16,6 +16,7 @@ import static hanto.studentndemarinis.testutil.TestCoordinates.origin;
 import static hanto.util.HantoPieceType.*;
 import static hanto.util.HantoPlayerColor.*;
 import static hanto.util.MoveResult.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +30,7 @@ import hanto.util.HantoGameID;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -161,7 +163,30 @@ public class TestDeltaHantoPlayer {
 		
 		assertEquals(CRAB, tourn.lastMove.getPiece());
 	}
+	
+	@Test
+	public void playerResignsIfPicksBadMove() throws HantoException {
+		HantoMoveRecord moves[] = { new HantoMoveRecord(BUTTERFLY, null, new TestHantoCoordinate(3, 7))};
+		
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves, false, false));
+		
+		tourn.manualMove(BUTTERFLY, null, origin);
+		
+		// Player should try to make an invalid move, which should fail, so it resigns
+		assertEquals(BLUE_WINS, tourn.playerMove()); 
+	}
 
+	
+	@Test
+	public void playerResignsIfGivenABadOpponentMove() throws HantoException 
+	{
+		HantoGamePlayer player = new DeltaHantoPlayer(BLUE, true);
+		
+		// Give the player an invalid move, so it should resign.  
+		// We signal this to the director by returning null
+		assertNull(player.makeMove(new HantoMoveRecord(BUTTERFLY, 
+				null, new TestHantoCoordinate(3, 7))));
+	}
 	
 	
 	@Test
@@ -225,7 +250,7 @@ public class TestDeltaHantoPlayer {
 		// The last move should not be a placement, meaning it has a valid source
 		assertNotNull(tourn.lastMove.getFrom());
 	}
-	
+
 	
 	
 	/* *********** HELPER METHODS *****************/

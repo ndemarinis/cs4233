@@ -101,14 +101,18 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	public HantoMoveRecord makeMove(HantoMoveRecord opponentsMove)
 	{
 		List<HantoMoveRecord> possibleMoves;
+		boolean needToResign = false; // If we need to resign based on a bad opponent move
 		
 		if(opponentsMove != null) // If this wasn't the starting move 
 		{
 			try {
 				game.makeMove(opponentsMove); // Record the opponent's move on our board
 			} catch (HantoException e) {
-				throw new HantoPlayerException("Opponent's move was bad!  You wrote a bad test!  " +
-						"Exception was:  " + e.getMessage());
+				needToResign = true;
+				
+				System.err.println("Received invalid opponent move, resigning.  " + 
+						"I don't have time for your nonsense.  " +
+						"Exception was:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(opponentsMove));
 			}
 		}
 		
@@ -118,8 +122,9 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		// Pick a random move based on those given strategy
 		// If no moves are available, resign.  
-		HantoMoveRecord selectedMove = possibleMoves.isEmpty() ? null : 
-			strategy.selectMove(game, possibleMoves);
+		HantoMoveRecord selectedMove = (needToResign) ? null  : 
+			           possibleMoves.isEmpty() ? null : 
+			        	   strategy.selectMove(game, possibleMoves);
 
 		if(selectedMove != null) {
 			// Run this move on our game, not only so we update our state, 
@@ -138,11 +143,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				}
 
 			} catch(HantoException e) {
-				System.out.println("Failure:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(selectedMove));
-
-				throw new HantoPlayerException("NOO!  Our move was bad! " +
-						"Something has gone horribly wrong!   Message was:  " + e.getMessage() + 
-						"  Move was:  " + getPrintableMove(selectedMove));
+				System.err.println("Picked invalid move, resigning.  Cause:  " + 
+						e.getMessage() + "\nMove was:  " + getPrintableMove(selectedMove));
+				
+				// Since we just broke our game, resign.  
+				selectedMove = null; 
 			}
 		}
 		
