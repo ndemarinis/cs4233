@@ -150,7 +150,7 @@ public class FakeHantoTournament {
 				color,
 				r.getPiece(),
 				((r.getFrom() == null) ? 
-						(" at " + r.getTo()) : (r.getTo() + " -> " + r.getTo())), 
+						(" at " + r.getTo()) : (r.getFrom() + " -> " + r.getTo())), 
 				ret);
 	}
 }

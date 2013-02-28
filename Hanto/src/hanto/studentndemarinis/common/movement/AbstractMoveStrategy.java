@@ -39,5 +39,5 @@ public abstract class AbstractMoveStrategy implements HantoMoveStrategy {
 	@Override
 	public abstract boolean canMoveTo(HantoGameState state, HexCoordinate from,
 			HexCoordinate to) throws HantoException;
-
+	
 }

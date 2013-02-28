@@ -32,7 +32,7 @@ import java.util.Vector;
  * @version Jan 23, 2013
  *
  */
-public class HantoBoard {
+public class HantoBoard implements Cloneable {
 
 	// Maximum number of possible neighbors on a hex grid
 	private final int MAX_NEIGHBORS = 6;
@@ -305,6 +305,21 @@ public class HantoBoard {
 		
 		for(HantoPiece p : pieces.values()) {
 			ret += (p + "\n");
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Clone the board in a horribly naive manner.  
+	 * @return board a new HantoBoard with new pieces
+	 */
+	public HantoBoard clone() {
+		HantoBoard ret = new HantoBoard();
+		
+		for(HantoPiece p : pieces.values()) {
+			ret.pieces.put(p.getCoordinate(), 
+					new HantoPiece(p.getColor(), p.getType(), p.getCoordinate()));
 		}
 		
 		return ret;

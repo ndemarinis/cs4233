@@ -212,7 +212,7 @@ public class TestDeltaHantoPlayer {
 		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c0_1),
 								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -2))};
 		
-		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves));
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves, false, true));
 		
 		tourn.manualMove(BUTTERFLY, null, c00);
 		tourn.playerMove();
