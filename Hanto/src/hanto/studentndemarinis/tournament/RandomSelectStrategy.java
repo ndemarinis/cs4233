@@ -44,11 +44,17 @@ public class RandomSelectStrategy implements HantoPlayerStrategy {
 		this(true, true);
 	}
 
+	/**
+	 * Select a move based on the given strategy
+	 * @param game The Hanto game
+	 * @param allPossibleMoves list of all possible moves
+	 */
 	public	HantoMoveRecord selectMove(InternalHantoGame game, 
 			List<HantoMoveRecord> allPossibleMoves) {
 		
 		List<HantoMoveRecord> possibleMovesBasedOnContraints = 
 				new ArrayList<HantoMoveRecord>();
+		
 		
 		// Don't bother parsing the list to remove pieces if we selected both.  
 		if(!selectPlaces || !selectMoves) {
@@ -70,6 +76,7 @@ public class RandomSelectStrategy implements HantoPlayerStrategy {
 			// If we selected everything, just use the original list.  
 			possibleMovesBasedOnContraints = allPossibleMoves;
 		}
+		
 		
 		// Then just randomly select a move.  That's it.  
 		// If the list after constraining is empty, we need to resign, so return null.  
