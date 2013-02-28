@@ -60,7 +60,10 @@ public class HantoFactory {
 	public HantoGame makeHantoGame(HantoGameID gameID)
 	{
 		HantoGame ret = null;
-		try {
+		
+		// TODO:  Figure out why these throw exceptions in the constructor
+		// and try to eliminate them.  
+		try { 
 			switch(gameID) {
 			case ALPHA_HANTO:
 				ret = new AlphaHantoGame();

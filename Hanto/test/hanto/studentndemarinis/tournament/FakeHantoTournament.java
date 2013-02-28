@@ -12,6 +12,7 @@ package hanto.studentndemarinis.tournament;
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.HantoFactory;
+import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoGameID;
@@ -34,7 +35,7 @@ import hanto.util.MoveResult;
  */
 public class FakeHantoTournament {
 
-	protected SimulatedHantoGame game;
+	protected InternalHantoGame game;
 	protected DeltaHantoPlayer player;
 	
 	protected HantoPlayerColor colorOfUUT;
@@ -55,7 +56,8 @@ public class FakeHantoTournament {
 		this.colorOfUUT = colorOfUUT;
 		this.playerMovingNext = startingPlayer;
 		
-		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
+		game = (InternalHantoGame)
+				(HantoFactory.getInstance().makeHantoGame(HantoGameID.DELTA_HANTO));
 		game.initialize(startingPlayer);
 		
 		player = new DeltaHantoPlayer(colorOfUUT, (colorOfUUT == startingPlayer), strategy);

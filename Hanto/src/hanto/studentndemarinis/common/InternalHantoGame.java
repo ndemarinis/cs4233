@@ -9,12 +9,15 @@
  */
 package hanto.studentndemarinis.common;
 
-import java.util.Map;
-
+import hanto.common.HantoException;
 import hanto.common.HantoGame;
+import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoCoordinate;
 import hanto.util.HantoPieceType;
 import hanto.util.HantoPlayerColor;
+import hanto.util.MoveResult;
+
+import java.util.Map;
 
 /**
  * Interface for HantoGame with additional methods,
@@ -47,6 +50,21 @@ public interface InternalHantoGame extends HantoGame {
 	 * @param c location of new piece
 	 */
 	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
+	
+	/**
+	 * Make a move based on a record provided by the tournament
+	 * 
+	 * NOTE:  I am assuming that it is okay for my game implementation
+	 * to have this dependency on HantoMoveRecord, which is from the tournament.  
+	 * I have basically only added this for convenience, and have justified it
+	 * because I see the player and tournament as all parts of our internal 
+	 * implementations.  
+	 * 
+	 * @param move Record for the move to make
+	 * @return Result of the move
+	 * @throws HantoException if the move was invalid
+	 */
+	public MoveResult makeMove(HantoMoveRecord move) throws HantoException;
 	
 	/**
 	 * 

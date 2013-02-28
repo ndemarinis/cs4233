@@ -10,9 +10,11 @@
 package hanto.studentndemarinis.tournament;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoPlayerHand;
 import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.studentndemarinis.common.movement.HantoMoveStrategy;
 import hanto.studentndemarinis.common.movement.HantoMoveType;
 import hanto.studentndemarinis.common.movement.MoveFactory;
@@ -38,7 +40,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 
 	HantoPlayerColor color; // Our color in this game
 	
-	private SimulatedHantoGame game;
+	// Game used for simulating moves and checking their validity
+	private InternalHantoGame game; // Since it's our player, we can use our interface for the game
 
 	private HantoPlayerHand hand; // Available pieces for play, represented similarly in the game itself
 	private Collection<HantoPiece> placedPieces;
@@ -79,7 +82,9 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		this.color = color;
 		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
 		
-		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
+		game = (InternalHantoGame)
+				(HantoFactory.getInstance().makeHantoGame(HantoGameID.DELTA_HANTO));
+		
 		hand = new HantoPlayerHand(game.getStartingHand()); // Setup our available pieces
 		placedPieces = new Vector<HantoPiece>(); // Initialize list of pieces we will place
 		moveStrategies = setupMoveStrategies();

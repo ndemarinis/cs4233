@@ -20,13 +20,20 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import hanto.common.HantoException;
 import hanto.common.HantoGame;
 import hanto.studentndemarinis.HantoFactory;
+import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.InternalHantoGame;
 import hanto.testutil.TestHantoCoordinate;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoGameID;
+import hanto.util.HantoPlayerColor;
 import hanto.util.MoveResult;
 
 import org.junit.Before;
@@ -134,9 +141,9 @@ public class TestDeltaHantoPlayer {
 	{
 		tourn = new FakeHantoTournament(BLUE, BLUE, new RandomSelectStrategy(true, false));
 		tourn.playerMove();
-		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(BUTTERFLY, null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(SPARROW, null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(SPARROW, null, getRandomValidEmptyCoordinate(tourn.game));
 	}
 	
 	@Test
@@ -210,23 +217,23 @@ public class TestDeltaHantoPlayer {
 		tourn = new FakeHantoTournament(BLUE, BLUE, new RandomSelectStrategy(true, false));
 
 		tourn.playerMove();
-		tourn.manualMove(BUTTERFLY, null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(BUTTERFLY, null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(SPARROW,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(SPARROW,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(SPARROW,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(SPARROW,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(SPARROW,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(CRAB,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(CRAB,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(CRAB,   null, getRandomValidEmptyCoordinate(tourn.game));
 		tourn.playerMove();
-		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
+		tourn.manualMove(CRAB,   null, getRandomValidEmptyCoordinate(tourn.game));
 		
 		// Player (BLUE) should be out of pieces now, so it should resign.  
 		assertEquals(RED_WINS, tourn.playerMove());  	
@@ -266,7 +273,7 @@ public class TestDeltaHantoPlayer {
 	 * @return true if the two move records have the same coordinates 
 	 * and piece
 	 */
-	public boolean equalsMoveRecord(HantoMoveRecord a, HantoMoveRecord b)
+	private boolean equalsMoveRecord(HantoMoveRecord a, HantoMoveRecord b)
 	{
 		return a != null && b != null && 
 				(a.getFrom() == null && b.getFrom() == null) || 
@@ -283,9 +290,30 @@ public class TestDeltaHantoPlayer {
 	 * @param record A move record
 	 * @throws HantoException if anything went wrong during the move
 	 */
-	public MoveResult makeMoveRecord(HantoGame game, HantoMoveRecord record) throws HantoException
+	private MoveResult makeMoveRecord(HantoGame game, HantoMoveRecord record) throws HantoException
 	{
 		return game.makeMove(record.getPiece(), record.getFrom(), record.getTo());
 	}
 
+	
+	/**
+	 * Just get me a valid empty coordinate.  This is gross, but just do it.  
+	 * 
+	 * @return An empty coordinate on the board with at least one adjacent piece
+	 * @throws HantoException if something went wrong
+	 */
+	private HexCoordinate getRandomValidEmptyCoordinate(InternalHantoGame game) throws HantoException {
+		
+		List<HexCoordinate> possibleMoves = new ArrayList<HexCoordinate>();
+		HantoPlayerColor oppositePlayer = (game.getCurrPlayer() == HantoPlayerColor.RED) ? 
+				HantoPlayerColor.BLUE : HantoPlayerColor.RED;
+		
+		for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates()) {
+			if(game.getNumMoves() <= 1 || !game.getBoard().hasNeighborsOfColor(c, oppositePlayer)) {
+				possibleMoves.add(c);
+			}
+		}
+		
+		return possibleMoves.get((int)(Math.random() * possibleMoves.size()));
+	}
 }
