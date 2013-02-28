@@ -62,7 +62,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	/**
 	 * Create a new DeltaHantoPlayer, as given
 	 * @param color Color for the player, given by tournament
-	 * @param starting true if this player is making the starting move
+	 * @param isStarting true if this player is making the starting move
 	 */
 	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) {
 		this(color, isStarting, null);
@@ -73,7 +73,6 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 * @param color Color for the player
 	 * @param isStarting true if this player is making a starting move
 	 * @param strategy PlayerStrategy to use when selecting moves
-	 * @throws HantoException if anything goes wrong
 	 * 
 	 * TODO: THIS SHOULD NOT THROW AN EXCEPTION
 	 */
@@ -105,7 +104,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 */
 	public HantoMoveRecord makeMove(HantoMoveRecord opponentsMove)
 	{
-		List<HantoMoveRecord> possibleMoves;
+		final List<HantoMoveRecord> possibleMoves;
 		boolean needToResign = false; // If we need to resign based on a bad opponent move
 		
 		if(opponentsMove != null) // If this wasn't the starting move 
@@ -143,7 +142,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				if(selectedMove.getFrom() == null) { 
 					hand.removeFromHand(selectedMove.getPiece());
 					
-					HexCoordinate selectedDest = HexCoordinate.extractHexCoordinate(selectedMove.getTo());
+					final HexCoordinate selectedDest = HexCoordinate.extractHexCoordinate(selectedMove.getTo());
 					placedPieces.add(new HantoPiece(color, selectedMove.getPiece(), selectedDest));
 				}
 
@@ -186,11 +185,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	private List<HantoMoveRecord> findPlacementMoves()
 	{
-		List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
+		final List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
 		
 		// Lists of all available pieces and coordinates we can place
-		Collection<HantoPieceType> piecesToPlace = new Vector<HantoPieceType>();
-		Collection<HexCoordinate>  possiblePlacementCoords = new Vector<HexCoordinate>();
+		final Collection<HantoPieceType> piecesToPlace = new Vector<HantoPieceType>();
+		final Collection<HexCoordinate>  possiblePlacementCoords = new Vector<HexCoordinate>();
 		
 		switch(moveState)
 		{
@@ -227,8 +226,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	private void findPossibleMoves(List<HantoMoveRecord> currentMoves)
 	{
-		Collection<HantoMoveRecord> possibleMoves = new Vector<HantoMoveRecord>();
-		Collection<HexCoordinate> possibleDestCoords = new Vector<HexCoordinate>(); 
+		final Collection<HantoMoveRecord> possibleMoves = new Vector<HantoMoveRecord>();
+		final Collection<HexCoordinate> possibleDestCoords = new Vector<HexCoordinate>(); 
 		
 		if(moveState == MoveState.PLACE_AND_MOVE) // We can only move when allowed
 		{
@@ -285,7 +284,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	
 	private Map<HantoPieceType, HantoMoveStrategy> setupMoveStrategies()
 	{
-		Map<HantoPieceType, HantoMoveStrategy> ret = 
+		final Map<HantoPieceType, HantoMoveStrategy> ret = 
 				new HashMap<HantoPieceType, HantoMoveStrategy>();
 		
 		ret.put(HantoPieceType.BUTTERFLY, 

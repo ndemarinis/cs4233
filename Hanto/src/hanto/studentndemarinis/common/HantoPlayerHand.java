@@ -79,7 +79,7 @@ public class HantoPlayerHand {
 	 */
 	public int getRemainingPiecesToPlay(HantoPieceType p)
 	{
-		Integer numPieces = hand.get(p);
+		final Integer numPieces = hand.get(p);
 		
 		return numPieces == null ? 0 : numPieces.intValue();
 	}

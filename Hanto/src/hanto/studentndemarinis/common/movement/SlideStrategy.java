@@ -25,6 +25,7 @@ public class SlideStrategy extends AbstractMoveStrategy {
 
 	/**
 	 * Initialize a sliding strategy
+	 * @param distance Distance to slide pieces
 	 */
 	public SlideStrategy(int distance) {
 		this.distance = distance;

@@ -54,6 +54,13 @@ public class DeltaHantoGame extends AbstractHantoGame {
 		state.setPlayersHand(HantoPlayerColor.RED, makeStartingHand());
 	}
 	
+	/**
+	 * Create the starting hand for DeltaHanto, 
+	 * using a map of pieces in a player's hand to 
+	 * their respective counts 
+	 * @return map of pieces available to a player at 
+	 * the beginning of the game with their corresponding counts
+	 */
 	protected static Map<HantoPieceType, Integer> makeStartingHand()
 	{
 		if(startingHand == null) {

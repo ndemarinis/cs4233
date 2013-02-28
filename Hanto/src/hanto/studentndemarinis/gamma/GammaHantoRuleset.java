@@ -74,7 +74,7 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 	 * @throws HantoException if the board is in an illegal state
 	 */
 	@Override
-	public MoveResult evaluateMoveResult() throws HantoException 
+	public MoveResult evaluateMoveResult() 
 	{	
 		MoveResult ret = winIfButterflyIsSurrounded();
 		

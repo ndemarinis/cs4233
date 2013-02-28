@@ -314,8 +314,11 @@ public class HantoBoard implements Cloneable {
 	 * Clone the board in a horribly naive manner.  
 	 * @return board a new HantoBoard with new pieces
 	 */
-	public HantoBoard clone() {
-		HantoBoard ret = new HantoBoard();
+	public HantoBoard clone()  {
+		// NOTE:  I am not sure the best way to handle these CloneNotSupportedExceptions
+		// but they just seem to be throwing all the time.  
+		// Therefore, I am ignoring CodePro's warning here.  
+		final HantoBoard ret = new HantoBoard();
 		
 		for(HantoPiece p : pieces.values()) {
 			ret.pieces.put(p.getCoordinate(), 

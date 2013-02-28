@@ -23,6 +23,7 @@ public class WalkStrategy extends AbstractMoveStrategy {
 	
 	/**
 	 * Initialize a walking strategy
+	 * @param distance Distance to slide pieces
 	 */
 	public WalkStrategy(int distance) {
 		this.distance = distance;
@@ -30,7 +31,7 @@ public class WalkStrategy extends AbstractMoveStrategy {
 
 	@Override
 	public boolean canMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException {
+			HexCoordinate from, HexCoordinate to) {
 	
 		return from.isAdjacentTo(to) && isBoardContiguousAfterSimulatingMove(state, from, to);
 	}

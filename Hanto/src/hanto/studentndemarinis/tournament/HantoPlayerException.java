@@ -20,36 +20,35 @@ package hanto.studentndemarinis.tournament;
  * (This is helpful for ensuring I write my tests properly)
  * 
  * @author ndemarinis
+ * @version Feb 26, 2013
  *
  */
 public class HantoPlayerException extends RuntimeException {
 
+
 	/**
-	 * 
+	 * An exception with a message
+	 * @param message message about the exception's cause
 	 */
-	public HantoPlayerException() {
+	public HantoPlayerException(String message) {
+		super(message);
 	}
 
 	/**
-	 * @param arg0
+	 * Exception with a throwable
+	 * @param cause Throwable about the cause
 	 */
-	public HantoPlayerException(String arg0) {
-		super(arg0);
+	public HantoPlayerException(Throwable cause) {
+		super(cause);
 	}
 
 	/**
-	 * @param arg0
+	 * Exception with message and information about cause
+	 * @param message information about cause
+	 * @param cause the cause info
 	 */
-	public HantoPlayerException(Throwable arg0) {
-		super(arg0);
-	}
-
-	/**
-	 * @param arg0
-	 * @param arg1
-	 */
-	public HantoPlayerException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
+	public HantoPlayerException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }

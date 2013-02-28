@@ -79,7 +79,7 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 * @throws HantoException if board state is invalid
 	 */
 	@Override
-	public MoveResult evaluateMoveResult() throws HantoException {
+	public MoveResult evaluateMoveResult() {
 		
 		// If this player resigned, the opponent wins.  
 		// This result overrides all others
@@ -103,6 +103,7 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	 * In this case, they are allowed to do so if they have 
 	 * placed their butterfly.  
 	 * @param from source coordinate
+	 * @param to destination coordinate
 	 * @throws HantoException if this condition has been violated
 	 */
 	protected void verifyPlayerCanMovePieces(HexCoordinate from, HexCoordinate to) 
@@ -125,7 +126,7 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	protected boolean playerHasResigned(HantoPieceType type, 
 			HexCoordinate from, HexCoordinate to)
 	{
-		boolean ret = (type == null && from == null && to == null);
+		final boolean ret = (type == null && from == null && to == null);
 		
 		// Record if the player resigned so it can affect the move result
 		// I don't know how good a practice it is for the rules to modify the state, 

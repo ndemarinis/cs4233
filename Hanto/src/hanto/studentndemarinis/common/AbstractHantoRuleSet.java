@@ -89,7 +89,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 	 * Determine the result of a move based on the game's rules.  
 	 * Must be overridden by concrete realization.  
 	 */
-	public abstract MoveResult evaluateMoveResult() throws HantoException;
+	public abstract MoveResult evaluateMoveResult();
 
 	
 	/**
@@ -178,7 +178,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		// Verify the piece to be moved is owned by the current player  
 		if(from != null) 
 		{
-			HantoPiece toPiece = state.board.getPieceAt(from);
+			final HantoPiece toPiece = state.board.getPieceAt(from);
 			
 			if(toPiece.getColor() != state.currPlayer) {
 				throw new HantoException("Illegal move:  your can only move pieces" +
@@ -205,6 +205,14 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 		}
 	}
 	
+	/**
+	 * Verify that a piece to be placed at a coordinate is not adjacent to any pieces
+	 * with the opposing color, as specified.  
+	 * This condition is not checked for the first move.  
+	 * @param from Source coordinate
+	 * @param to Destination coordinate
+	 * @throws HantoException if the condition has been violated
+	 */
 	protected void verifyPlacementIsNotNextToAnotherColor(HexCoordinate from, HexCoordinate to) 
 			throws HantoException {
 		

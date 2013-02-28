@@ -102,7 +102,7 @@ public class AlphaHantoGame extends AbstractHantoGame {
 	
 	public Map<HantoPieceType, Integer> getStartingHand()
 	{
-		Map<HantoPieceType, Integer> ret = new HashMap<HantoPieceType, Integer>();
+		final Map<HantoPieceType, Integer> ret = new HashMap<HantoPieceType, Integer>();
 		
 		ret.put(HantoPieceType.BUTTERFLY, 1);
 		

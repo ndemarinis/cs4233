@@ -29,12 +29,13 @@ public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame 
 	protected HantoGameState state;
 	protected HantoRuleSet rules;
 	
-	protected static Map<HantoPieceType, Integer> startingHand = null;
-	
 	/**
 	 * Abstract HantoGame providing basic implementation
 	 */
 	
+	// NOTE:  CodePro throws a warning here about the missing exception.  
+	// 	While it's not technically necessary, I'm leaving it since it's in
+	// the interface.  
 	@Override
 	public void initialize(HantoPlayerColor firstPlayer) throws HantoException {
 		

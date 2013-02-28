@@ -59,7 +59,6 @@ public interface HantoRuleSet {
 	 * Check conditions to determine if the game needs to end.  This is used for
 	 * returning the result of a recent move
 	 * @return MoveResult with based on the current board's conditions
-	 * @throws HantoException on an invalid board configuration
 	 */
-	MoveResult evaluateMoveResult() throws HantoException;
+	MoveResult evaluateMoveResult();
 }

@@ -20,17 +20,10 @@ import hanto.studentndemarinis.common.HexCoordinate;
  * @version Feb 26, 2013
  */
 public class FlyStrategy extends AbstractMoveStrategy {
-	
-	/**
-	 * Initialize a walking strategy
-	 */
-	public FlyStrategy(int distance) {
-		this.distance = distance;
-	}
 
 	@Override
 	public boolean canMoveTo(HantoGameState state, 
-			HexCoordinate from, HexCoordinate to) throws HantoException {
+			HexCoordinate from, HexCoordinate to) {
 
 		// We can fly anywhere we want so long as the board is contiguous
 		return isBoardContiguousAfterSimulatingMove(state, from, to); 

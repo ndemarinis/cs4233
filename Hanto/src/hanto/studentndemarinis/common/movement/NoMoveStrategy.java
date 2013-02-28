@@ -22,16 +22,10 @@ import hanto.studentndemarinis.common.HexCoordinate;
  */
 public class NoMoveStrategy extends AbstractMoveStrategy {
 
-	/**
-	 * Create a nomove strategy
-	 */
-	public NoMoveStrategy() {
-		// We literally have nothing to do here
-	}
 
 	@Override
 	public boolean canMoveTo(HantoGameState state, HexCoordinate from,
-			HexCoordinate to) throws HantoException {
+			HexCoordinate to) {
 		
 		return false; // We can't move, so always fail.  
 	}

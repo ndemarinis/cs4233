@@ -63,7 +63,7 @@ public abstract class AbstractMoveStrategy implements HantoMoveStrategy {
 	protected boolean isBoardContiguousAfterSimulatingMove(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) {
 		 
-		HantoBoard mock = state.getBoard().clone(); // Clone the board
+		final HantoBoard mock = state.getBoard().clone(); // Clone the board
 		mock.remove(from);
 		mock.addPieceAt(new HantoPiece(null,  null, null), to);
 		

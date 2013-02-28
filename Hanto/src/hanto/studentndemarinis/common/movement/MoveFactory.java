@@ -22,7 +22,7 @@ public class MoveFactory {
 
 	private static MoveFactory instance = null;
 	
-	private Map<HantoMoveType, HantoMoveStrategy> strategies;
+	private final Map<HantoMoveType, HantoMoveStrategy> strategies;
 	
 	/**
 	 * Create a MoveFactory.  Since this method is a singleton, 
@@ -32,6 +32,12 @@ public class MoveFactory {
 		strategies = new HashMap<HantoMoveType, HantoMoveStrategy>();
 	}
 
+	/**
+	 * Get the instance of this move factory.  
+	 * This factory method ensures consistent access to the same
+	 * factory for creating moves, maintaining the singleton pattern.  
+	 * @return instance of the move factory
+	 */
 	public static MoveFactory getInstance()
 	{
 		if(instance == null){
@@ -73,7 +79,7 @@ public class MoveFactory {
 				break;
 
 			case FLY:
-				ret = new FlyStrategy(distance);
+				ret = new FlyStrategy();
 				break;
 			}
 			

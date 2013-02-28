@@ -38,7 +38,7 @@ public interface InternalHantoGame extends HantoGame {
 	 * I don't understand how the suggestions in
 	 * CodePro's audit rule could make more sense here.   
 	 */
-	public boolean doesPieceExistAt(HantoCoordinate c);
+	boolean doesPieceExistAt(HantoCoordinate c);
 	
 	/**
 	 * Add a coordinate to the board
@@ -49,7 +49,7 @@ public interface InternalHantoGame extends HantoGame {
 	 * @param type type of new piece
 	 * @param c location of new piece
 	 */
-	public void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
+	void addToBoard(HantoPlayerColor color, HantoPieceType type, HantoCoordinate c);
 	
 	/**
 	 * Make a move based on a record provided by the tournament
@@ -64,43 +64,43 @@ public interface InternalHantoGame extends HantoGame {
 	 * @return Result of the move
 	 * @throws HantoException if the move was invalid
 	 */
-	public MoveResult makeMove(HantoMoveRecord move) throws HantoException;
+	MoveResult makeMove(HantoMoveRecord move) throws HantoException;
 	
 	/**
 	 * 
 	 * @return the player's starting hand
 	 */
-	public Map<HantoPieceType, Integer> getStartingHand();
+	Map<HantoPieceType, Integer> getStartingHand();
 	
 	/**
 	 * @param p Color of a HantoPlayer
 	 * @return The hand for that player, containing the numbers of each piece available
 	 */
-	public HantoPlayerHand getPlayersHand(HantoPlayerColor p);
+	HantoPlayerHand getPlayersHand(HantoPlayerColor p);
 	
 	/**
 	 * @return The Hanto Board.  
 	 */
-	public HantoBoard getBoard();
+	HantoBoard getBoard();
 	
 	/**
 	 * @return the Hanto Game state
 	 */
-	public HantoGameState getState();
+	HantoGameState getState();
 	
 	/**
 	 * @return the number of moves made in this game
 	 */
-	public int getNumMoves();
+	int getNumMoves();
 	
 	/**
 	 * @param numMoves the number of moves to set
 	 */
-	public void setNumMoves(int numMoves);
+	void setNumMoves(int numMoves);
 	
 	/**
 	 * @return the current player up for a move
 	 */
-	public HantoPlayerColor getCurrPlayer();
+	HantoPlayerColor getCurrPlayer();
 	
 }

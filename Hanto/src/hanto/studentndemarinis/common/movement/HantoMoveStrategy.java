@@ -31,7 +31,7 @@ public interface HantoMoveStrategy {
 	 * @param to Destination coordinate
 	 * @throws HantoException if the move was invalid
 	 */
-	public void tryMoveTo(HantoGameState state, 
+	void tryMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException;
 	
 	/**
@@ -47,7 +47,7 @@ public interface HantoMoveStrategy {
 	 * @throws HantoException if something went wrong calculating the move
 	 * This method does NOT throw an exception if the move was invalid
 	 */
-	public boolean canMoveTo(HantoGameState state, 
+	boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException;
 	
 	
