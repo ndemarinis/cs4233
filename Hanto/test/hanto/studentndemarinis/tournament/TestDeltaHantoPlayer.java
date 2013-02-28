@@ -199,13 +199,19 @@ public class TestDeltaHantoPlayer {
 	@Test
 	public void playerIsForcedToPlaceButterflyByFourthTurn() throws HantoException
 	{
-		HantoMoveRecord moves[] = {new HantoMoveRecord(SPARROW, null, c01)};
+		HantoMoveRecord moves[] = {new HantoMoveRecord(SPARROW, null, c01), 
+								   new HantoMoveRecord(SPARROW, null, new TestHantoCoordinate(0, 2)), 
+								   new HantoMoveRecord(SPARROW, null, new TestHantoCoordinate(0, 3))};
 		
 		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves));
 		
 		tourn.manualMove(BUTTERFLY, null, c00);
 		tourn.playerMove();
 		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, -1));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, -2));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, -3));
 		tourn.playerMove();
 		
 		assertEquals(BUTTERFLY, tourn.lastMove.getPiece());

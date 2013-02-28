@@ -56,7 +56,9 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	private MoveState moveState;
 	private HantoPlayerStrategy strategy;
 	
-	private static final int NUM_MOVES_PRE_BUTTERFLY = 3; // Fake it and copypaste this
+	// Constants for DeltaHanto's rules, which are embedded in the strategy
+	// TODO:  find a good way to pull these out of DeltaHanto instead of copypasting them
+	private static final int NUM_MOVES_PRE_BUTTERFLY = 7; 
 	private static final int NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY = 1;
 	
 	/**
@@ -121,9 +123,10 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			}
 		}
 		
+		// Find the current state and set of all possible moves
 		determineCurrentMoveState();
-		possibleMoves = findPlacementMoves();
-		findPossibleMoves(possibleMoves);
+		possibleMoves = findValidPlacementMoves();
+		possibleMoves.addAll(findValidMovementMoves());
 		
 		// Pick a random move based on those given strategy
 		// If no moves are available, resign.  
@@ -157,11 +160,12 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			}
 		}
 		
-
-		
 		return selectedMove;
 	}
 	
+	/**
+	 * Find the current move state, which governs how we place/move pieces
+	 */
 	private void determineCurrentMoveState()
 	{
 		boolean butterflyPlaced = game.getBoard().contains(color, HantoPieceType.BUTTERFLY);
@@ -185,7 +189,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		}
 	}
 	
-	private List<HantoMoveRecord> findPlacementMoves()
+	/**
+	 * Find possible moves that involve placing new pieces
+	 * @return list of all posible placement move records
+	 */
+	private List<HantoMoveRecord> findValidPlacementMoves()
 	{
 		final List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
 		
@@ -226,7 +234,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		return ret;
 	}
 	
-	private void findPossibleMoves(List<HantoMoveRecord> currentMoves)
+	/**
+	 * Determine possible moves that involve moving pieces
+	 * @param currentMoves Current list of moves
+	 */
+	private Collection<HantoMoveRecord> findValidMovementMoves()
 	{
 		final Collection<HantoMoveRecord> possibleMoves = new Vector<HantoMoveRecord>();
 		final Collection<HexCoordinate> possibleDestCoords = new Vector<HexCoordinate>(); 
@@ -256,8 +268,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			}
 		}
 		
-		
-		currentMoves.addAll(possibleMoves);
+		return possibleMoves;
 	}
 	
 	
@@ -288,6 +299,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		}
 	}
 	
+	/**
+	 * Setup move strategies based on DeltaHanto
+	 * TODO:  pull this from DeltaHanto itself
+	 * @return
+	 */
 	private Map<HantoPieceType, HantoMoveStrategy> setupMoveStrategies()
 	{
 		final Map<HantoPieceType, HantoMoveStrategy> ret = 
@@ -303,6 +319,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		return ret;
 	}
 	
+	/**
+	 * Get a printable representation of a MoveRecord
+	 * @param r a record
+	 * @return String representation of that record (since MoveRecord has no toString())
+	 */
 	private String getPrintableMove(HantoMoveRecord r)
 	{
 		return ((r.getFrom() == null) ? "PLACE " : " MOVE  ") + 

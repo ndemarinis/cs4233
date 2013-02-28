@@ -85,7 +85,7 @@ public class TestDeltaHanto {
 	@Test(expected=HantoException.class)
 	public void cantPlaceSomethingNotButterflyForFourthMoveIfNonePresent() throws HantoException
 	{
-		((InternalHantoGame)game).setNumMoves(3); // Fake it:  3 moves have been completed
+		((InternalHantoGame)game).setNumMoves(7); // Fake it:  7 moves have been completed
 		game.makeMove(SPARROW, null, origin);
 	}
 	
