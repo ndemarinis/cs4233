@@ -41,8 +41,8 @@ public class TestDeltaHantoPlayerDirector {
 
 		// create two of your players (say in variable blue and red.
 		HantoGameDirector director = HantoGameDirector.getInstance();
-		director.initialize(new DeltaHantoPlayer(HantoPlayerColor.BLUE, true), 
-				new DeltaHantoPlayer(HantoPlayerColor.RED, false));
+		director.initialize(new DeltaHantoPlayer(HantoPlayerColor.BLUE, false), 
+				new DeltaHantoPlayer(HantoPlayerColor.RED, true));
 		
 		// if you want logging turned on include the next line.
 		director.setLogLevel(HantoGameDirector.HantoLogLevel.BASIC);

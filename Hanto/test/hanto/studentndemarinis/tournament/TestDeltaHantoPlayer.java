@@ -264,6 +264,45 @@ public class TestDeltaHantoPlayer {
 		assertNotNull(tourn.lastMove.getFrom());
 	}
 
+	@Test
+	public void playerCanMakeTwoMoves() throws HantoException {
+		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c0_1),
+								   new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -2)), 
+								   new HantoMoveRecord(SPARROW,   new TestHantoCoordinate(0, -2), 
+										   new TestHantoCoordinate(1, -2)),
+								   new HantoMoveRecord(SPARROW,   new TestHantoCoordinate(1, -2), 
+										   new TestHantoCoordinate(0, -2)),
+								    };
+		
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves, false, true)); 
+		tourn.manualMove(BUTTERFLY, null,origin);
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, c01);
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, 2));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, 3));
+		tourn.playerMove();
+	}
+	
+	@Test
+	public void playerCanOnlyPickTwoMoves() throws HantoException {
+		HantoMoveRecord moves[] = {new HantoMoveRecord(BUTTERFLY, null, c0_1),
+									new HantoMoveRecord(SPARROW,   null, new TestHantoCoordinate(0, -2))
+								    };
+		
+		tourn = new FakeHantoTournament(BLUE, RED, new PartialFakedSelectStrategy(moves, false, true)); 
+		tourn.manualMove(BUTTERFLY, null,origin);
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, c01);
+		
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, 2));
+		tourn.playerMove();
+		tourn.manualMove(SPARROW, null, new TestHantoCoordinate(0, 3));
+		
+		assertEquals(OK, tourn.playerMove());
+	}
 	
 	
 	/* *********** HELPER METHODS *****************/

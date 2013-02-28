@@ -27,8 +27,10 @@ import hanto.util.HantoPlayerColor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -44,7 +46,13 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	private InternalHantoGame game; // Since it's our player, we can use our interface for the game
 
 	private HantoPlayerHand hand; // Available pieces for play, represented in the game itself
-	private Collection<HantoPiece> placedPieces;
+	
+	// Representation of pieces we have placed, this is so we don't have to search
+	// the board for them each time.  
+	private Map<HexCoordinate, HantoPiece> placedPieces;
+	
+	// Strategies for movement of each piece type--just like the ruleset
+	// TODO:  can I do this FROM the ruleset?  
 	private Map<HantoPieceType, HantoMoveStrategy> moveStrategies;
 	
 	// This enum describes how we can place pieces:  
@@ -87,7 +95,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				(HantoFactory.getInstance().makeHantoGame(HantoGameID.DELTA_HANTO));
 		
 		hand = new HantoPlayerHand(game.getStartingHand()); // Setup our available pieces
-		placedPieces = new Vector<HantoPiece>(); // Initialize list of pieces we will place
+		placedPieces = new HashMap<HexCoordinate, HantoPiece>(); // Initialize list of pieces we will place
 		moveStrategies = setupMoveStrategies();
 		
 		// If we've passed in a strategy, use it.  Otherwise, pick the random one.  
@@ -143,12 +151,23 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 
 				// If we are placing a piece, remove it from our hand
 				// and add it to the list of placed pieces
+				final HexCoordinate selectedDest = 
+						HexCoordinate.extractHexCoordinate(selectedMove.getTo());
+				
 				if(selectedMove.getFrom() == null) { 
 					hand.removeFromHand(selectedMove.getPiece());
 					
-					final HexCoordinate selectedDest = 
-							HexCoordinate.extractHexCoordinate(selectedMove.getTo());
-					placedPieces.add(new HantoPiece(color, selectedMove.getPiece(), selectedDest));
+					placedPieces.put(selectedDest, 
+							new HantoPiece(color, selectedMove.getPiece(), selectedDest));
+				}
+				else // If we're moving a piece, remove it and add at the new coordinate
+				{
+					final HexCoordinate selectedSrc = 
+							HexCoordinate.extractHexCoordinate(selectedMove.getFrom());
+					
+					placedPieces.remove(selectedSrc);
+					placedPieces.put(selectedDest, 
+							new HantoPiece(color, selectedMove.getPiece(), selectedDest));
 				}
 
 			} catch(HantoException e) {
@@ -248,7 +267,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			addValidEmptyCoords(possibleDestCoords);
 			
 			// Check each piece for valid moves from its location
-			for(HantoPiece p : placedPieces) {
+			for(HantoPiece p : placedPieces.values()) {
 				HantoMoveStrategy strat = moveStrategies.get(p.getType());
 				
 				// Find if a piece can move to that coordinate
