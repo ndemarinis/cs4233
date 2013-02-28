@@ -309,11 +309,11 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				new HashMap<HantoPieceType, HantoMoveStrategy>();
 		
 		ret.put(HantoPieceType.BUTTERFLY, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE));
 		ret.put(HantoPieceType.CRAB, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE));
 		ret.put(HantoPieceType.SPARROW, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY, -1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY));
 		
 		return ret;
 	}

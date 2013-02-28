@@ -25,8 +25,6 @@ import hanto.studentndemarinis.common.HexCoordinate;
  */
 public abstract class AbstractMoveStrategy implements HantoMoveStrategy {
 
-	protected int distance; // Distance for a given move
-
 	@Override
 	public void tryMoveTo(HantoGameState state, HexCoordinate from,
 			HexCoordinate to) throws HantoException {

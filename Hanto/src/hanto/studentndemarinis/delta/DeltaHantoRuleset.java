@@ -41,11 +41,11 @@ public class DeltaHantoRuleset extends AbstractHantoRuleSet implements
 	protected void setupMoveStrategies()
 	{
 		moveStrategies.put(HantoPieceType.BUTTERFLY, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE));
 		moveStrategies.put(HantoPieceType.CRAB, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE));
 		moveStrategies.put(HantoPieceType.SPARROW, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY, -1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY));
 	}
 	
 	/**

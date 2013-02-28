@@ -25,7 +25,9 @@ public class FlyStrategy extends AbstractMoveStrategy {
 			HexCoordinate from, HexCoordinate to) {
 
 		// We can fly anywhere we want so long as the board is contiguous
-		return isBoardContiguousAfterSimulatingMove(state, from, to); 
+		// and we're not trying to fly to the same piece
+		return from != to && 
+				isBoardContiguousAfterSimulatingMove(state, from, to); 
 	}
 
 }

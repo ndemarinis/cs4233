@@ -14,25 +14,23 @@ import hanto.studentndemarinis.common.HexCoordinate;
 
 /**
  * This class represents a strategy for walking
+ * In this case, walking does NOT involve sliding
  * 
  * @author ndemarinis
  * @version Feb 26, 2013
  */
 public class WalkStrategy extends AbstractMoveStrategy {
 	
-	/**
-	 * Initialize a walking strategy
-	 * @param distance Distance to slide pieces
-	 */
-	public WalkStrategy(int distance) {
-		this.distance = distance;
-	}
-
 	@Override
 	public boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) {
-	
-		return from.isAdjacentTo(to) && isBoardContiguousAfterSimulatingMove(state, from, to);
+
+		// Walking (no sliding) is valid if we're not moving to our own piece,
+		// the destination is adjacent to this one,
+		// the board remains contiguous after the move
+		return from != to && 
+				from.isAdjacentTo(to) && 
+				isBoardContiguousAfterSimulatingMove(state, from, to);
 	}
 
 }

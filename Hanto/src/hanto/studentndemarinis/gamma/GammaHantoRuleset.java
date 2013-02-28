@@ -44,9 +44,9 @@ public class GammaHantoRuleset extends AbstractHantoRuleSet implements HantoRule
 
 	protected void setupMoveStrategies() {
 		moveStrategies.put(HantoPieceType.BUTTERFLY, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.WALK, 1));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.WALK));
 		moveStrategies.put(HantoPieceType.SPARROW, 
-				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.NO_MOVE, 0));
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.NO_MOVE));
 	}
 	
 	/**

@@ -48,17 +48,17 @@ public class MoveFactory {
 	}
 	
 	/**
-	 * Get a move strategy matching a particular type, 
-	 * allowing variation over a particular distance
+	 * Get a move strategy matching a particular type
+	 * 
+	 * This COULD allow movement based on a particular distance,
+	 * but we don't actually need it for our game
 	 * 
 	 * @param type Type of move strategy, defined by HantoMoveType
-	 * @param distance Optional move distance--may not even be passed to strategy, 
-	 * depending on implementation
 	 * 
 	 * @return The given move strategy.  If one does not exist in the factory already,
 	 * one will be created
 	 */
-	public HantoMoveStrategy getMoveStrategy(HantoMoveType type, int distance)
+	public HantoMoveStrategy getMoveStrategy(HantoMoveType type)
 	{
 		HantoMoveStrategy ret = strategies.get(type);
 		
@@ -71,11 +71,11 @@ public class MoveFactory {
 				break;
 				
 			case WALK:
-				ret =  new WalkStrategy(distance);
+				ret =  new WalkStrategy();
 				break;
 
 			case SLIDE:
-				ret = new SlideStrategy(distance);
+				ret = new SlideStrategy();
 				break;
 
 			case FLY:

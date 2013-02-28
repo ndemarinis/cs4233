@@ -21,19 +21,15 @@ import hanto.studentndemarinis.common.HexCoordinate;
  */
 public class SlideStrategy extends AbstractMoveStrategy {
 
-	/**
-	 * Initialize a sliding strategy
-	 * @param distance Distance to slide pieces
-	 */
-	public SlideStrategy(int distance) {
-		this.distance = distance;
-	}
-
 	@Override
 	public boolean canMoveTo(HantoGameState state,
 			HexCoordinate from, HexCoordinate to) throws HantoException {
 		
-		return from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to) && 
+		// Sliding is valid if we're not moving to our own piece,
+		// the destination is adjacent to this one,
+		// we can slide to it, as defined
+		// the board remains contiguous after the move
+		return from != to && from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to) && 
 				isBoardContiguousAfterSimulatingMove(state, from, to); 
 	}
 }
