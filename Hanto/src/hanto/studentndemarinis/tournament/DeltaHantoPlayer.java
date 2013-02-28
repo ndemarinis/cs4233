@@ -43,12 +43,12 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	// Game used for simulating moves and checking their validity
 	private InternalHantoGame game; // Since it's our player, we can use our interface for the game
 
-	private HantoPlayerHand hand; // Available pieces for play, represented similarly in the game itself
+	private HantoPlayerHand hand; // Available pieces for play, represented in the game itself
 	private Collection<HantoPiece> placedPieces;
 	private Map<HantoPieceType, HantoMoveStrategy> moveStrategies;
 	
 	// This enum describes how we can place pieces:  
-	private enum MoveState { 	        STARTING,   // This is the first move, we only have one option
+	private enum MoveState { 	        STARTING,   // This is the first move, so only one option
 				 			MUST_PLACE_BUTTERFLY,   // We MUST place the butterfly on this move
 				 				      PLACE_ONLY,   // We can only place pieces
 				 				  PLACE_AND_MOVE }; // We can place and move pieces
@@ -116,7 +116,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				
 				System.err.println("Received invalid opponent move, resigning.  " + 
 						"I don't have time for your nonsense.  " +
-						"Exception was:  " + e.getMessage() + "\nMove was:  " + getPrintableMove(opponentsMove));
+						"Exception was:  " + e.getMessage() + 
+						"\nMove was:  " + getPrintableMove(opponentsMove));
 			}
 		}
 		
@@ -142,7 +143,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				if(selectedMove.getFrom() == null) { 
 					hand.removeFromHand(selectedMove.getPiece());
 					
-					final HexCoordinate selectedDest = HexCoordinate.extractHexCoordinate(selectedMove.getTo());
+					final HexCoordinate selectedDest = 
+							HexCoordinate.extractHexCoordinate(selectedMove.getTo());
 					placedPieces.add(new HantoPiece(color, selectedMove.getPiece(), selectedDest));
 				}
 
@@ -233,17 +235,21 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		{
 			addValidEmptyCoords(possibleDestCoords);
 			
+			// Check each piece for valid moves from its location
 			for(HantoPiece p : placedPieces) {
 				HantoMoveStrategy strat = moveStrategies.get(p.getType());
 				
+				// Find if a piece can move to that coordinate
 				for(HexCoordinate c : possibleDestCoords) {
 					try {
+						// If there's a valid move, based on the piece's strategy,
+						// from the piece to a coordinate, it's a possible move 
 						if(strat.canMoveTo(game.getState(), p.getCoordinate(), c)) {
 							possibleMoves.add(new HantoMoveRecord(p.getType(), 
 									p.getCoordinate(), c));
 						}
 					} catch(HantoException e) {
-						throw new HantoPlayerException("WAT?  Test move was invalid!");
+						System.err.println("Found invalid move!  Cause:  " + e.getMessage());
 					}
 				}
 				

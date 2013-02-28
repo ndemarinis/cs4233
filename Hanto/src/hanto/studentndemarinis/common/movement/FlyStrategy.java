@@ -9,7 +9,6 @@
  */
 package hanto.studentndemarinis.common.movement;
 
-import hanto.common.HantoException;
 import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HexCoordinate;
 
