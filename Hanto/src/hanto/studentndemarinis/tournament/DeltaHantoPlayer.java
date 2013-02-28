@@ -160,49 +160,66 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	private List<HantoMoveRecord> findPlacementMoves()
 	{
 		List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
+		
 		Collection<HantoPieceType> piecesToPlace = new Vector<HantoPieceType>();
+		Collection<HexCoordinate>  possiblePlacementCoords = new Vector<HexCoordinate>();
 		
 		switch(moveState)
 		{
-		case STARTING: // We only have one move option
-			ret.add(new HantoMoveRecord(HantoPieceType.BUTTERFLY, 
-					null, new HexCoordinate(0, 0)));
+		case STARTING: // If we're starting, we can only place at the origin
+			addAvailablePiecesFromHand(piecesToPlace); // We can place anything in our hand
+			possiblePlacementCoords.add(new HexCoordinate(0, 0));
 			break;
 			
 		case MUST_PLACE_BUTTERFLY: // We can only place the butterfly, nothing else
 			piecesToPlace.add(HantoPieceType.BUTTERFLY);
+			addValidEmptyCoords(possiblePlacementCoords);
 			break;
 		
 		case PLACE_ONLY:     // For these, we can place any piece that is available
-		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
+			addAvailablePiecesFromHand(piecesToPlace);
+			addValidEmptyCoords(possiblePlacementCoords);
+			break;
 			
-			for(HantoPieceType p : game.getStartingHand().keySet()) {
-				if(hand.getRemainingPiecesToPlay(p) > 0) {
-					piecesToPlace.add(p);
-				}
-			}
+		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
+			addAvailablePiecesFromHand(piecesToPlace);
+			addValidEmptyCoords(possiblePlacementCoords);
 			break;
 		}
 		
-		if(moveState != MoveState.STARTING) {
-			
-			// Theoretically, we can place a piece on any space that is adjacent to 
-			// an existing piece--by definition, this preserves the contiguous board condition
-			for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates())
-			{
-				HantoPlayerColor opponentColor = (color == HantoPlayerColor.RED) ? 
-						HantoPlayerColor.BLUE : HantoPlayerColor.RED;
-				
-				if(game.getNumMoves() <= NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY ||  
-						!game.getBoard().hasNeighborsOfColor(c, opponentColor)) {
-					for(HantoPieceType t : piecesToPlace) {
-						ret.add(new HantoMoveRecord(t, null, c));
-					}
-				}
+		// Cross both of the sets, which will give us all possible placements
+		for(HexCoordinate c : possiblePlacementCoords) {
+			for(HantoPieceType t : piecesToPlace) {
+				ret.add(new HantoMoveRecord(t, null, c));
 			}
 		}
 		
 		return ret;
+	}
+	
+	private void addAvailablePiecesFromHand(Collection<HantoPieceType> pieces)
+	{
+		for(HantoPieceType p : game.getStartingHand().keySet()) {
+			if(hand.getRemainingPiecesToPlay(p) > 0) {
+				pieces.add(p);
+			}
+		}
+	}
+	
+	private void addValidEmptyCoords(Collection<HexCoordinate> coords)
+	{
+		// Theoretically, we can place a piece on any space that is adjacent to 
+		// an existing piece--by definition, this preserves the contiguous board condition
+		for(HexCoordinate c : game.getBoard().getAllEmptyNeighborCoordinates())
+		{
+			HantoPlayerColor opponentColor = (color == HantoPlayerColor.RED) ? 
+					HantoPlayerColor.BLUE : HantoPlayerColor.RED;
+
+			if(game.getNumMoves() <= NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY ||  
+					!game.getBoard().hasNeighborsOfColor(c, opponentColor)) {
+				coords.add(c);
+			}
+		}
 	}
 	
 	private String getPrintableMove(HantoMoveRecord r)

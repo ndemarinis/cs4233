@@ -29,7 +29,7 @@ public abstract class AbstractHantoRuleSet implements HantoRuleSet {
 
 	protected HantoGameState state;
 	
-	protected Map<HantoPieceType, HantoMoveStrategy> moveStrategies = 
+	protected static Map<HantoPieceType, HantoMoveStrategy> moveStrategies = 
 			new HashMap<HantoPieceType, HantoMoveStrategy>();
 	
 	private static final int NUM_MOVES_PRE_BUTTERFLY = 3;

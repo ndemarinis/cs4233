@@ -202,7 +202,7 @@ public class TestDeltaHantoPlayer {
 		tourn.playerMove();
 		tourn.manualMove(CRAB,   null, tourn.game.getRandomValidEmptyCoordinate());
 		
-		assertEquals(RED_WINS, tourn.playerMove()); // Player (BLUE) should be out of pieces now.  	
+		assertEquals(OK, tourn.playerMove()); // Player (BLUE) should be out of pieces now.  	
 	}
 	
 	
