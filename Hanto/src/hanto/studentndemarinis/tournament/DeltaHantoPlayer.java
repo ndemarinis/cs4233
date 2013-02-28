@@ -143,32 +143,13 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			        	   strategy.selectMove(game, possibleMoves);
 
 		if(selectedMove != null) {
-			// Run this move on our game, not only so we update our state, 
-			// but to verify it against the rules.  
 			try {
-				// Try to actually make the move
+				// Run this move on our game, not only so we update our state, 
+				// but to verify it against the rules.  
 				game.makeMove(selectedMove);
-
-				// If we are placing a piece, remove it from our hand
-				// and add it to the list of placed pieces
-				final HexCoordinate selectedDest = 
-						HexCoordinate.extractHexCoordinate(selectedMove.getTo());
 				
-				if(selectedMove.getFrom() == null) { 
-					hand.removeFromHand(selectedMove.getPiece());
-					
-					placedPieces.put(selectedDest, 
-							new HantoPiece(color, selectedMove.getPiece(), selectedDest));
-				}
-				else // If we're moving a piece, remove it and add at the new coordinate
-				{
-					final HexCoordinate selectedSrc = 
-							HexCoordinate.extractHexCoordinate(selectedMove.getFrom());
-					
-					placedPieces.remove(selectedSrc);
-					placedPieces.put(selectedDest, 
-							new HantoPiece(color, selectedMove.getPiece(), selectedDest));
-				}
+				// Update our known pieces
+				recordMove(selectedMove);
 
 			} catch(HantoException e) {
 				System.err.println("Picked invalid move, resigning.  Cause:  " + 
@@ -290,7 +271,6 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		return possibleMoves;
 	}
 	
-	
 	/* ********************** HELPER METHODS ***************************/
 	
 	private void addAvailablePiecesFromHand(Collection<HantoPieceType> pieces)
@@ -336,6 +316,36 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY, -1));
 		
 		return ret;
+	}
+	
+	/**
+	 * Update our data structure of available pieces based on the last
+	 * move result.  This data structure allows us to check our pieces
+	 * for valid moves without having to search the board for them.  
+	 * 
+	 * @param latestMove the move we just made
+	 * @throws HantoException if something went wrong updating the state
+	 */
+	private void recordMove(HantoMoveRecord latestMove) throws HantoException
+	{
+		final HexCoordinate dest = 
+				HexCoordinate.extractHexCoordinate(latestMove.getTo());
+		final HexCoordinate src = 
+				HexCoordinate.extractHexCoordinate(latestMove.getFrom());
+		
+		// If we placed a piece, add it to our list of available pieces
+		if(src == null) { 
+			hand.removeFromHand(latestMove.getPiece());
+			
+			placedPieces.put(dest, 
+					new HantoPiece(color, latestMove.getPiece(), dest));
+		}
+		else // If we're moving a piece, remove it and add at the new coordinate
+		{
+			placedPieces.remove(src);
+			placedPieces.put(dest, 
+					new HantoPiece(color, latestMove.getPiece(), dest));
+		}
 	}
 	
 	/**
