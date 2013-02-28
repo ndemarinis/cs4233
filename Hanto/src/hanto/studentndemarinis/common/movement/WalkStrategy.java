@@ -32,7 +32,7 @@ public class WalkStrategy extends AbstractMoveStrategy {
 	public boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException {
 	
-		return from.isAdjacentTo(to);
+		return from.isAdjacentTo(to) && isBoardContiguousAfterSimulatingMove(state, from, to);
 	}
 
 }

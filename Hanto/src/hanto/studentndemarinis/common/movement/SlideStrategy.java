@@ -33,25 +33,8 @@ public class SlideStrategy extends AbstractMoveStrategy {
 	@Override
 	public boolean canMoveTo(HantoGameState state,
 			HexCoordinate from, HexCoordinate to) throws HantoException {
-		 
-		boolean moveIsPossible = from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to);
 		
-		
-		// Test the move doesn't violate the contiguity condition
-		// Here, I do this by clone the board by simulating the move
-		
-		// I UNDERSTAND THAT THIS IS COMPLETELY HORRIBLE IDEA
-		// SINCE IT USES A TON OF MEMORY AND IS REALLY SLOW
-		
-		// However, since we do not have timing constraints
-		// and we don't have any requirements that this implementation
-		// needs to scale, I am leaving it for now.  I'm really tired.  
-		
-		HantoBoard mock = state.getBoard().clone();
-		mock.remove(from);
-		mock.addPieceAt(new HantoPiece(null,  null, null), to);
-		moveIsPossible = moveIsPossible && mock.isBoardContiguous();
-		
-		return moveIsPossible; 
+		return from.isAdjacentTo(to) && state.getBoard().canSlideTo(from, to) && 
+				isBoardContiguousAfterSimulatingMove(state, from, to); 
 	}
 }

@@ -10,7 +10,9 @@
 package hanto.studentndemarinis.common.movement;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HantoBoard;
 import hanto.studentndemarinis.common.HantoGameState;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HexCoordinate;
 
 /**
@@ -39,5 +41,33 @@ public abstract class AbstractMoveStrategy implements HantoMoveStrategy {
 	@Override
 	public abstract boolean canMoveTo(HantoGameState state, HexCoordinate from,
 			HexCoordinate to) throws HantoException;
+	
+	
+	/**
+	 * Test the move doesn't violate the contiguity condition
+	 * Here, I do this by clone the board by simulating the move.
+	 * No changes are made to the real board or state.  
+	 *	
+	 * I UNDERSTAND THAT THIS IS COMPLETELY HORRIBLE IDEA
+	 * SINCE IT USES A TON OF MEMORY AND IS REALLY SLOW
+	 *	
+	 * However, since we do not have timing constraints
+	 * and we don't have any requirements that this implementation
+	 * needs to scale, I am leaving it for now.  I'm really tired. 
+	 * 
+	 * @param state the game's state
+	 * @param from source coordinate
+	 * @param to destination coordinate
+	 * @return true if the board is contiguous after the move
+	 */
+	protected boolean isBoardContiguousAfterSimulatingMove(HantoGameState state, 
+			HexCoordinate from, HexCoordinate to) {
+		 
+		HantoBoard mock = state.getBoard().clone(); // Clone the board
+		mock.remove(from);
+		mock.addPieceAt(new HantoPiece(null,  null, null), to);
+		
+		return mock.isBoardContiguous();
+	}
 	
 }

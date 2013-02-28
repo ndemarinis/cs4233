@@ -31,9 +31,9 @@ public class FlyStrategy extends AbstractMoveStrategy {
 	@Override
 	public boolean canMoveTo(HantoGameState state, 
 			HexCoordinate from, HexCoordinate to) throws HantoException {
-	
-		// TODO:  This is so simple that I KNOW these move strategies should have more functionality.  
-		return true; // We can fly anywhere we want so long as the other checks pass.  
+
+		// We can fly anywhere we want so long as the board is contiguous
+		return isBoardContiguousAfterSimulatingMove(state, from, to); 
 	}
 
 }
