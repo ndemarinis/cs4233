@@ -66,6 +66,11 @@ public interface InternalHantoGame extends HantoGame {
 	public HantoBoard getBoard();
 	
 	/**
+	 * @return the Hanto Game state
+	 */
+	public HantoGameState getState();
+	
+	/**
 	 * @return the number of moves made in this game
 	 */
 	public int getNumMoves();

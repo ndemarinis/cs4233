@@ -136,6 +136,13 @@ public abstract class AbstractHantoGame implements HantoGame, InternalHantoGame 
 	}
 	
 	/**
+	 * @return the Hanto Game state
+	 */
+	public HantoGameState getState() {
+		return state;
+	}
+	
+	/**
 	 * @return the number of moves made in this game
 	 */
 	public int getNumMoves() {

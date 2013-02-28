@@ -10,8 +10,12 @@
 package hanto.studentndemarinis.tournament;
 
 import hanto.common.HantoException;
+import hanto.studentndemarinis.common.HantoPiece;
 import hanto.studentndemarinis.common.HantoPlayerHand;
 import hanto.studentndemarinis.common.HexCoordinate;
+import hanto.studentndemarinis.common.movement.HantoMoveStrategy;
+import hanto.studentndemarinis.common.movement.HantoMoveType;
+import hanto.studentndemarinis.common.movement.MoveFactory;
 import hanto.tournament.HantoGamePlayer;
 import hanto.tournament.HantoMoveRecord;
 import hanto.util.HantoGameID;
@@ -20,7 +24,9 @@ import hanto.util.HantoPlayerColor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -33,15 +39,19 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	HantoPlayerColor color; // Our color in this game
 	
 	private SimulatedHantoGame game;
-	private HantoPlayerStrategy strategy;
+
 	private HantoPlayerHand hand; // Available pieces for play, represented similarly in the game itself
+	private Collection<HantoPiece> placedPieces;
+	private Map<HantoPieceType, HantoMoveStrategy> moveStrategies;
 	
 	// This enum describes how we can place pieces:  
 	private enum MoveState { 	        STARTING,   // This is the first move, we only have one option
 				 			MUST_PLACE_BUTTERFLY,   // We MUST place the butterfly on this move
 				 				      PLACE_ONLY,   // We can only place pieces
 				 				  PLACE_AND_MOVE }; // We can place and move pieces
-	MoveState moveState;
+				 					
+	private MoveState moveState;
+	private HantoPlayerStrategy strategy;
 	
 	private static final int NUM_MOVES_PRE_BUTTERFLY = 3; // Fake it and copypaste this
 	private static final int NUM_MOVES_BEFORE_CARE_ABOUT_COLOR_ADJACENCY = 1;
@@ -71,6 +81,8 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		game = new SimulatedHantoGame(HantoGameID.DELTA_HANTO);
 		hand = new HantoPlayerHand(game.getStartingHand()); // Setup our available pieces
+		placedPieces = new Vector<HantoPiece>(); // Initialize list of pieces we will place
+		moveStrategies = setupMoveStrategies();
 		
 		// If we've passed in a strategy, use it.  Otherwise, pick the random one.  
 		if(strategy == null) {
@@ -102,6 +114,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		determineCurrentMoveState();
 		possibleMoves = findPlacementMoves();
+		findPossibleMoves(possibleMoves);
 		
 		// Pick a random move based on those given strategy
 		// If no moves are available, resign.  
@@ -116,8 +129,12 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				game.makeMove(selectedMove);
 
 				// If we are placing a piece, remove it from our hand
+				// and add it to the list of placed pieces
 				if(selectedMove.getFrom() == null) { 
 					hand.removeFromHand(selectedMove.getPiece());
+					
+					HexCoordinate selectedDest = HexCoordinate.extractHexCoordinate(selectedMove.getTo());
+					placedPieces.add(new HantoPiece(color, selectedMove.getPiece(), selectedDest));
 				}
 
 			} catch(HantoException e) {
@@ -161,6 +178,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	{
 		List<HantoMoveRecord> ret = new ArrayList<HantoMoveRecord>();
 		
+		// Lists of all available pieces and coordinates we can place
 		Collection<HantoPieceType> piecesToPlace = new Vector<HantoPieceType>();
 		Collection<HexCoordinate>  possiblePlacementCoords = new Vector<HexCoordinate>();
 		
@@ -181,7 +199,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 			addValidEmptyCoords(possiblePlacementCoords);
 			break;
 			
-		case PLACE_AND_MOVE: // Yes, I am abusing fallthrough DON'T HATE ME I KNOW IT'S BAD
+		case PLACE_AND_MOVE: // Same here
 			addAvailablePiecesFromHand(piecesToPlace);
 			addValidEmptyCoords(possiblePlacementCoords);
 			break;
@@ -196,6 +214,39 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 		
 		return ret;
 	}
+	
+	private void findPossibleMoves(List<HantoMoveRecord> currentMoves)
+	{
+		Collection<HantoMoveRecord> possibleMoves = new Vector<HantoMoveRecord>();
+		Collection<HexCoordinate> possibleDestCoords = new Vector<HexCoordinate>(); 
+		
+		if(moveState == MoveState.PLACE_AND_MOVE) // We can only move when allowed
+		{
+			addValidEmptyCoords(possibleDestCoords);
+			
+			for(HantoPiece p : placedPieces) {
+				HantoMoveStrategy strat = moveStrategies.get(p.getType());
+				
+				for(HexCoordinate c : possibleDestCoords) {
+					try {
+						if(strat.canMoveTo(game.getState(), p.getCoordinate(), c)) {
+							possibleMoves.add(new HantoMoveRecord(p.getType(), 
+									p.getCoordinate(), c));
+						}
+					} catch(HantoException e) {
+						throw new HantoPlayerException("WAT?  Test move was invalid!");
+					}
+				}
+				
+			}
+		}
+		
+		
+		currentMoves.addAll(possibleMoves);
+	}
+	
+	
+	/* ********************** HELPER METHODS ***************************/
 	
 	private void addAvailablePiecesFromHand(Collection<HantoPieceType> pieces)
 	{
@@ -220,6 +271,21 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 				coords.add(c);
 			}
 		}
+	}
+	
+	private Map<HantoPieceType, HantoMoveStrategy> setupMoveStrategies()
+	{
+		Map<HantoPieceType, HantoMoveStrategy> ret = 
+				new HashMap<HantoPieceType, HantoMoveStrategy>();
+		
+		ret.put(HantoPieceType.BUTTERFLY, 
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+		ret.put(HantoPieceType.CRAB, 
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.SLIDE, 1));
+		ret.put(HantoPieceType.SPARROW, 
+				MoveFactory.getInstance().getMoveStrategy(HantoMoveType.FLY, -1));
+		
+		return ret;
 	}
 	
 	private String getPrintableMove(HantoMoveRecord r)

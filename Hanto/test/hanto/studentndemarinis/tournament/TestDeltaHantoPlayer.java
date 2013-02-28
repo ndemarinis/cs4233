@@ -161,6 +161,7 @@ public class TestDeltaHantoPlayer {
 		
 		assertEquals(CRAB, tourn.lastMove.getPiece());
 	}
+
 	
 	
 	@Test

@@ -12,6 +12,7 @@ package hanto.studentndemarinis.tournament;
 import hanto.common.HantoException;
 import hanto.studentndemarinis.HantoFactory;
 import hanto.studentndemarinis.common.HantoBoard;
+import hanto.studentndemarinis.common.HantoGameState;
 import hanto.studentndemarinis.common.HantoPlayerHand;
 import hanto.studentndemarinis.common.HexCoordinate;
 import hanto.studentndemarinis.common.InternalHantoGame;
@@ -120,6 +121,13 @@ public class SimulatedHantoGame implements InternalHantoGame {
 	@Override
 	public HantoBoard getBoard() {
 		return game.getBoard();
+	}
+	
+	/**
+	 * @return the Hanto Game state
+	 */
+	public HantoGameState getState() {
+		return game.getState();
 	}
 	
 	@Override
