@@ -40,7 +40,7 @@ public class SimulatedHantoGame implements InternalHantoGame {
 	 * Create a simulated Hanto Game
 	 * @param game The game we're simulating
 	 */
-	public SimulatedHantoGame(HantoGameID gameID) throws HantoException {
+	public SimulatedHantoGame(HantoGameID gameID) {
 		this.game = (InternalHantoGame)(HantoFactory.getInstance().makeHantoGame(gameID));
 	}
 

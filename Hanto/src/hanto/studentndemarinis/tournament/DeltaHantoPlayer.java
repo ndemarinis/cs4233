@@ -61,7 +61,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 * @param color Color for the player, given by tournament
 	 * @param starting true if this player is making the starting move
 	 */
-	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) throws HantoException{
+	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting) {
 		this(color, isStarting, null);
 	}
 	
@@ -75,7 +75,7 @@ public class DeltaHantoPlayer implements HantoGamePlayer {
 	 * TODO: THIS SHOULD NOT THROW AN EXCEPTION
 	 */
 	public DeltaHantoPlayer(HantoPlayerColor color, boolean isStarting, 
-			HantoPlayerStrategy strategy) throws HantoException {
+			HantoPlayerStrategy strategy) {
 		this.color = color;
 		moveState = isStarting ? MoveState.STARTING : MoveState.PLACE_ONLY;
 		

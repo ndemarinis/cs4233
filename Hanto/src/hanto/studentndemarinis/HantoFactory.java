@@ -57,25 +57,33 @@ public class HantoFactory {
 	 * @return Instance of the specified Hanto Game, null
 	 * if game could not be made
 	 */
-	public HantoGame makeHantoGame(HantoGameID gameID) throws HantoException
+	public HantoGame makeHantoGame(HantoGameID gameID)
 	{
 		HantoGame ret = null;
-		
-		switch(gameID) {
-		case ALPHA_HANTO:
-			ret = new AlphaHantoGame();
-			break;
-		
-		case GAMMA_HANTO:
-			ret = new GammaHantoGame();
-			break;
-			
-		case DELTA_HANTO:
-			ret = new DeltaHantoGame();
-			break;
-			
-		default:
-			throw new HantoException("This type of Hanto Game is not supported!");
+		try {
+			switch(gameID) {
+			case ALPHA_HANTO:
+				ret = new AlphaHantoGame();
+				break;
+
+			case GAMMA_HANTO:
+				ret = new GammaHantoGame();
+				break;
+
+			case DELTA_HANTO:
+				ret = new DeltaHantoGame();
+				break;
+
+			default:
+				// We could throw an exception here (and I was); however, 
+				// this causes issues with DeltaHantoPlayer, which needs to make a 
+				// HantoGame but can't throw exceptions in the constructor.  
+				// Since we have absolutely no requirement for throwing an exception,
+				// I removed it.  
+				ret = null; 
+			}
+		} catch(HantoException e) {
+			ret = null;
 		}
 		
 		return ret;
